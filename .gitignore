@@ -2,6 +2,9 @@
 *.class
 target
 bin
-.classpath
-.project
-.settings
+dao-common/.classpath
+dao-derby/.classpath
+dao-common/.project
+dao-derby/.project
+dao-common/.settings
+dao-derby/.settings
