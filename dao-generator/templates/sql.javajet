@@ -1,0 +1,46 @@
+<%@ jet package="com.porpoise.dao.generator.templates" imports="java.util.* com.porpoise.dao.generator.gen.*" class="SqlTemplate"  
+skeleton="generator.skeleton" %>
+
+<% final DaoContext ctxt = (DaoContext) argument; 
+final String n = ctxt.getName();
+%>
+
+package <%= ctxt.getPackageName() %>;
+
+import <%= ctxt.getPackageName() %>.model.<%= n%>Dto;
+
+import java.math.BigDecimal;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.List;
+
+
+/**
+ */
+public class <%= n %>Sql
+{
+    ;// uninstantiable
+
+    public static String byId(final Long id)
+    {
+        return "";
+    }
+
+    public static String selectLike(final <%= n %>Dto dto)
+    {
+        return select() + like("dto", dto);
+
+    }
+
+    private static String like(final String aliasPrefix, final <%= n %>Dto dto)
+    {
+        final String alias = aliasPrefix.endsWith(".") ? aliasPrefix : aliasPrefix + ".";
+        return alias;
+    }
+
+    public static String select()
+    {
+        return null;
+    }
+    
+}

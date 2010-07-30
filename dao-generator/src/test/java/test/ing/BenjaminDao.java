@@ -1,18 +1,13 @@
-<%@ jet package="com.porpoise.dao.generator.templates" imports="java.util.* com.porpoise.dao.generator.gen.* com.porpoise.dao.generator.model.*" class="DaoTemplate" 
-skeleton="generator.skeleton" %>
 
-<% final DaoContext ctxt = (DaoContext) argument; 
-final String n = ctxt.getName();
-%>
 
-package <%= ctxt.getPackageName() %>;
+package test.ing;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-import <%= ctxt.getPackageName() %>.model.<%= n %>Dto;
+import test.ing.model.BenjaminDto;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
@@ -22,15 +17,15 @@ import com.porpoise.dao.database.dao.AbstractDao;
 import com.porpoise.dao.database.visitors.AbstractResultSetVisitor;
 
 /**
- * Functional Data Access class for <%= n %>Dto objects
+ * Functional Data Access class for BenjaminDto objects
  */
-public class <%= n %>Dao extends AbstractDao
+public class BenjaminDao extends AbstractDao
 {
     ;// uninstantiable
     
     private static class Visitor extends AbstractResultSetVisitor {
         
-        private final List<<%= n %>Dto> dtoResults;
+        private final List<BenjaminDto> dtoResults;
 
         public Visitor()
         {
@@ -42,11 +37,12 @@ public class <%= n %>Dao extends AbstractDao
         {
             int columnIndex = 1;
 
-<% for (final Column c : ctxt.getColumns()) { %>
-            final <%= c.getJavaName() %> <%= ctxt.asProperty(c.getName()) %> = get<%= c.getJavaName() %>(resultSet, columnIndex++);
-<%} // end for %>
-
-            final <%= n %>Dto dto  = new <%= n %>Dto(<%=  ctxt.getColumnParameterList() %>);
+//            final BigDecimal amount = getBigDecimal(resultSet, columnIndex++);
+//            final String name = getString(resultSet, columnIndex++);
+            final Long id = getLong(resultSet, columnIndex++);
+            final Long aaronId = getLong(resultSet, columnIndex++);
+            final String name = getString(resultSet, columnIndex++);
+            final BenjaminDto dto  = new BenjaminDto(id, aaronId, name);
             this.dtoResults.add(dto);
             return true;
         }
@@ -54,12 +50,12 @@ public class <%= n %>Dao extends AbstractDao
         /**
          * @return the dtoResults
          */
-        public List<<%= n %>Dto> getDtoResults()
+        public List<BenjaminDto> getDtoResults()
         {
             return ImmutableList.copyOf(this.dtoResults);
         }
 
-        public <%= n %>Dto getSingleResult()
+        public BenjaminDto getSingleResult()
         {
             return Iterables.getOnlyElement(this.dtoResults);
         }
@@ -71,9 +67,9 @@ public class <%= n %>Dao extends AbstractDao
      * @param id
      * @return
      */
-    public <%= n %>Dto byId(final DbConnectionFactory factory, final Long id)
+    public BenjaminDto byId(final DbConnectionFactory factory, final Long id)
     {
-        final String querySql = <%= n %>Sql.byId(id);
+        final String querySql = BenjaminSql.byId(id);
         final Visitor visitor = factory.executeQueryInSingleTransaction(new Visitor(), querySql, id);
         return visitor.getSingleResult();
     }

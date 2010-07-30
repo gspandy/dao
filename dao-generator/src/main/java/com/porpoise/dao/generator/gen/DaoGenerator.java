@@ -2,32 +2,67 @@ package com.porpoise.dao.generator.gen;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import com.google.common.base.Charsets;
+import com.google.common.collect.Maps;
 import com.google.common.io.Files;
 import com.porpoise.dao.generator.templates.DaoTemplate;
+import com.porpoise.dao.generator.templates.DtoTemplate;
+import com.porpoise.dao.generator.templates.MetadataTemplate;
+import com.porpoise.dao.generator.templates.SqlTemplate;
 
 /**
  * @author Aaron
  */
 public class DaoGenerator
 {
+    private static final Map<String, IGenerator> generatorByExtension = Maps.newHashMap();
+
+    static
+    {
+        generatorByExtension.put("%sDao", new DaoTemplate());
+        generatorByExtension.put("model/%sDto", new DtoTemplate());
+        generatorByExtension.put("model/%sMetadata", new MetadataTemplate());
+        generatorByExtension.put("%sSql", new SqlTemplate());
+
+    }
+
     /**
      * @param destFolder
-     * @param c
+     * @param ctxt
      * @throws IOException
      */
-    public static void generate(final File destFolder, final DaoContext c) throws IOException
+    public static void generate(final File destFolder, final DaoContext ctxt) throws IOException
     {
-        final File file = createFile(destFolder, c);
-        final CharSequence text = new DaoTemplate().generate(c);
+        for (final Entry<String, IGenerator> entry : generatorByExtension.entrySet())
+        {
+            final IGenerator generator = entry.getValue();
+            final String fileName = String.format(entry.getKey(), ctxt.getName());
+            generate(destFolder, generator, ctxt, fileName);
+        }
+    }
+
+    private static void generate(final File destFolder, final IGenerator template, final DaoContext ctxt, final String javaFileName)
+            throws IOException
+    {
+        final String basePackagePath = ctxt.getPackageNameAsPath();
+        final File file = createJavaFile(destFolder, basePackagePath, javaFileName);
+        final CharSequence text = template.generate(ctxt);
+
+        // check our 'subpackages' exist
+        if (!file.getParentFile().exists() && !file.getParentFile().mkdirs())
+        {
+            throw new IllegalStateException("Could not create sub-package directory " + file.getParentFile().getAbsolutePath());
+        }
         Files.write(text, file, Charsets.UTF_8);
     }
 
-    private static File createFile(final File destFolder, final DaoContext c)
+    private static File createJavaFile(final File destFolder, final String packageAsPath, final String fileName)
     {
-        final File targetFolder = createSubFolder(destFolder, c.getPackageNameAsPath());
-        final File file = new File(targetFolder, c.getName() + ".java");
+        final File targetFolder = createSubFolder(destFolder, packageAsPath);
+        final File file = new File(targetFolder, fileName + ".java");
         return file;
     }
 

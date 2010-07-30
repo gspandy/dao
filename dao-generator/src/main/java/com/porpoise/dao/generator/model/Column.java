@@ -1,13 +1,17 @@
 package com.porpoise.dao.generator.model;
 
+import com.google.common.base.CaseFormat;
+
 public class Column
 {
     private final String  name;
     private final boolean required;
-    private final Type    type;
+    private final ColType type;
+    private final Table   owningTable;
 
-    public Column(final String n, final boolean isRequired, final Type colType)
+    Column(final Table table, final String n, final boolean isRequired, final ColType colType)
     {
+        this.owningTable = table;
         this.name = n;
         this.required = isRequired;
         this.type = colType;
@@ -32,9 +36,19 @@ public class Column
     /**
      * @return the type
      */
-    public Type getType()
+    public ColType getType()
     {
         return this.type;
+    }
+
+    public String getJavaName()
+    {
+        return this.type.getJavaName();
+    }
+
+    public String getNameAsProperty()
+    {
+        return CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.LOWER_CAMEL, getName());
     }
 
 }

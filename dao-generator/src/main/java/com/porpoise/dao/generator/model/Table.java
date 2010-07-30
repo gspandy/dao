@@ -9,6 +9,7 @@ public class Table
 {
     private final String       name;
     private final List<Column> columns;
+    private final List<Column> oneToMany = Lists.newArrayList();
 
     public Table(final String n)
     {
@@ -16,9 +17,10 @@ public class Table
         this.columns = Lists.newArrayList();
     }
 
-    public void addColumn(final Column c)
+    private Column addColumn(final Column c)
     {
         this.columns.add(c);
+        return c;
     }
 
     public Iterable<Column> getColumns()
@@ -29,5 +31,15 @@ public class Table
     public String getName()
     {
         return this.name;
+    }
+
+    public void oneToMany(final Column fk)
+    {
+        this.oneToMany.add(fk);
+    }
+
+    public Column addColumn(final String colName, final boolean required, final ColType colType)
+    {
+        return addColumn(new Column(this, colName, required, colType));
     }
 }

@@ -1,0 +1,26 @@
+<%@ jet package="com.porpoise.dao.generator.templates" imports="java.util.* com.porpoise.dao.generator.gen.* com.porpoise.dao.generator.model.*" class="MetadataTemplate"  
+skeleton="generator.skeleton" %><% 
+final DaoContext ctxt = (DaoContext) argument; 
+final String n = ctxt.getName();
+%>
+package <%= ctxt.getPackageName() %>.model;
+
+import com.porpoise.dao.database.metadata.Field;
+import java.math.BigDecimal;
+import java.util.List;
+
+/**
+ * <%= n %>Metadata
+ */
+public enum <%= n %>Metadata
+{
+    ;// uninstantiable
+
+<% for (final Column c : ctxt.getColumns()) { %>
+    /**
+     * Field <%= c.getName() %>
+     */
+    public static Field<<%= c.getJavaName() %>> <%= c.getName() %> = new Field<<%= c.getJavaName() %>>("<%= c.getName() %>", <%= c.getJavaName() %>.class, <%= c.isRequired() %>);
+
+<% } // end for %>
+}
