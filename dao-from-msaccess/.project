@@ -1,0 +1,37 @@
+<projectDescription>
+  <name>dao-from-msaccess</name>
+  <comment/>
+  <projects/>
+  <buildSpec>
+    <buildCommand>
+      <name>ch.epfl.lamp.sdt.core.scalabuilder</name>
+    </buildCommand>
+  </buildSpec>
+  <natures>
+    <nature>org.eclipse.jdt.core.javanature</nature>
+    <nature>org.eclipse.pde.PluginNature</nature>
+    <nature>ch.epfl.lamp.sdt.core.scalanature</nature>
+  </natures>
+  <linkedResources>
+    <link>
+      <name>guava-r06.jar</name>
+      <type>1</type>
+      <location>/Users/Aaron/.m2/repository/com/google/guava/guava/r06/guava-r06.jar</location>
+    </link>
+    <link>
+      <name>dao-common-0.0.1-SNAPSHOT.jar</name>
+      <type>1</type>
+      <location>/Users/Aaron/.m2/repository/com/porpoise/dao/dao-common/0.0.1-SNAPSHOT/dao-common-0.0.1-SNAPSHOT.jar</location>
+    </link>
+    <link>
+      <name>log4j-1.2.14.jar</name>
+      <type>1</type>
+      <location>/Users/Aaron/.m2/repository/log4j/log4j/1.2.14/log4j-1.2.14.jar</location>
+    </link>
+    <link>
+      <name>scala-library-2.8.0.jar</name>
+      <type>1</type>
+      <location>/Users/Aaron/.m2/repository/org/scala-lang/scala-library/2.8.0/scala-library-2.8.0.jar</location>
+    </link>
+  </linkedResources>
+</projectDescription>

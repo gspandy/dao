@@ -19,6 +19,7 @@
 		<module>dao-common</module>
 		<module>dao-derby</module>
 		<module>dao-generator</module>
+                <module>dao-from-msaccess</module>
 		<!--		<module>dao-mysql</module>
 		<module>dao-oracle</module> -->
 	</modules>

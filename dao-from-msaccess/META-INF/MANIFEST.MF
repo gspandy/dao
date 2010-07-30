@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: dao generated from ms access
+Bundle-SymbolicName: dao-from-msaccess;singleton:=true
+Bundle-Version: 0.0.1.SNAPSHOT
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Export-Package: com.porpoise.dao,
+ com.porpoise.dao.access
+Bundle-ClassPath: .,
+ guava-r06.jar,
+ dao-common-0.0.1-SNAPSHOT.jar,
+ log4j-1.2.14.jar,
+ scala-library-2.8.0.jar
