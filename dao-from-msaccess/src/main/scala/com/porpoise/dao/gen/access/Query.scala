@@ -26,7 +26,7 @@ class Query(val sql: String) {
 	 */
 	def queryWith(connection: Connection, visitor : (Int, ResultSet, List[String]) => Unit) : Unit = {
 
-		import _root_.com.porpoise.dao.Query._
+		import _root_.com.porpoise.dao.gen.access.Query._
 		
 		val statement = connection.prepareStatement(sql);
 		using (statement) {statement => {
@@ -44,7 +44,7 @@ class Query(val sql: String) {
 							for(c <- 1 to colCount) {
 								columnLabels + metaData.getColumnLabel(c)
 							}
-						visitor(row, queryResultSet, List(columnLabels))
+						visitor(row, queryResultSet, columnLabels.toList)
 						row += 1;
 					} while(queryResultSet.next())
 				}

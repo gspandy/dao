@@ -1,9 +1,9 @@
 package com.porpoise.dao.gen.access
 
 import java.sql._;
-import com.porpoise.dao.access._;
-import com.porpoise.dao._;
-import com.porpoise.dao.Query._;
+import com.porpoise.dao.gen.access._;
+import com.porpoise.dao.gen._;
+import com.porpoise.dao.gen.access.Query._;
 import org.scalatest.matchers.ShouldMatchers
 import org.scalatest._
 import org.scalatest.events._;
