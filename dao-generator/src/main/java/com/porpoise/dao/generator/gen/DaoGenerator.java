@@ -12,6 +12,7 @@ import com.porpoise.dao.generator.templates.DaoTemplate;
 import com.porpoise.dao.generator.templates.DaoTestTemplate;
 import com.porpoise.dao.generator.templates.DtoTemplate;
 import com.porpoise.dao.generator.templates.MetadataTemplate;
+import com.porpoise.dao.generator.templates.PomTemplate;
 import com.porpoise.dao.generator.templates.SqlTemplate;
 
 /**
@@ -35,6 +36,27 @@ public class DaoGenerator
         testSourceTemplateByFilename = ImmutableMap.of(//
                 "%sDaoTest", testGen//
                 );
+    }
+
+    public static void generatePom(final String artifactId, final String groupId, final String version, final File destDir)
+            throws IOException
+    {
+        final IGenerator template = PomTemplate.create(String.format("%n"));
+        final PomContext ctxt = new PomContext(artifactId, groupId, version);
+        final CharSequence pom = template.generate(ctxt);
+        File target;
+        if (destDir.getName().endsWith("pom.xml"))
+        {
+            assert destDir.isFile();
+            target = destDir;
+        }
+        else
+        {
+
+            assert destDir.isDirectory();
+            target = new File(destDir, "pom.xml");
+        }
+        Files.write(pom, target, Charsets.UTF_8);
     }
 
     /**

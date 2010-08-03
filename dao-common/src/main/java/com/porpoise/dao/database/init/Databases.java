@@ -41,6 +41,19 @@ public enum Databases implements IDatabaseVendor
     },
 
     /**
+     * MS ACCESS
+     */
+    ACCESS
+    {
+        @Override
+        public DbConnectionFactory init(final DbConnectionFactory connectionFactory, final String connectionName,
+                final DbConnectionDetails details)
+        {
+            return AccessInit.initialise(connectionFactory, connectionName, details);
+        }
+    },
+
+    /**
      * ORACLE
      */
     ORACLE
@@ -67,11 +80,11 @@ public enum Databases implements IDatabaseVendor
      */
     protected DbConnectionFactory init()
     {
-        DbConnectionDetails connectionDetails = DbConfiguration.getConnectionDetails();
+        final DbConnectionDetails connectionDetails = DbConfiguration.getConnectionDetails();
         return init(connectionDetails);
     }
 
-    public DbConnectionFactory init(DbConnectionDetails connectionDetails)
+    public DbConnectionFactory init(final DbConnectionDetails connectionDetails)
     {
         return init(DbConnectionFactory.getInstance(), IDatabaseVendor.DEFAULT_CONNECTION_NAME, connectionDetails);
     }
