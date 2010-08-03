@@ -35,7 +35,7 @@ public class DaoGeneratorTest
     @Before
     public void setup()
     {
-        this.transaction = this.factory.startNewTransaction();
+        this.transaction = factory.startNewTransaction();
     }
 
     @After
