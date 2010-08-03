@@ -124,7 +124,10 @@ public class DaoGenerator
     {
         if (!destFolder.exists())
         {
-            throw new IllegalArgumentException(destFolder + " does not exit");
+            if (!destFolder.mkdirs())
+            {
+                throw new IllegalArgumentException(destFolder + " does not exit and could not create the directory");
+            }
         }
         if (!destFolder.isDirectory())
         {
