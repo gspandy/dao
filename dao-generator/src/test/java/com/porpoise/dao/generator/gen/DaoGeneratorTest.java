@@ -2,6 +2,7 @@ package com.porpoise.dao.generator.gen;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -9,6 +10,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.google.common.io.CharStreams;
 import com.porpoise.dao.database.DbConnectionDetails;
 import com.porpoise.dao.database.DbConnectionFactory;
 import com.porpoise.dao.database.IDbTransaction;
@@ -91,5 +93,12 @@ public class DaoGeneratorTest
         DaoGenerator.generateMainJavaSource(srcDir, ctxt);
         DaoGenerator.generateTestJavaSource(testDir, ctxt);
         DaoGenerator.generatePom("dao.test", "dao-test", "1.0.0", derbyTestDir);
+
+        // execute the pom
+        final Process process = Runtime.getRuntime().exec("cmd mvn test", new String[0], derbyTestDir);
+        final Readable supplier = new InputStreamReader(process.getInputStream());
+        final String output = CharStreams.toString(supplier);
+        System.out.println(output);
+
     }
 }
