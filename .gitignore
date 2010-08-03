@@ -10,3 +10,4 @@ dao-common/.settings
 dao-derby/.settings
 *.mdb
 test/ing
+*.log

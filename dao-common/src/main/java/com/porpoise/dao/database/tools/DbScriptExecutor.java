@@ -265,6 +265,11 @@ public enum DbScriptExecutor
         Logger.getLogger(DbScriptExecutor.class).info(String.format(format, args));
     }
 
+    public static void executeSQL(final IDbTransaction transaction, final String script)
+    {
+        executeSQL(transaction, DefaultExceptionHandler.getInstance(), script);
+    }
+
     /**
      * execute some sql
      * 
