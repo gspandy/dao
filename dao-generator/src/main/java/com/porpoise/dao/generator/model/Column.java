@@ -51,4 +51,9 @@ public class Column
         return CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.LOWER_CAMEL, getName());
     }
 
+    public String getNameAsAccessor()
+    {
+        return "get" + CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_CAMEL, getName());
+    }
+
 }

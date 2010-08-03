@@ -5,6 +5,7 @@ final String n = ctxt.getName();
 %>
 package <%= ctxt.getPackageName() %>.model;
 
+import com.google.common.collect.ImmutableList;
 import com.porpoise.dao.database.metadata.Field;
 import java.math.BigDecimal;
 import java.util.List;
@@ -23,4 +24,9 @@ public enum <%= n %>Metadata
     public static Field<<%= c.getJavaName() %>> <%= c.getName() %> = new Field<<%= c.getJavaName() %>>("<%= c.getName() %>", <%= c.getJavaName() %>.class, <%= c.isRequired() %>);
 
 <% } // end for %>
+
+    /**
+     * All fields
+     */
+    public static ImmutableList<? extends Field<?>> FIELDS = ImmutableList.of(<%= ctxt.getColumnNames() %>);
 }

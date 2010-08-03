@@ -82,6 +82,22 @@ public class DaoContext
         return b.toString();
     }
 
+    public String getColumnNames()
+    {
+        final StringBuilder b = new StringBuilder();
+
+        for (final Iterator<Column> iter = this.table.getColumns().iterator(); iter.hasNext();)
+        {
+            final Column c = iter.next();
+            b.append(c.getName());
+            if (iter.hasNext())
+            {
+                b.append(", ");
+            }
+        }
+        return b.toString();
+    }
+
     public Iterable<Column> getColumns()
     {
         return this.table.getColumns();

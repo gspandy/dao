@@ -1,5 +1,7 @@
 package com.porpoise.dao.database.metadata;
 
+import java.util.Iterator;
+
 import com.google.common.base.Preconditions;
 
 public class Field<T>
@@ -7,6 +9,26 @@ public class Field<T>
     private final String   name;
     private final Class<T> javaType;
     private final boolean  required;
+
+    public static String asAttributeList(final String alias, final Iterable<? extends Field<?>> fields)
+    {
+        final StringBuilder b = new StringBuilder();
+        final Iterator<? extends Field<?>> iter = fields.iterator();
+        while (iter.hasNext())
+        {
+            if (alias != null)
+            {
+                b.append(alias).append(".");
+            }
+            b.append(iter.next().getName());
+            if (iter.hasNext())
+            {
+                b.append(", ");
+            }
+        }
+        return b.toString();
+
+    }
 
     public Field(final String fieldName, final Class<T> type, final boolean isRequired)
     {

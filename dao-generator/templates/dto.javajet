@@ -1,4 +1,4 @@
-<%@ jet package="com.porpoise.dao.generator.templates" imports="java.util.* com.porpoise.dao.generator.gen.*" class="DtoTemplate"  
+<%@ jet package="com.porpoise.dao.generator.templates" imports="java.util.* com.porpoise.dao.generator.model.* com.porpoise.dao.generator.gen.*" class="DtoTemplate"  
 skeleton="generator.skeleton" %>
 
 <% final DaoContext ctxt = (DaoContext) argument; 
@@ -15,12 +15,35 @@ import <%= ctxt.getPackageName() %>.model.<%= n %>Dto;
 /**
  * <%= n %>Dto
  */
-public class <%= n %>Dto
+public final class <%= n %>Dto
 {
+<% for (final Column col : ctxt.getColumns()) { %>
+    /**
+     * <%= col.getNameAsProperty() %>
+     */
+    private final <%= col.getJavaName() %> <%= col.getNameAsProperty() %>;
+    
+<%}%>
+
     public <%= n %>Dto(
 <%= ctxt.getColumnDeclarations() %>    
     )
     {
         super();
+<% for (final Column col : ctxt.getColumns()) { %>
+        this.<%= col.getNameAsProperty() %> = <%= col.getNameAsProperty() %>; 
+<%}%>
     }
+
+<% for (final Column col : ctxt.getColumns()) { %>
+    /**
+     * <%= col.getNameAsProperty() %>
+     */
+    public <%= col.getJavaName() %> <%= col.getNameAsAccessor() %>()
+    {
+        return this.<%= col.getNameAsProperty() %>;
+    }
+    
+<%}%>
+
 }

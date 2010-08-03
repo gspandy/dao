@@ -17,7 +17,7 @@ public class MetadataTemplate implements IGenerator
 
   public final String NL = nl == null ? (System.getProperties().getProperty("line.separator")) : nl;
   protected final String TEXT_1 = "package ";
-  protected final String TEXT_2 = ".model;" + NL + "" + NL + "import com.porpoise.dao.database.metadata.Field;" + NL + "import java.math.BigDecimal;" + NL + "import java.util.List;" + NL + "" + NL + "/**" + NL + " * ";
+  protected final String TEXT_2 = ".model;" + NL + "" + NL + "import com.google.common.collect.ImmutableList;" + NL + "import com.porpoise.dao.database.metadata.Field;" + NL + "import java.math.BigDecimal;" + NL + "import java.util.List;" + NL + "" + NL + "/**" + NL + " * ";
   protected final String TEXT_3 = "Metadata" + NL + " */" + NL + "public enum ";
   protected final String TEXT_4 = "Metadata" + NL + "{" + NL + "    ;// uninstantiable" + NL;
   protected final String TEXT_5 = NL + "    /**" + NL + "     * Field ";
@@ -28,8 +28,9 @@ public class MetadataTemplate implements IGenerator
   protected final String TEXT_10 = "\", ";
   protected final String TEXT_11 = ".class, ";
   protected final String TEXT_12 = ");" + NL;
-  protected final String TEXT_13 = NL + "}";
-  protected final String TEXT_14 = NL;
+  protected final String TEXT_13 = NL + NL + "    /**" + NL + "     * All fields" + NL + "     */" + NL + "    public static ImmutableList<? extends Field<?>> FIELDS = ImmutableList.of(";
+  protected final String TEXT_14 = ");" + NL + "}";
+  protected final String TEXT_15 = NL;
 
    /* (non-javadoc)
     * @see IGenerator#generate(Object)
@@ -66,7 +67,9 @@ final String n = ctxt.getName();
     stringBuffer.append(TEXT_12);
      } // end for 
     stringBuffer.append(TEXT_13);
+    stringBuffer.append( ctxt.getColumnNames() );
     stringBuffer.append(TEXT_14);
+    stringBuffer.append(TEXT_15);
     return stringBuffer.toString();
   }
 }

@@ -37,11 +37,10 @@ public class BenjaminDao extends AbstractDao
         {
             int columnIndex = 1;
 
-//            final BigDecimal amount = getBigDecimal(resultSet, columnIndex++);
-//            final String name = getString(resultSet, columnIndex++);
             final Long id = getLong(resultSet, columnIndex++);
             final Long aaronId = getLong(resultSet, columnIndex++);
             final String name = getString(resultSet, columnIndex++);
+
             final BenjaminDto dto  = new BenjaminDto(id, aaronId, name);
             this.dtoResults.add(dto);
             return true;

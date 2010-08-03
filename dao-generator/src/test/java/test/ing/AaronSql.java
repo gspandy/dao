@@ -3,6 +3,9 @@
 package test.ing;
 
 import test.ing.model.AaronDto;
+import test.ing.model.AaronMetadata;
+
+import com.porpoise.dao.database.metadata.Field;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
@@ -15,6 +18,11 @@ import java.util.List;
 public class AaronSql
 {
     ;// uninstantiable
+
+    public static String attributeListAsString(final String alias)
+    {
+        return Field.asAttributeList(alias, AaronMetadata.FIELDS);
+    }
 
     public static String byId(final Long id)
     {
@@ -30,12 +38,16 @@ public class AaronSql
     private static String like(final String aliasPrefix, final AaronDto dto)
     {
         final String alias = aliasPrefix.endsWith(".") ? aliasPrefix : aliasPrefix + ".";
-        return alias;
+        return String.format(" WHERE %s", likeClause(alias, dto));
+    }
+    private static String likeClause(final String aliasPrefix, final AaronDto dto)
+    {
+        return "";
     }
 
     public static String select()
     {
-        return null;
+        return String.format("SELECT %s FROM Aaron", attributeListAsString(null));
     }
     
 }

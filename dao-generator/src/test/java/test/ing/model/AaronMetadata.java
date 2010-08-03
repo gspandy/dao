@@ -1,5 +1,6 @@
 package test.ing.model;
 
+import com.google.common.collect.ImmutableList;
 import com.porpoise.dao.database.metadata.Field;
 import java.math.BigDecimal;
 import java.util.List;
@@ -21,4 +22,9 @@ public enum AaronMetadata
      */
     public static Field<String> Name = new Field<String>("Name", String.class, false);
 
+
+    /**
+     * All fields
+     */
+    public static ImmutableList<? extends Field<?>> FIELDS = ImmutableList.of(ID, Name);
 }

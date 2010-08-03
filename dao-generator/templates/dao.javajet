@@ -71,7 +71,7 @@ public class <%= n %>Dao extends AbstractDao
      * @param id
      * @return
      */
-    public <%= n %>Dto byId(final DbConnectionFactory factory, final Long id)
+    public <%= n %>Dto findById(final DbConnectionFactory factory, final Long id)
     {
         final String querySql = <%= n %>Sql.byId(id);
         final Visitor visitor = factory.executeQueryInSingleTransaction(new Visitor(), querySql, id);

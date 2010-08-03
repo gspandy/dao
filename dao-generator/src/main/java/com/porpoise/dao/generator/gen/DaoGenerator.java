@@ -6,9 +6,10 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import com.google.common.base.Charsets;
-import com.google.common.collect.Maps;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.io.Files;
 import com.porpoise.dao.generator.templates.DaoTemplate;
+import com.porpoise.dao.generator.templates.DaoTestTemplate;
 import com.porpoise.dao.generator.templates.DtoTemplate;
 import com.porpoise.dao.generator.templates.MetadataTemplate;
 import com.porpoise.dao.generator.templates.SqlTemplate;
@@ -18,15 +19,22 @@ import com.porpoise.dao.generator.templates.SqlTemplate;
  */
 public class DaoGenerator
 {
-    private static final Map<String, IGenerator> generatorByExtension = Maps.newHashMap();
+    private static final Map<String, IGenerator> mainSourceTemplateByFilename;
+    private static final Map<String, IGenerator> testSourceTemplateByFilename;
 
     static
     {
-        generatorByExtension.put("%sDao", new DaoTemplate());
-        generatorByExtension.put("model/%sDto", new DtoTemplate());
-        generatorByExtension.put("model/%sMetadata", new MetadataTemplate());
-        generatorByExtension.put("%sSql", new SqlTemplate());
+        mainSourceTemplateByFilename = ImmutableMap.of(//
+                "%sDao", new DaoTemplate(),//
+                "model/%sDto", new DtoTemplate(),// /
+                "model/%sMetadata", new MetadataTemplate(),//
+                "%sSql", new SqlTemplate()//
+                );
 
+        final IGenerator testGen = new DaoTestTemplate();
+        testSourceTemplateByFilename = ImmutableMap.of(//
+                "%sDaoTest", testGen//
+                );
     }
 
     /**
@@ -34,9 +42,20 @@ public class DaoGenerator
      * @param ctxt
      * @throws IOException
      */
-    public static void generate(final File destFolder, final DaoContext ctxt) throws IOException
+    public static void generateMainJavaSource(final File destFolder, final DaoContext ctxt) throws IOException
     {
-        for (final Entry<String, IGenerator> entry : generatorByExtension.entrySet())
+        doGenerate(destFolder, ctxt, mainSourceTemplateByFilename);
+    }
+
+    public static void generateTestJavaSource(final File destFolder, final DaoContext ctxt) throws IOException
+    {
+        doGenerate(destFolder, ctxt, testSourceTemplateByFilename);
+    }
+
+    private static void doGenerate(final File destFolder, final DaoContext ctxt, final Map<String, IGenerator> templateByFilename)
+            throws IOException
+    {
+        for (final Entry<String, IGenerator> entry : templateByFilename.entrySet())
         {
             final IGenerator generator = entry.getValue();
             final String fileName = String.format(entry.getKey(), ctxt.getName());

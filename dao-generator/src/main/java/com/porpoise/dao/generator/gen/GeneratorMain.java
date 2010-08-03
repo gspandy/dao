@@ -3,9 +3,9 @@ package com.porpoise.dao.generator.gen;
 import java.io.File;
 import java.io.IOException;
 
+import com.porpoise.dao.generator.model.ColType;
 import com.porpoise.dao.generator.model.Column;
 import com.porpoise.dao.generator.model.Table;
-import com.porpoise.dao.generator.model.ColType;
 
 public class GeneratorMain
 {
@@ -27,13 +27,22 @@ public class GeneratorMain
 
         tbl.oneToMany(fk);
 
-        generateForTable(dest, packageName, tbl);
-        generateForTable(dest, packageName, tbl2);
+        generateMainJavaSourceForTable(dest, packageName, tbl);
+        generateTestJavaSourceForTable(dest, packageName, tbl);
+
+        generateMainJavaSourceForTable(dest, packageName, tbl2);
+        generateTestJavaSourceForTable(dest, packageName, tbl2);
     }
 
-    private static void generateForTable(final File dest, final String packageName, final Table tbl) throws IOException
+    private static void generateMainJavaSourceForTable(final File mainDest, final String packageName, final Table tbl) throws IOException
     {
         final DaoContext c = new DaoContext(packageName, tbl);
-        DaoGenerator.generate(dest, c);
+        DaoGenerator.generateMainJavaSource(mainDest, c);
+    }
+
+    private static void generateTestJavaSourceForTable(final File testDest, final String packageName, final Table tbl) throws IOException
+    {
+        final DaoContext c = new DaoContext(packageName, tbl);
+        DaoGenerator.generateTestJavaSource(testDest, c);
     }
 }

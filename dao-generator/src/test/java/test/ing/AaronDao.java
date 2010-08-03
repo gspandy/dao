@@ -37,10 +37,9 @@ public class AaronDao extends AbstractDao
         {
             int columnIndex = 1;
 
-//            final BigDecimal amount = getBigDecimal(resultSet, columnIndex++);
-//            final String name = getString(resultSet, columnIndex++);
             final Long id = getLong(resultSet, columnIndex++);
             final String name = getString(resultSet, columnIndex++);
+
             final AaronDto dto  = new AaronDto(id, name);
             this.dtoResults.add(dto);
             return true;

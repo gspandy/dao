@@ -1,0 +1,32 @@
+<projectDescription>
+  <name>dao</name>
+  <comment>NO_M2ECLIPSE_SUPPORT: Project files created with the maven-eclipse-plugin are not supported in M2Eclipse.</comment>
+  <projects/>
+  <buildSpec>
+    <buildCommand>
+      <name>ch.epfl.lamp.sdt.core.scalabuilder</name>
+    </buildCommand>
+                <buildCommand>
+                        <name>org.eclipse.pde.ManifestBuilder</name>
+                        <arguments>
+                        </arguments>
+                </buildCommand>
+                <buildCommand>
+                        <name>org.eclipse.pde.SchemaBuilder</name>
+                        <arguments>
+                        </arguments>
+                </buildCommand>
+  </buildSpec>
+  <natures>
+    <nature>org.eclipse.pde.PluginNature</nature>
+    <nature>org.eclipse.jdt.core.javanature</nature>
+    <nature>ch.epfl.lamp.sdt.core.scalanature</nature>
+  </natures>
+  <linkedResources>
+    <link>
+      <name>scala-library-2.8.0.jar</name>
+      <type>1</type>
+      <location>C:/Documents and Settings/aaron/.m2/repository/org/scala-lang/scala-library/2.8.0/scala-library-2.8.0.jar</location>
+    </link>
+  </linkedResources>
+</projectDescription>

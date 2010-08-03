@@ -1,0 +1,40 @@
+<%@ jet package="com.porpoise.dao.generator.templates" imports="java.util.* com.porpoise.dao.generator.gen.* com.porpoise.dao.generator.model.*" class="DaoTestTemplate" 
+skeleton="generator.skeleton" %>
+
+<% final DaoContext ctxt = (DaoContext) argument; 
+final String n = ctxt.getName();
+%>
+
+package <%= ctxt.getPackageName() %>;
+
+import java.math.BigDecimal;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.List;
+
+import <%= ctxt.getPackageName() %>.model.<%= n %>Dto;
+
+import org.junit.BeforeClass;
+import org.junit.Test;
+
+/**
+ * Tests for the AaronDao class
+ */
+public class <%= n %>DaoTest
+{
+
+    @BeforeClass
+    public static void setup()
+    {
+
+    }
+
+    /**
+     * 
+     */
+    @Test
+    public void test_findById()
+    {
+    }
+
+}

@@ -26,17 +26,18 @@ public enum Databases implements IDatabaseVendor
     // }
     // },
     //
-    // /**
-    // * DERBY
-    // */
-    // DERBY
-    // {
-    // public DbConnectionFactory init(final DbConnectionFactory connectionFactory, final String connectionName,
-    // final DbConnectionDetails details)
-    // {
-    // return DerbyInit.initialise(connectionFactory, connectionName, details);
-    // }
-    // },
+    /**
+     * DERBY
+     */
+    DERBY
+    {
+        @Override
+        public DbConnectionFactory init(final DbConnectionFactory connectionFactory, final String connectionName,
+                final DbConnectionDetails details)
+        {
+            return DerbyInit.initialise(connectionFactory, connectionName, details);
+        }
+    }
     //
     // /**
     // * ORACLE
@@ -107,6 +108,6 @@ public enum Databases implements IDatabaseVendor
     public DbConnectionFactory init(final DbConnectionFactory connectionFactory, final String connectionName,
             final DbConnectionDetails details)
     {
-        return null;
+        return DerbyInit.initialise(connectionFactory, connectionName, details);
     }
 }
