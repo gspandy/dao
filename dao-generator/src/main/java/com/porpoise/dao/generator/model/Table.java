@@ -19,8 +19,25 @@ public class Table
 
     private Column addColumn(final Column c)
     {
+        if (getColumnByName(c.getName()) != null)
+        {
+            throw new IllegalArgumentException(String.format("A column with name '%s' is already defined", c.getName()));
+        }
+
         this.columns.add(c);
         return c;
+    }
+
+    public Column getColumnByName(final String colName)
+    {
+        for (final Column c : this.columns)
+        {
+            if (c.getName().equals(colName))
+            {
+                return c;
+            }
+        }
+        return null;
     }
 
     public Iterable<Column> getColumns()

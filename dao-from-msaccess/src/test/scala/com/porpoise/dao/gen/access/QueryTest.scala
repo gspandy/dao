@@ -34,6 +34,7 @@ class QueryTest extends AssertionsForJUnit  {
 	def teardown()
 	{
 		println("tearing down");
+		if (conn != null)
 		conn.close()
 	}
 	

@@ -34,13 +34,12 @@ public class DaoGeneratorTest
         final DbConnectionDetails details = new DbConnectionDetails();
         final String userDir = System.getProperty("user.dir");
         derbyTestDir = new File(userDir, "dao-test");
-        derbyTestDir.deleteOnExit();
-
         srcDir = new File(derbyTestDir, "src/main/java");
-        srcDir.deleteOnExit();
-
         testDir = new File(derbyTestDir, "src/test/java");
-        testDir.deleteOnExit();
+
+        // derbyTestDir.deleteOnExit();
+        // srcDir.deleteOnExit();
+        // testDir.deleteOnExit();
 
         details.setDatabaseName(new File(derbyTestDir, "dao-gen-test").getAbsolutePath());
         factory = Databases.DERBY.init(details);
@@ -62,6 +61,10 @@ public class DaoGeneratorTest
     public static void tearDownClass() throws IOException
     {
         factory.closeAllConnections();
+        if (true)
+        {
+            return;
+        }
         Files.deleteRecursively(derbyTestDir);
     }
 
@@ -85,7 +88,6 @@ public class DaoGeneratorTest
         table.addColumn("id", false, ColType.Integer);
         table.addColumn("LastName", false, ColType.String);
         table.addColumn("FirstName", false, ColType.String);
-        table.addColumn("LastName", false, ColType.Integer);
 
         // generate a DAO for the table:
         final DaoContext ctxt = new DaoContext("test.pack.age", table);
@@ -93,11 +95,12 @@ public class DaoGeneratorTest
         DaoGenerator.generateTestJavaSource(testDir, ctxt);
         DaoGenerator.generatePom("dao.test", "dao-test", "1.0.0", derbyTestDir);
 
-        // execute the pom
-        final Process process = Runtime.getRuntime().exec("cmd mvn test", new String[0], derbyTestDir);
+        // execute the pom for the generated code - have it run the generated tests
+        final Process process = Runtime.getRuntime().exec("mvn test", new String[0], derbyTestDir);
         final Readable supplier = new InputStreamReader(process.getInputStream());
         final String output = CharStreams.toString(supplier);
         System.out.println(output);
+        // Assert.assertTrue(output, output.contains("SUCCESS"));
 
     }
 }

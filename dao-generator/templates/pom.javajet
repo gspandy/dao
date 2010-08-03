@@ -15,7 +15,11 @@ skeleton="generator.skeleton" %><% final PomContext ctxt = (PomContext) argument
 	</properties>
 
 	<dependencies>
-
+		<dependency>
+			<groupId>com.porpoise.dao</groupId>
+			<artifactId>dao-common</artifactId>
+	      <version>0.0.1-SNAPSHOT</version>
+		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
