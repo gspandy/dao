@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 
 import org.junit.After;
 import org.junit.AfterClass;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -37,9 +38,9 @@ public class DaoGeneratorTest
         srcDir = new File(derbyTestDir, "src/main/java");
         testDir = new File(derbyTestDir, "src/test/java");
 
-        // derbyTestDir.deleteOnExit();
-        // srcDir.deleteOnExit();
-        // testDir.deleteOnExit();
+        derbyTestDir.deleteOnExit();
+        srcDir.deleteOnExit();
+        testDir.deleteOnExit();
 
         details.setDatabaseName(new File(derbyTestDir, "dao-gen-test").getAbsolutePath());
         factory = Databases.DERBY.init(details);
@@ -61,10 +62,6 @@ public class DaoGeneratorTest
     public static void tearDownClass() throws IOException
     {
         factory.closeAllConnections();
-        if (true)
-        {
-            return;
-        }
         Files.deleteRecursively(derbyTestDir);
     }
 
@@ -100,7 +97,7 @@ public class DaoGeneratorTest
         final Readable supplier = new InputStreamReader(process.getInputStream());
         final String output = CharStreams.toString(supplier);
         System.out.println(output);
-        // Assert.assertTrue(output, output.contains("SUCCESS"));
+        Assert.assertTrue(output, output.contains("SUCCESS"));
 
     }
 }
