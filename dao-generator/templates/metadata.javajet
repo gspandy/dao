@@ -1,7 +1,7 @@
 <%@ jet package="com.porpoise.dao.generator.templates" imports="java.util.* com.porpoise.dao.generator.gen.* com.porpoise.dao.generator.model.*" class="MetadataTemplate"  
 skeleton="generator.skeleton" %><% 
 final DaoContext ctxt = (DaoContext) argument; 
-final String n = ctxt.getName();
+final String n = ctxt.getJavaName();
 %>
 package <%= ctxt.getPackageName() %>.model;
 
@@ -19,7 +19,7 @@ public enum <%= n %>Metadata
 
 <% for (final Column c : ctxt.getColumns()) { %>
     /**
-     * Field <%= c.getName() %>
+     * Field <%= c.getJavaName() %>
      */
     public static Field<<%= c.getJavaName() %>> <%= c.getName() %> = new Field<<%= c.getJavaName() %>>("<%= c.getName() %>", <%= c.getJavaName() %>.class, <%= c.isRequired() %>);
 

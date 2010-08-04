@@ -2,7 +2,7 @@
 skeleton="generator.skeleton" %>
 
 <% final DaoContext ctxt = (DaoContext) argument; 
-final String n = ctxt.getName();
+final String n = ctxt.getJavaName();
 %>
 
 package <%= ctxt.getPackageName() %>;
@@ -16,6 +16,11 @@ import <%= ctxt.getPackageName() %>.model.<%= n %>Dto;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import com.porpoise.dao.database.DbConnectionDetails;
+import com.porpoise.dao.database.DbConnectionFactory;
+import com.porpoise.dao.database.init.Databases;
+
 
 /**
  * Tests for the AaronDao class

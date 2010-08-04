@@ -42,9 +42,14 @@ public class DaoContext
         return this.packageName.replace('.', '/');
     }
 
-    public String getName()
+    public String getJavaName()
     {
-        return this.table.getName();
+        return this.table.getJavaName();
+    }
+
+    public String getTableName()
+    {
+        return this.table.getTableName();
     }
 
     public String getColumnDeclarations()

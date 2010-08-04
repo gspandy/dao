@@ -40,7 +40,7 @@ public class MetadataTemplate implements IGenerator
     final StringBuffer stringBuffer = new StringBuffer();
      
 final DaoContext ctxt = (DaoContext) argument; 
-final String n = ctxt.getName();
+final String n = ctxt.getJavaName();
 
     stringBuffer.append(TEXT_1);
     stringBuffer.append( ctxt.getPackageName() );
@@ -51,7 +51,7 @@ final String n = ctxt.getName();
     stringBuffer.append(TEXT_4);
      for (final Column c : ctxt.getColumns()) { 
     stringBuffer.append(TEXT_5);
-    stringBuffer.append( c.getName() );
+    stringBuffer.append( c.getJavaName() );
     stringBuffer.append(TEXT_6);
     stringBuffer.append( c.getJavaName() );
     stringBuffer.append(TEXT_7);

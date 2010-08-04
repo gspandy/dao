@@ -2,7 +2,7 @@
 skeleton="generator.skeleton" %>
 
 <% final DaoContext ctxt = (DaoContext) argument; 
-final String n = ctxt.getName();
+final String n = ctxt.getJavaName();
 %>
 
 package <%= ctxt.getPackageName() %>;
@@ -11,6 +11,7 @@ import <%= ctxt.getPackageName() %>.model.<%= n%>Dto;
 import <%= ctxt.getPackageName() %>.model.<%= n%>Metadata;
 
 import com.porpoise.dao.database.metadata.Field;
+import com.google.common.base.Strings;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
@@ -24,35 +25,42 @@ public class <%= n %>Sql
 {
     ;// uninstantiable
 
+    private static final String TABLE_NAME = "<%=ctxt.getTableName() %>";
+
     public static String attributeListAsString(final String alias)
     {
         return Field.asAttributeList(alias, <%= n %>Metadata.FIELDS);
     }
-
-    public static String byId(final Long id)
+    
+    public static String attributeListAsUpdateString(final String alias)
     {
-        return "";
+        return Field.asUpdateList(alias, <%= n %>Metadata.FIELDS);
     }
 
-    public static String selectLike(final <%= n %>Dto dto)
+    public static String byId()
     {
-        return select() + like("dto", dto);
-
+        return by(<%= n %>Metadata.id);
     }
 
-    private static String like(final String aliasPrefix, final <%= n %>Dto dto)
+    public static String by(final Field<?> field)
     {
-        final String alias = aliasPrefix.endsWith(".") ? aliasPrefix : aliasPrefix + ".";
-        return String.format(" WHERE %s", likeClause(alias, dto));
+        return String.format("%s WHERE %s=?", select(), field.getName());
     }
-    private static String likeClause(final String aliasPrefix, final <%= n %>Dto dto)
+
+    public static String insert()
     {
-        return "";
+        final String propertyPlaceholders = Strings.repeat("?,", <%= n %>Metadata.FIELDS.size() - 1) + "?";
+        return String.format("INSERT INTO %s (%s) VALUES (%s)", TABLE_NAME, attributeListAsString(null), propertyPlaceholders);
+    }
+
+    public static String update()
+    {
+        return String.format("UPDATE %s SET %s", TABLE_NAME, attributeListAsUpdateString(null));
     }
 
     public static String select()
     {
-        return String.format("SELECT %s FROM <%=ctxt.getName() %>", attributeListAsString(null));
+        return String.format("SELECT %s FROM %s", attributeListAsString(null), TABLE_NAME);
     }
     
 }

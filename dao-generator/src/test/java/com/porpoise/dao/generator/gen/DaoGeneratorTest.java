@@ -12,7 +12,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.google.common.io.CharStreams;
-import com.google.common.io.Files;
 import com.porpoise.dao.database.DbConnectionDetails;
 import com.porpoise.dao.database.DbConnectionFactory;
 import com.porpoise.dao.database.IDbTransaction;
@@ -38,10 +37,6 @@ public class DaoGeneratorTest
         srcDir = new File(derbyTestDir, "src/main/java");
         testDir = new File(derbyTestDir, "src/test/java");
 
-        derbyTestDir.deleteOnExit();
-        srcDir.deleteOnExit();
-        testDir.deleteOnExit();
-
         details.setDatabaseName(new File(derbyTestDir, "dao-gen-test").getAbsolutePath());
         factory = Databases.DERBY.init(details);
     }
@@ -62,7 +57,7 @@ public class DaoGeneratorTest
     public static void tearDownClass() throws IOException
     {
         factory.closeAllConnections();
-        Files.deleteRecursively(derbyTestDir);
+        // Files.deleteRecursively(derbyTestDir);
     }
 
     /**
@@ -81,7 +76,7 @@ public class DaoGeneratorTest
         );
 
         // represent the table in code:
-        final Table table = new Table("TestTable");
+        final Table table = new Table("TEST_TABLE");
         table.addColumn("id", false, ColType.Integer);
         table.addColumn("LastName", false, ColType.String);
         table.addColumn("FirstName", false, ColType.String);

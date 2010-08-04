@@ -2,6 +2,7 @@ package com.porpoise.dao.generator.model;
 
 import java.util.List;
 
+import com.google.common.base.CaseFormat;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 
@@ -45,7 +46,12 @@ public class Table
         return ImmutableList.copyOf(this.columns);
     }
 
-    public String getName()
+    public String getJavaName()
+    {
+        return CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, this.name);
+    }
+
+    public String getTableName()
     {
         return this.name;
     }

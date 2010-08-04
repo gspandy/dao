@@ -12,6 +12,18 @@ public class Field<T>
 
     public static String asAttributeList(final String alias, final Iterable<? extends Field<?>> fields)
     {
+        final boolean appendEquals = false;
+        return asSqlString(alias, fields, appendEquals);
+    }
+
+    public static String asUpdateList(final String alias, final Iterable<? extends Field<?>> fields)
+    {
+        final boolean appendEquals = true;
+        return asSqlString(alias, fields, appendEquals);
+    }
+
+    private static String asSqlString(final String alias, final Iterable<? extends Field<?>> fields, final boolean appendEquals)
+    {
         final StringBuilder b = new StringBuilder();
         final Iterator<? extends Field<?>> iter = fields.iterator();
         while (iter.hasNext())
@@ -21,13 +33,16 @@ public class Field<T>
                 b.append(alias).append(".");
             }
             b.append(iter.next().getName());
+            if (appendEquals)
+            {
+                b.append("=?");
+            }
             if (iter.hasNext())
             {
                 b.append(", ");
             }
         }
         return b.toString();
-
     }
 
     public Field(final String fieldName, final Class<T> type, final boolean isRequired)

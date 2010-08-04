@@ -2,7 +2,7 @@
 skeleton="generator.skeleton" %>
 
 <% final DaoContext ctxt = (DaoContext) argument; 
-final String n = ctxt.getName();
+final String n = ctxt.getJavaName();
 %>
 
 package <%= ctxt.getPackageName() %>.model;

@@ -51,7 +51,7 @@ public class DtoTemplate implements IGenerator
     final StringBuffer stringBuffer = new StringBuffer();
     stringBuffer.append(TEXT_1);
      final DaoContext ctxt = (DaoContext) argument; 
-final String n = ctxt.getName();
+final String n = ctxt.getJavaName();
 
     stringBuffer.append(TEXT_2);
     stringBuffer.append( ctxt.getPackageName() );

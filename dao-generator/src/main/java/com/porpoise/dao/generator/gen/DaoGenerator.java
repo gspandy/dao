@@ -80,7 +80,7 @@ public class DaoGenerator
         for (final Entry<String, IGenerator> entry : templateByFilename.entrySet())
         {
             final IGenerator generator = entry.getValue();
-            final String fileName = String.format(entry.getKey(), ctxt.getName());
+            final String fileName = String.format(entry.getKey(), ctxt.getJavaName());
             generate(destFolder, generator, ctxt, fileName);
         }
     }

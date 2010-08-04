@@ -20,7 +20,7 @@ public class DaoTestTemplate implements IGenerator
   protected final String TEXT_2 = NL + NL + "package ";
   protected final String TEXT_3 = ";" + NL + "" + NL + "import java.math.BigDecimal;" + NL + "import java.sql.ResultSet;" + NL + "import java.sql.SQLException;" + NL + "import java.util.List;" + NL + "" + NL + "import ";
   protected final String TEXT_4 = ".model.";
-  protected final String TEXT_5 = "Dto;" + NL + "" + NL + "import org.junit.BeforeClass;" + NL + "import org.junit.Test;" + NL + "" + NL + "/**" + NL + " * Tests for the AaronDao class" + NL + " */" + NL + "public class ";
+  protected final String TEXT_5 = "Dto;" + NL + "" + NL + "import org.junit.BeforeClass;" + NL + "import org.junit.Test;" + NL + "" + NL + "import com.porpoise.dao.database.DbConnectionDetails;" + NL + "import com.porpoise.dao.database.DbConnectionFactory;" + NL + "import com.porpoise.dao.database.init.Databases;" + NL + "" + NL + "" + NL + "/**" + NL + " * Tests for the AaronDao class" + NL + " */" + NL + "public class ";
   protected final String TEXT_6 = "DaoTest" + NL + "{" + NL + "" + NL + "    @BeforeClass" + NL + "    public static void setup()" + NL + "    {" + NL + "" + NL + "    }" + NL + "" + NL + "    /**" + NL + "     * " + NL + "     */" + NL + "    @Test" + NL + "    public void test_findById()" + NL + "    {" + NL + "    }" + NL + "" + NL + "}";
 
    /* (non-javadoc)
@@ -31,7 +31,7 @@ public class DaoTestTemplate implements IGenerator
     final StringBuffer stringBuffer = new StringBuffer();
     stringBuffer.append(TEXT_1);
      final DaoContext ctxt = (DaoContext) argument; 
-final String n = ctxt.getName();
+final String n = ctxt.getJavaName();
 
     stringBuffer.append(TEXT_2);
     stringBuffer.append( ctxt.getPackageName() );

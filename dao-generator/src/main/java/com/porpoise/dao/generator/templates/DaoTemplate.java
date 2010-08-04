@@ -46,7 +46,7 @@ public class DaoTemplate implements IGenerator
     final StringBuffer stringBuffer = new StringBuffer();
     stringBuffer.append(TEXT_1);
      final DaoContext ctxt = (DaoContext) argument; 
-final String n = ctxt.getName();
+final String n = ctxt.getJavaName();
 
     stringBuffer.append(TEXT_2);
     stringBuffer.append( ctxt.getPackageName() );
@@ -65,7 +65,7 @@ final String n = ctxt.getName();
     stringBuffer.append(TEXT_9);
     stringBuffer.append( c.getJavaName() );
     stringBuffer.append(TEXT_10);
-    stringBuffer.append( ctxt.asProperty(c.getName()) );
+    stringBuffer.append( ctxt.asProperty(c.getJavaName()) );
     stringBuffer.append(TEXT_11);
     stringBuffer.append( c.getJavaName() );
     stringBuffer.append(TEXT_12);

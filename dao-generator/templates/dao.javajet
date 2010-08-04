@@ -2,7 +2,7 @@
 skeleton="generator.skeleton" %>
 
 <% final DaoContext ctxt = (DaoContext) argument; 
-final String n = ctxt.getName();
+final String n = ctxt.getJavaName();
 %>
 
 package <%= ctxt.getPackageName() %>;
@@ -43,7 +43,7 @@ public class <%= n %>Dao extends AbstractDao
             int columnIndex = 1;
 
 <% for (final Column c : ctxt.getColumns()) { %>
-            final <%= c.getJavaName() %> <%= ctxt.asProperty(c.getName()) %> = get<%= c.getJavaName() %>(resultSet, columnIndex++);
+            final <%= c.getJavaName() %> <%= ctxt.asProperty(c.getJavaName()) %> = get<%= c.getJavaName() %>(resultSet, columnIndex++);
 <%} // end for %>
 
             final <%= n %>Dto dto  = new <%= n %>Dto(<%=  ctxt.getColumnParameterList() %>);
