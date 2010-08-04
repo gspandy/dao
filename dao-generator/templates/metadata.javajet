@@ -19,9 +19,9 @@ public enum <%= n %>Metadata
 
 <% for (final Column c : ctxt.getColumns()) { %>
     /**
-     * Field <%= c.getJavaName() %>
+     * Field <%= c.getName() %>
      */
-    public static Field<<%= c.getJavaName() %>> <%= c.getName() %> = new Field<<%= c.getJavaName() %>>("<%= c.getName() %>", <%= c.getJavaName() %>.class, <%= c.isRequired() %>);
+    public static Field<<%= c.getJavaTypeName() %>> <%= c.getName() %> = new Field<<%= c.getJavaTypeName() %>>("<%= c.getName() %>", <%= c.getJavaTypeName() %>.class, <%= c.isRequired() %>);
 
 <% } // end for %>
 

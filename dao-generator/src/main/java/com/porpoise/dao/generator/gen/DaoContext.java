@@ -60,7 +60,7 @@ public class DaoContext
         {
             final Column c = iter.next();
             b.append("final ");
-            b.append(c.getJavaName());
+            b.append(c.getJavaTypeName());
             b.append(" ");
             b.append(c.getNameAsProperty());
             if (iter.hasNext())

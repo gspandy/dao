@@ -21,7 +21,7 @@ public final class <%= n %>Dto
     /**
      * <%= col.getNameAsProperty() %>
      */
-    private final <%= col.getJavaName() %> <%= col.getNameAsProperty() %>;
+    private final <%= col.getJavaTypeName() %> <%= col.getNameAsProperty() %>;
     
 <%}%>
 
@@ -39,7 +39,7 @@ public final class <%= n %>Dto
     /**
      * <%= col.getNameAsProperty() %>
      */
-    public <%= col.getJavaName() %> <%= col.getNameAsAccessor() %>()
+    public <%= col.getJavaTypeName() %> <%= col.getNameAsAccessor() %>()
     {
         return this.<%= col.getNameAsProperty() %>;
     }

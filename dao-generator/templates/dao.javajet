@@ -43,7 +43,7 @@ public class <%= n %>Dao extends AbstractDao
             int columnIndex = 1;
 
 <% for (final Column c : ctxt.getColumns()) { %>
-            final <%= c.getJavaName() %> <%= ctxt.asProperty(c.getJavaName()) %> = get<%= c.getJavaName() %>(resultSet, columnIndex++);
+            final <%= c.getJavaTypeName() %> <%= ctxt.asProperty(c.getName()) %> = get<%= c.getJavaTypeName() %>(resultSet, columnIndex++);
 <%} // end for %>
 
             final <%= n %>Dto dto  = new <%= n %>Dto(<%=  ctxt.getColumnParameterList() %>);
@@ -73,7 +73,7 @@ public class <%= n %>Dao extends AbstractDao
      */
     public <%= n %>Dto findById(final DbConnectionFactory factory, final Long id)
     {
-        final String querySql = <%= n %>Sql.byId(id);
+        final String querySql = <%= n %>Sql.byId();
         final Visitor visitor = factory.executeQueryInSingleTransaction(new Visitor(), querySql, id);
         return visitor.getSingleResult();
     }

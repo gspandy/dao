@@ -41,7 +41,7 @@ public class Column
         return this.type;
     }
 
-    public String getJavaName()
+    public String getJavaTypeName()
     {
         return this.type.getJavaName();
     }

@@ -35,7 +35,7 @@ public class DaoTemplate implements IGenerator
   protected final String TEXT_17 = "Dto> getDtoResults()" + NL + "        {" + NL + "            return ImmutableList.copyOf(this.dtoResults);" + NL + "        }" + NL + "" + NL + "        public ";
   protected final String TEXT_18 = "Dto getSingleResult()" + NL + "        {" + NL + "            return Iterables.getOnlyElement(this.dtoResults);" + NL + "        }" + NL + "        " + NL + "    }" + NL + "    " + NL + "    /**" + NL + "     * @param factory" + NL + "     * @param id" + NL + "     * @return" + NL + "     */" + NL + "    public ";
   protected final String TEXT_19 = "Dto findById(final DbConnectionFactory factory, final Long id)" + NL + "    {" + NL + "        final String querySql = ";
-  protected final String TEXT_20 = "Sql.byId(id);" + NL + "        final Visitor visitor = factory.executeQueryInSingleTransaction(new Visitor(), querySql, id);" + NL + "        return visitor.getSingleResult();" + NL + "    }" + NL + "    " + NL + "}";
+  protected final String TEXT_20 = "Sql.byId();" + NL + "        final Visitor visitor = factory.executeQueryInSingleTransaction(new Visitor(), querySql, id);" + NL + "        return visitor.getSingleResult();" + NL + "    }" + NL + "    " + NL + "}";
   protected final String TEXT_21 = NL;
 
    /* (non-javadoc)
@@ -63,11 +63,11 @@ final String n = ctxt.getJavaName();
     stringBuffer.append(TEXT_8);
      for (final Column c : ctxt.getColumns()) { 
     stringBuffer.append(TEXT_9);
-    stringBuffer.append( c.getJavaName() );
+    stringBuffer.append( c.getJavaTypeName() );
     stringBuffer.append(TEXT_10);
-    stringBuffer.append( ctxt.asProperty(c.getJavaName()) );
+    stringBuffer.append( ctxt.asProperty(c.getName()) );
     stringBuffer.append(TEXT_11);
-    stringBuffer.append( c.getJavaName() );
+    stringBuffer.append( c.getJavaTypeName() );
     stringBuffer.append(TEXT_12);
     } // end for 
     stringBuffer.append(TEXT_13);
