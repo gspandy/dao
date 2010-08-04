@@ -404,4 +404,19 @@ public enum DbConnectionFactory
         }
         return visitor;
     }
+
+    public void executeInSingleTransaction(final String sql, final Object... params)
+    {
+        IDbTransaction trans = null;
+
+        try
+        {
+            trans = startNewTransaction();
+            trans.executeUpdate(sql, params);
+        }
+        finally
+        {
+            close(trans);
+        }
+    }
 }

@@ -35,8 +35,11 @@ public class DaoTemplate implements IGenerator
   protected final String TEXT_17 = "Dto> getDtoResults()" + NL + "        {" + NL + "            return ImmutableList.copyOf(this.dtoResults);" + NL + "        }" + NL + "" + NL + "        public ";
   protected final String TEXT_18 = "Dto getSingleResult()" + NL + "        {" + NL + "            return Iterables.getOnlyElement(this.dtoResults);" + NL + "        }" + NL + "        " + NL + "    }" + NL + "    " + NL + "    /**" + NL + "     * @param factory" + NL + "     * @param id" + NL + "     * @return" + NL + "     */" + NL + "    public ";
   protected final String TEXT_19 = "Dto findById(final DbConnectionFactory factory, final Long id)" + NL + "    {" + NL + "        final String querySql = ";
-  protected final String TEXT_20 = "Sql.byId();" + NL + "        final Visitor visitor = factory.executeQueryInSingleTransaction(new Visitor(), querySql, id);" + NL + "        return visitor.getSingleResult();" + NL + "    }" + NL + "    " + NL + "}";
-  protected final String TEXT_21 = NL;
+  protected final String TEXT_20 = "Sql.byId();" + NL + "        final Visitor visitor = factory.executeQueryInSingleTransaction(new Visitor(), querySql, id);" + NL + "        return visitor.getSingleResult();" + NL + "    }" + NL + "    public void insert(final DbConnectionFactory factory, final ";
+  protected final String TEXT_21 = "Dto dto)" + NL + "    {" + NL + "        final String sql = ";
+  protected final String TEXT_22 = "Sql.insert();" + NL + "        factory.executeInSingleTransaction(sql, ";
+  protected final String TEXT_23 = "); " + NL + "    }    " + NL + "}";
+  protected final String TEXT_24 = NL;
 
    /* (non-javadoc)
     * @see IGenerator#generate(Object)
@@ -85,7 +88,13 @@ final String n = ctxt.getJavaName();
     stringBuffer.append(TEXT_19);
     stringBuffer.append( n );
     stringBuffer.append(TEXT_20);
+    stringBuffer.append( n );
     stringBuffer.append(TEXT_21);
+    stringBuffer.append( n );
+    stringBuffer.append(TEXT_22);
+    stringBuffer.append( ctxt.getColumnAccessorMethods() );
+    stringBuffer.append(TEXT_23);
+    stringBuffer.append(TEXT_24);
     return stringBuffer.toString();
   }
 }

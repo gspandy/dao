@@ -7,6 +7,7 @@ final String n = ctxt.getJavaName();
 
 package <%= ctxt.getPackageName() %>;
 
+import java.io.File;
 import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,6 +15,7 @@ import java.util.List;
 
 import <%= ctxt.getPackageName() %>.model.<%= n %>Dto;
 
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -23,15 +25,27 @@ import com.porpoise.dao.database.init.Databases;
 
 
 /**
- * Tests for the AaronDao class
+ * Tests for the <%= n %>Dao class
  */
 public class <%= n %>DaoTest
 {
+    private static DbConnectionFactory factory;
 
     @BeforeClass
     public static void setup()
     {
+        final DbConnectionDetails config = new DbConnectionDetails();
 
+        final File testDir = new File(System.getProperty("user.dir"));
+        final String url = new File(testDir, "dao-gen-test").getAbsolutePath();
+        config.setDatabaseName(url);
+        factory = Databases.DERBY.init(config);
+    }
+
+    @AfterClass
+    public static void tearDown()
+    {
+        factory.closeAllConnections();
     }
 
     /**

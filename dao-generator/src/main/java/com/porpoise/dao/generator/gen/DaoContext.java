@@ -71,6 +71,22 @@ public class DaoContext
         return b.toString();
     }
 
+    public String getColumnAccessorMethods()
+    {
+        final StringBuilder b = new StringBuilder();
+
+        for (final Iterator<Column> iter = this.table.getColumns().iterator(); iter.hasNext();)
+        {
+            final Column c = iter.next();
+            b.append(c.getNameAsAccessor());
+            if (iter.hasNext())
+            {
+                b.append(", ");
+            }
+        }
+        return b.toString();
+    }
+
     public String getColumnParameterList()
     {
         final StringBuilder b = new StringBuilder();
