@@ -31,7 +31,7 @@ public class DaoGeneratorTest
     private IDbTransaction             transaction;
 
     @BeforeClass
-    public static void setupClass()
+    public static void setupClass() throws IOException
     {
         final DbConnectionDetails details = new DbConnectionDetails();
         final String userDir = System.getProperty("user.dir");
@@ -40,6 +40,11 @@ public class DaoGeneratorTest
         testDir = new File(codeGenDir, "src/test/java");
 
         derbyDir = new File(codeGenDir, "dao-gen-test");
+        if (derbyDir.exists())
+        {
+            Files.deleteRecursively(derbyDir);
+        }
+
         details.setDatabaseName(derbyDir.getAbsolutePath());
         factory = Databases.DERBY.init(details);
     }
@@ -60,8 +65,6 @@ public class DaoGeneratorTest
     public static void tearDownClass() throws IOException
     {
         factory.closeAllConnections();
-        Files f = null;
-//        Files.deleteRecursively(derbyDir);
         // Files.deleteRecursively(codeGenDir);
     }
 

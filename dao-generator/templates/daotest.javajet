@@ -1,7 +1,6 @@
 <%@ jet package="com.porpoise.dao.generator.templates" imports="java.util.* com.porpoise.dao.generator.gen.* com.porpoise.dao.generator.model.*" class="DaoTestTemplate" 
-skeleton="generator.skeleton" %>
-
-<% final DaoContext ctxt = (DaoContext) argument; 
+skeleton="generator.skeleton" %><% 
+final DaoContext ctxt = (DaoContext) argument; 
 final String n = ctxt.getJavaName();
 %>
 
@@ -59,7 +58,7 @@ public class <%= n %>DaoTest
     public void test_createAndFindById()
     {
         // create an entry to find
-        final <%= n %>Dto dto = new <%= n %>Dto(1L, "lastname", "firstname");
+        final <%= n %>Dto dto = new <%= n %>Dto(<%= ctxt.getTestValues() %>);
  
         final <%= n %>Dao dao = new <%= n %>Dao(); 
         dao.insert(transaction, dto);

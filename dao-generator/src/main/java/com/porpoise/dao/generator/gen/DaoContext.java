@@ -16,6 +16,7 @@ public class DaoContext
     {
         this.packageName = packageName;
         this.table = t;
+
     }
 
     /**
@@ -101,6 +102,45 @@ public class DaoContext
             }
         }
         return b.toString();
+    }
+
+    public String getTestValues()
+    {
+        final StringBuilder b = new StringBuilder();
+
+        for (final Iterator<Column> iter = this.table.getColumns().iterator(); iter.hasNext();)
+        {
+            final Column c = iter.next();
+            b.append(newTestValue(c));
+            if (iter.hasNext())
+            {
+                b.append(", ");
+            }
+        }
+        return b.toString();
+    }
+
+    private String newTestValue(final Column c)
+    {
+        switch (c.getType())
+        {
+            case BigDecimal:
+            {
+                return "Integer.valueOf(1)";
+            }
+            case String:
+            case Text:
+                return String.format("\"%s\"", c.getName());
+            case Boolean:
+                return String.format("Boolean.TRUE");
+            case Long:
+                return "Long.valueOf(1)";
+            case Integer:
+                return "Integer.valueOf(1)";
+            case Date:
+                return "new java.sql.Date()";
+        }
+        throw new IllegalArgumentException(String.format("Unknown column type for %s: %s", c.toString(), c.getType()));
     }
 
     public String getColumnNames()

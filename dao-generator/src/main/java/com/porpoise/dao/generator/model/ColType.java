@@ -13,6 +13,7 @@ public enum ColType
     }, //
     Boolean, //
     Integer, //
+    Date, //
     BigDecimal, //
     Long;
 
