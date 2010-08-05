@@ -90,11 +90,12 @@ public class <%= n %>Dao extends AbstractDao
     
     /** 
      * @param transaction
+     * @param id the ID of the element to update
      * @param dto
      */
-    public void update(final IDbTransaction transaction, final <%= n %>Dto dto)
+    public void <T> update(final IDbTransaction transaction, T id, final <%= n %>Dto dto)
     {
         final String sql = <%= n %>Sql.update() + " WHERE id=?";
-        transaction.executeUpdate(sql, <%= ctxt.getColumnAccessorMethods("dto") %>, dto.getId()); 
+        transaction.executeUpdate(sql, <%= ctxt.getColumnAccessorMethods("dto") %>, id); 
     }    
 }

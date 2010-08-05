@@ -38,10 +38,10 @@ public class DaoTemplate implements IGenerator
   protected final String TEXT_20 = "Sql.byId();" + NL + "        final Visitor visitor = transaction.executeQuery(new Visitor(), querySql, id);" + NL + "        return visitor.getSingleResult();" + NL + "    }" + NL + "    " + NL + "    /** " + NL + "     * @param transaction" + NL + "     * @param dto" + NL + "     */" + NL + "    public void insert(final IDbTransaction transaction, final ";
   protected final String TEXT_21 = "Dto dto)" + NL + "    {" + NL + "        final String sql = ";
   protected final String TEXT_22 = "Sql.insert();" + NL + "        transaction.executeUpdate(sql, ";
-  protected final String TEXT_23 = "); " + NL + "    }    " + NL + "    " + NL + "    /** " + NL + "     * @param transaction" + NL + "     * @param dto" + NL + "     */" + NL + "    public void update(final IDbTransaction transaction, final ";
+  protected final String TEXT_23 = "); " + NL + "    }    " + NL + "    " + NL + "    /** " + NL + "     * @param transaction" + NL + "     * @param id the ID of the element to update" + NL + "     * @param dto" + NL + "     */" + NL + "    public void <T> update(final IDbTransaction transaction, T id, final ";
   protected final String TEXT_24 = "Dto dto)" + NL + "    {" + NL + "        final String sql = ";
   protected final String TEXT_25 = "Sql.update() + \" WHERE id=?\";" + NL + "        transaction.executeUpdate(sql, ";
-  protected final String TEXT_26 = ", dto.getId()); " + NL + "    }    " + NL + "}";
+  protected final String TEXT_26 = ", id); " + NL + "    }    " + NL + "}";
   protected final String TEXT_27 = NL;
 
    /* (non-javadoc)
