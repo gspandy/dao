@@ -20,7 +20,7 @@ public class DaoTemplate implements IGenerator
   protected final String TEXT_2 = NL + NL + "package ";
   protected final String TEXT_3 = ";" + NL + "" + NL + "import java.math.BigDecimal;" + NL + "import java.sql.ResultSet;" + NL + "import java.sql.SQLException;" + NL + "import java.util.List;" + NL + "" + NL + "import ";
   protected final String TEXT_4 = ".model.";
-  protected final String TEXT_5 = "Dto;" + NL + "" + NL + "import com.google.common.collect.ImmutableList;" + NL + "import com.google.common.collect.Iterables;" + NL + "import com.google.common.collect.Lists;" + NL + "import com.porpoise.dao.database.DbConnectionFactory;" + NL + "import com.porpoise.dao.database.dao.AbstractDao;" + NL + "import com.porpoise.dao.database.visitors.AbstractResultSetVisitor;" + NL + "" + NL + "/**" + NL + " * Functional Data Access class for ";
+  protected final String TEXT_5 = "Dto;" + NL + "" + NL + "import com.google.common.collect.ImmutableList;" + NL + "import com.google.common.collect.Iterables;" + NL + "import com.google.common.collect.Lists;" + NL + "import com.porpoise.dao.database.IDbTransaction;" + NL + "import com.porpoise.dao.database.DbConnectionFactory;" + NL + "import com.porpoise.dao.database.dao.AbstractDao;" + NL + "import com.porpoise.dao.database.visitors.AbstractResultSetVisitor;" + NL + "" + NL + "/**" + NL + " * Functional Data Access class for ";
   protected final String TEXT_6 = "Dto objects" + NL + " */" + NL + "public class ";
   protected final String TEXT_7 = "Dao extends AbstractDao" + NL + "{" + NL + "    " + NL + "    private static class Visitor extends AbstractResultSetVisitor {" + NL + "        " + NL + "        private final List<";
   protected final String TEXT_8 = "Dto> dtoResults;" + NL + "" + NL + "        public Visitor()" + NL + "        {" + NL + "            this.dtoResults = Lists.newArrayList();" + NL + "        }" + NL + "        " + NL + "        @Override" + NL + "        public boolean onResultSet(final ResultSet resultSet) throws SQLException" + NL + "        {" + NL + "            int columnIndex = 1;" + NL;
@@ -33,14 +33,14 @@ public class DaoTemplate implements IGenerator
   protected final String TEXT_15 = "Dto(";
   protected final String TEXT_16 = ");" + NL + "            this.dtoResults.add(dto);" + NL + "            return true;" + NL + "        }" + NL + "" + NL + "        /**" + NL + "         * @return the dtoResults" + NL + "         */" + NL + "        public List<";
   protected final String TEXT_17 = "Dto> getDtoResults()" + NL + "        {" + NL + "            return ImmutableList.copyOf(this.dtoResults);" + NL + "        }" + NL + "" + NL + "        public ";
-  protected final String TEXT_18 = "Dto getSingleResult()" + NL + "        {" + NL + "            return Iterables.getOnlyElement(this.dtoResults);" + NL + "        }" + NL + "        " + NL + "    }" + NL + "    " + NL + "    /**" + NL + "     * @param factory" + NL + "     * @param id" + NL + "     * @return" + NL + "     */" + NL + "    public ";
-  protected final String TEXT_19 = "Dto findById(final DbConnectionFactory factory, final Long id)" + NL + "    {" + NL + "        final String querySql = ";
-  protected final String TEXT_20 = "Sql.byId();" + NL + "        final Visitor visitor = factory.executeQueryInSingleTransaction(new Visitor(), querySql, id);" + NL + "        return visitor.getSingleResult();" + NL + "    }" + NL + "    " + NL + "    /** " + NL + "     * @param factory" + NL + "     * @param dto" + NL + "     */" + NL + "    public void insert(final DbConnectionFactory factory, final ";
+  protected final String TEXT_18 = "Dto getSingleResult()" + NL + "        {" + NL + "            return Iterables.getOnlyElement(this.dtoResults);" + NL + "        }" + NL + "        " + NL + "    }" + NL + "    " + NL + "    /**" + NL + "     * @param transaction" + NL + "     * @param id" + NL + "     * @return" + NL + "     */" + NL + "    public ";
+  protected final String TEXT_19 = "Dto findById(final IDbTransaction transaction, final Long id)" + NL + "    {" + NL + "        final String querySql = ";
+  protected final String TEXT_20 = "Sql.byId();" + NL + "        final Visitor visitor = transaction.executeQuery(new Visitor(), querySql, id);" + NL + "        return visitor.getSingleResult();" + NL + "    }" + NL + "    " + NL + "    /** " + NL + "     * @param transaction" + NL + "     * @param dto" + NL + "     */" + NL + "    public void insert(final IDbTransaction transaction, final ";
   protected final String TEXT_21 = "Dto dto)" + NL + "    {" + NL + "        final String sql = ";
-  protected final String TEXT_22 = "Sql.insert();" + NL + "        factory.executeInSingleTransaction(sql, ";
-  protected final String TEXT_23 = "); " + NL + "    }    " + NL + "    " + NL + "    /** " + NL + "     * @param factory" + NL + "     * @param dto" + NL + "     */" + NL + "    public void update(final DbConnectionFactory factory, final ";
+  protected final String TEXT_22 = "Sql.insert();" + NL + "        transaction.executeUpdate(sql, ";
+  protected final String TEXT_23 = "); " + NL + "    }    " + NL + "    " + NL + "    /** " + NL + "     * @param transaction" + NL + "     * @param dto" + NL + "     */" + NL + "    public void update(final IDbTransaction transaction, final ";
   protected final String TEXT_24 = "Dto dto)" + NL + "    {" + NL + "        final String sql = ";
-  protected final String TEXT_25 = "Sql.update();" + NL + "        factory.executeInSingleTransaction(sql, ";
+  protected final String TEXT_25 = "Sql.update();" + NL + "        transaction.executeUpdate(sql, ";
   protected final String TEXT_26 = "); " + NL + "    }    " + NL + "}";
   protected final String TEXT_27 = NL;
 

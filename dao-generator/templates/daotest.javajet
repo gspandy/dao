@@ -15,12 +15,14 @@ import java.util.List;
 
 import <%= ctxt.getPackageName() %>.model.<%= n %>Dto;
 
+import org.junit.Assert;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.porpoise.dao.database.DbConnectionDetails;
 import com.porpoise.dao.database.DbConnectionFactory;
+import com.porpoise.dao.database.IDbTransaction;
 import com.porpoise.dao.database.init.Databases;
 
 
@@ -30,6 +32,7 @@ import com.porpoise.dao.database.init.Databases;
 public class <%= n %>DaoTest
 {
     private static DbConnectionFactory factory;
+    private static IDbTransaction      transaction;
 
     @BeforeClass
     public static void setup()
@@ -40,6 +43,7 @@ public class <%= n %>DaoTest
         final String url = new File(testDir, "dao-gen-test").getAbsolutePath();
         config.setDatabaseName(url);
         factory = Databases.DERBY.init(config);
+        transaction = factory.startNewTransaction();
     }
 
     @AfterClass
@@ -52,14 +56,16 @@ public class <%= n %>DaoTest
      * 
      */
     @Test
-    public void test_findById()
+    public void test_createAndFindById()
     {
         // create an entry to find
-        final <%= n %>Dto dto = new <%= n %>Dto(1, "lastname", "firstname");
-        dao.insert(factory, dto);
+        final <%= n %>Dto dto = new <%= n %>Dto(1L, "lastname", "firstname");
+ 
+        final <%= n %>Dao dao = new <%= n %>Dao(); 
+        dao.insert(transaction, dto);
 
         // find our new entry        
-        final <%= n %>Dto read = dao.findById(factory, Long.valueOf(1));
+        final <%= n %>Dto read = dao.findById(transaction, Long.valueOf(1));
         Assert.assertEquals(dto, read);
     }
 

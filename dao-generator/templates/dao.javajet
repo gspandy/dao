@@ -17,6 +17,7 @@ import <%= ctxt.getPackageName() %>.model.<%= n %>Dto;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
+import com.porpoise.dao.database.IDbTransaction;
 import com.porpoise.dao.database.DbConnectionFactory;
 import com.porpoise.dao.database.dao.AbstractDao;
 import com.porpoise.dao.database.visitors.AbstractResultSetVisitor;
@@ -66,34 +67,34 @@ public class <%= n %>Dao extends AbstractDao
     }
     
     /**
-     * @param factory
+     * @param transaction
      * @param id
      * @return
      */
-    public <%= n %>Dto findById(final DbConnectionFactory factory, final Long id)
+    public <%= n %>Dto findById(final IDbTransaction transaction, final Long id)
     {
         final String querySql = <%= n %>Sql.byId();
-        final Visitor visitor = factory.executeQueryInSingleTransaction(new Visitor(), querySql, id);
+        final Visitor visitor = transaction.executeQuery(new Visitor(), querySql, id);
         return visitor.getSingleResult();
     }
     
     /** 
-     * @param factory
+     * @param transaction
      * @param dto
      */
-    public void insert(final DbConnectionFactory factory, final <%= n %>Dto dto)
+    public void insert(final IDbTransaction transaction, final <%= n %>Dto dto)
     {
         final String sql = <%= n %>Sql.insert();
-        factory.executeInSingleTransaction(sql, <%= ctxt.getColumnAccessorMethods("dto") %>); 
+        transaction.executeUpdate(sql, <%= ctxt.getColumnAccessorMethods("dto") %>); 
     }    
     
     /** 
-     * @param factory
+     * @param transaction
      * @param dto
      */
-    public void update(final DbConnectionFactory factory, final <%= n %>Dto dto)
+    public void update(final IDbTransaction transaction, final <%= n %>Dto dto)
     {
         final String sql = <%= n %>Sql.update();
-        factory.executeInSingleTransaction(sql, <%= ctxt.getColumnAccessorMethods("dto") %>); 
+        transaction.executeUpdate(sql, <%= ctxt.getColumnAccessorMethods("dto") %>); 
     }    
 }

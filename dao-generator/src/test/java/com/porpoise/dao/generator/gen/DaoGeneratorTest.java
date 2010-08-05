@@ -12,6 +12,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.google.common.io.CharStreams;
+import com.google.common.io.Files;
 import com.porpoise.dao.database.DbConnectionDetails;
 import com.porpoise.dao.database.DbConnectionFactory;
 import com.porpoise.dao.database.IDbTransaction;
@@ -23,9 +24,10 @@ import com.porpoise.dao.generator.model.Table;
 public class DaoGeneratorTest
 {
     private static DbConnectionFactory factory;
-    private static File                derbyTestDir;
+    private static File                codeGenDir;
     private static File                srcDir;
     private static File                testDir;
+    private static File                derbyDir;
     private IDbTransaction             transaction;
 
     @BeforeClass
@@ -33,11 +35,12 @@ public class DaoGeneratorTest
     {
         final DbConnectionDetails details = new DbConnectionDetails();
         final String userDir = System.getProperty("user.dir");
-        derbyTestDir = new File(userDir, "dao-test");
-        srcDir = new File(derbyTestDir, "src/main/java");
-        testDir = new File(derbyTestDir, "src/test/java");
+        codeGenDir = new File(userDir, "dao-test");
+        srcDir = new File(codeGenDir, "src/main/java");
+        testDir = new File(codeGenDir, "src/test/java");
 
-        details.setDatabaseName(new File(derbyTestDir, "dao-gen-test").getAbsolutePath());
+        derbyDir = new File(codeGenDir, "dao-gen-test");
+        details.setDatabaseName(derbyDir.getAbsolutePath());
         factory = Databases.DERBY.init(details);
     }
 
@@ -57,7 +60,9 @@ public class DaoGeneratorTest
     public static void tearDownClass() throws IOException
     {
         factory.closeAllConnections();
-        // Files.deleteRecursively(derbyTestDir);
+        Files f = null;
+//        Files.deleteRecursively(derbyDir);
+        // Files.deleteRecursively(codeGenDir);
     }
 
     /**
@@ -75,6 +80,8 @@ public class DaoGeneratorTest
                         "FirstName varchar(255))" //
         );
 
+        this.transaction.commit();
+
         // represent the table in code:
         final Table table = new Table("TEST_TABLE");
         table.addColumn("id", false, ColType.Long);
@@ -85,10 +92,10 @@ public class DaoGeneratorTest
         final DaoContext ctxt = new DaoContext("test.pack.age", table);
         DaoGenerator.generateMainJavaSource(srcDir, ctxt);
         DaoGenerator.generateTestJavaSource(testDir, ctxt);
-        DaoGenerator.generatePom("dao.test", "dao-test", "1.0.0", derbyTestDir);
+        DaoGenerator.generatePom("dao.test", "dao-test", "1.0.0", codeGenDir);
 
         // execute the pom for the generated code - have it run the generated tests
-        final Process process = Runtime.getRuntime().exec("mvn test", new String[0], derbyTestDir);
+        final Process process = Runtime.getRuntime().exec("mvn test", new String[0], codeGenDir);
         final Readable supplier = new InputStreamReader(process.getInputStream());
         final String output = CharStreams.toString(supplier);
         System.out.println(output);
