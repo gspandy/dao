@@ -15,7 +15,9 @@ import java.util.List;
 import <%= ctxt.getPackageName() %>.model.<%= n %>Dto;
 
 import org.junit.Assert;
+import org.junit.After;
 import org.junit.AfterClass;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -31,10 +33,10 @@ import com.porpoise.dao.database.init.Databases;
 public class <%= n %>DaoTest
 {
     private static DbConnectionFactory factory;
-    private static IDbTransaction      transaction;
+    private IDbTransaction      transaction;
 
     @BeforeClass
-    public static void setup()
+    public static void setupClass()
     {
         final DbConnectionDetails config = new DbConnectionDetails();
 
@@ -42,20 +44,48 @@ public class <%= n %>DaoTest
         final String url = new File(testDir, "dao-gen-test").getAbsolutePath();
         config.setDatabaseName(url);
         factory = Databases.DERBY.init(config);
+    }
+    
+    @Before
+    public void setup()
+    {
         transaction = factory.startNewTransaction();
+    }
+    
+    @After
+    public void tearDown()
+    {
+        transaction.rollback();
     }
 
     @AfterClass
-    public static void tearDown()
+    public static void tearDownClass()
     {
         factory.closeAllConnections();
     }
 
     /**
-     * 
+     * test the DAO can create and find an entry 
      */
     @Test
     public void test_createAndFindById()
+    {
+        // create an entry to find
+        final <%= n %>Dto dto = new <%= n %>Dto(<%= ctxt.getTestValues() %>);
+ 
+        final <%= n %>Dao dao = new <%= n %>Dao(); 
+        dao.insert(transaction, dto);
+
+        // find our new entry        
+        final <%= n %>Dto read = dao.findById(transaction, Long.valueOf(1));
+        Assert.assertEquals(dto, read);
+    }
+
+    /**
+     * test the DAO can update an entry 
+     */
+    @Test
+    public void test_update()
     {
         // create an entry to find
         final <%= n %>Dto dto = new <%= n %>Dto(<%= ctxt.getTestValues() %>);

@@ -40,8 +40,8 @@ public class DaoTemplate implements IGenerator
   protected final String TEXT_22 = "Sql.insert();" + NL + "        transaction.executeUpdate(sql, ";
   protected final String TEXT_23 = "); " + NL + "    }    " + NL + "    " + NL + "    /** " + NL + "     * @param transaction" + NL + "     * @param dto" + NL + "     */" + NL + "    public void update(final IDbTransaction transaction, final ";
   protected final String TEXT_24 = "Dto dto)" + NL + "    {" + NL + "        final String sql = ";
-  protected final String TEXT_25 = "Sql.update();" + NL + "        transaction.executeUpdate(sql, ";
-  protected final String TEXT_26 = "); " + NL + "    }    " + NL + "}";
+  protected final String TEXT_25 = "Sql.update() + \" WHERE id=?\";" + NL + "        transaction.executeUpdate(sql, ";
+  protected final String TEXT_26 = ", dto.getId()); " + NL + "    }    " + NL + "}";
   protected final String TEXT_27 = NL;
 
    /* (non-javadoc)
