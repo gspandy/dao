@@ -42,8 +42,60 @@ public final class <%= n %>Dto
     public <%= col.getJavaTypeName() %> <%= col.getNameAsAccessor() %>()
     {
         return this.<%= col.getNameAsProperty() %>;
-    }
-    
+    }    
 <%}%>
 
+    /* (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString()
+    {
+        return "<%= n %>Dto";
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode()
+    {
+        final int prime = 31;
+        int result = 1;
+<% for (final Column col : ctxt.getColumns()) { %>
+        result = prime * result + ((<%= col.getNameAsAccessor() %>() == null) ? 0 : <%= col.getNameAsAccessor() %>().hashCode());
+<%}%>
+        return result;
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        <%= n %>Dto other = (<%= n %>Dto) obj;
+
+<% for (final Column col : ctxt.getColumns()) { %>
+
+        if (<%= col.getNameAsAccessor() %>() == null)
+        {
+            if (other.<%= col.getNameAsAccessor() %>() != null)
+            {
+                return false;
+            }
+        }
+        else if (!<%= col.getNameAsAccessor() %>().equals(other.<%= col.getNameAsAccessor() %>()))
+        {
+            return false;
+        }
+<%}%>
+        return true;
+    }
 }

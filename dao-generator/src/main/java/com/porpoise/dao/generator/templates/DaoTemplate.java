@@ -22,7 +22,7 @@ public class DaoTemplate implements IGenerator
   protected final String TEXT_4 = ".model.";
   protected final String TEXT_5 = "Dto;" + NL + "" + NL + "import com.google.common.collect.ImmutableList;" + NL + "import com.google.common.collect.Iterables;" + NL + "import com.google.common.collect.Lists;" + NL + "import com.porpoise.dao.database.DbConnectionFactory;" + NL + "import com.porpoise.dao.database.dao.AbstractDao;" + NL + "import com.porpoise.dao.database.visitors.AbstractResultSetVisitor;" + NL + "" + NL + "/**" + NL + " * Functional Data Access class for ";
   protected final String TEXT_6 = "Dto objects" + NL + " */" + NL + "public class ";
-  protected final String TEXT_7 = "Dao extends AbstractDao" + NL + "{" + NL + "    ;// uninstantiable" + NL + "    " + NL + "    private static class Visitor extends AbstractResultSetVisitor {" + NL + "        " + NL + "        private final List<";
+  protected final String TEXT_7 = "Dao extends AbstractDao" + NL + "{" + NL + "    " + NL + "    private static class Visitor extends AbstractResultSetVisitor {" + NL + "        " + NL + "        private final List<";
   protected final String TEXT_8 = "Dto> dtoResults;" + NL + "" + NL + "        public Visitor()" + NL + "        {" + NL + "            this.dtoResults = Lists.newArrayList();" + NL + "        }" + NL + "        " + NL + "        @Override" + NL + "        public boolean onResultSet(final ResultSet resultSet) throws SQLException" + NL + "        {" + NL + "            int columnIndex = 1;" + NL;
   protected final String TEXT_9 = NL + "            final ";
   protected final String TEXT_10 = " ";
@@ -35,11 +35,14 @@ public class DaoTemplate implements IGenerator
   protected final String TEXT_17 = "Dto> getDtoResults()" + NL + "        {" + NL + "            return ImmutableList.copyOf(this.dtoResults);" + NL + "        }" + NL + "" + NL + "        public ";
   protected final String TEXT_18 = "Dto getSingleResult()" + NL + "        {" + NL + "            return Iterables.getOnlyElement(this.dtoResults);" + NL + "        }" + NL + "        " + NL + "    }" + NL + "    " + NL + "    /**" + NL + "     * @param factory" + NL + "     * @param id" + NL + "     * @return" + NL + "     */" + NL + "    public ";
   protected final String TEXT_19 = "Dto findById(final DbConnectionFactory factory, final Long id)" + NL + "    {" + NL + "        final String querySql = ";
-  protected final String TEXT_20 = "Sql.byId();" + NL + "        final Visitor visitor = factory.executeQueryInSingleTransaction(new Visitor(), querySql, id);" + NL + "        return visitor.getSingleResult();" + NL + "    }" + NL + "    public void insert(final DbConnectionFactory factory, final ";
+  protected final String TEXT_20 = "Sql.byId();" + NL + "        final Visitor visitor = factory.executeQueryInSingleTransaction(new Visitor(), querySql, id);" + NL + "        return visitor.getSingleResult();" + NL + "    }" + NL + "    " + NL + "    /** " + NL + "     * @param factory" + NL + "     * @param dto" + NL + "     */" + NL + "    public void insert(final DbConnectionFactory factory, final ";
   protected final String TEXT_21 = "Dto dto)" + NL + "    {" + NL + "        final String sql = ";
   protected final String TEXT_22 = "Sql.insert();" + NL + "        factory.executeInSingleTransaction(sql, ";
-  protected final String TEXT_23 = "); " + NL + "    }    " + NL + "}";
-  protected final String TEXT_24 = NL;
+  protected final String TEXT_23 = "); " + NL + "    }    " + NL + "    " + NL + "    /** " + NL + "     * @param factory" + NL + "     * @param dto" + NL + "     */" + NL + "    public void update(final DbConnectionFactory factory, final ";
+  protected final String TEXT_24 = "Dto dto)" + NL + "    {" + NL + "        final String sql = ";
+  protected final String TEXT_25 = "Sql.update();" + NL + "        factory.executeInSingleTransaction(sql, ";
+  protected final String TEXT_26 = "); " + NL + "    }    " + NL + "}";
+  protected final String TEXT_27 = NL;
 
    /* (non-javadoc)
     * @see IGenerator#generate(Object)
@@ -92,9 +95,15 @@ final String n = ctxt.getJavaName();
     stringBuffer.append(TEXT_21);
     stringBuffer.append( n );
     stringBuffer.append(TEXT_22);
-    stringBuffer.append( ctxt.getColumnAccessorMethods() );
+    stringBuffer.append( ctxt.getColumnAccessorMethods("dto") );
     stringBuffer.append(TEXT_23);
+    stringBuffer.append( n );
     stringBuffer.append(TEXT_24);
+    stringBuffer.append( n );
+    stringBuffer.append(TEXT_25);
+    stringBuffer.append( ctxt.getColumnAccessorMethods("dto") );
+    stringBuffer.append(TEXT_26);
+    stringBuffer.append(TEXT_27);
     return stringBuffer.toString();
   }
 }

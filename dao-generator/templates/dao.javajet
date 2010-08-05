@@ -26,7 +26,6 @@ import com.porpoise.dao.database.visitors.AbstractResultSetVisitor;
  */
 public class <%= n %>Dao extends AbstractDao
 {
-    ;// uninstantiable
     
     private static class Visitor extends AbstractResultSetVisitor {
         
@@ -77,9 +76,24 @@ public class <%= n %>Dao extends AbstractDao
         final Visitor visitor = factory.executeQueryInSingleTransaction(new Visitor(), querySql, id);
         return visitor.getSingleResult();
     }
+    
+    /** 
+     * @param factory
+     * @param dto
+     */
     public void insert(final DbConnectionFactory factory, final <%= n %>Dto dto)
     {
         final String sql = <%= n %>Sql.insert();
-        factory.executeInSingleTransaction(sql, <%= ctxt.getColumnAccessorMethods() %>); 
+        factory.executeInSingleTransaction(sql, <%= ctxt.getColumnAccessorMethods("dto") %>); 
+    }    
+    
+    /** 
+     * @param factory
+     * @param dto
+     */
+    public void update(final DbConnectionFactory factory, final <%= n %>Dto dto)
+    {
+        final String sql = <%= n %>Sql.update();
+        factory.executeInSingleTransaction(sql, <%= ctxt.getColumnAccessorMethods("dto") %>); 
     }    
 }

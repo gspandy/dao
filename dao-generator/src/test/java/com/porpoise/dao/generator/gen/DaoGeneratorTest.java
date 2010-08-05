@@ -77,7 +77,7 @@ public class DaoGeneratorTest
 
         // represent the table in code:
         final Table table = new Table("TEST_TABLE");
-        table.addColumn("id", false, ColType.Integer);
+        table.addColumn("id", false, ColType.Long);
         table.addColumn("LastName", false, ColType.String);
         table.addColumn("FirstName", false, ColType.String);
 

@@ -71,14 +71,14 @@ public class DaoContext
         return b.toString();
     }
 
-    public String getColumnAccessorMethods()
+    public String getColumnAccessorMethods(final String varName)
     {
         final StringBuilder b = new StringBuilder();
 
         for (final Iterator<Column> iter = this.table.getColumns().iterator(); iter.hasNext();)
         {
             final Column c = iter.next();
-            b.append(c.getNameAsAccessor());
+            b.append(varName).append(".").append(c.getNameAsAccessor()).append("()");
             if (iter.hasNext())
             {
                 b.append(", ");
