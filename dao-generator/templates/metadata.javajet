@@ -9,6 +9,7 @@ import com.google.common.collect.ImmutableList;
 import com.porpoise.dao.database.metadata.Field;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Date;
 
 /**
  * <%= n %>Metadata
@@ -17,6 +18,7 @@ public enum <%= n %>Metadata
 {
     ;// uninstantiable
 
+
 <% for (final Column c : ctxt.getColumns()) { %>
     /**
      * Field <%= c.getName() %>
@@ -24,6 +26,13 @@ public enum <%= n %>Metadata
     public static Field<<%= c.getJavaTypeName() %>> <%= c.getName() %> = new Field<<%= c.getJavaTypeName() %>>("<%= c.getName() %>", <%= c.getJavaTypeName() %>.class, <%= c.isRequired() %>);
 
 <% } // end for %>
+
+<% if (ctxt.hasIdField()) { %>
+    /** 
+     * ID_FIELD
+     */
+    public static Field<<%= ctxt.getIdField().getJavaTypeName() %>> ID_FIELD = <%= ctxt.getIdField().getName() %>;
+<% } // end if %>
 
     /**
      * All fields

@@ -2,15 +2,14 @@ package com.porpoise.dao.generator.model;
 
 import com.google.common.base.CaseFormat;
 
-public class Column
-{
+public class Column {
 	private final String name;
 	private final boolean required;
 	private final ColType type;
 	private final Table owningTable;
 
-	Column(final Table table, final String n, final boolean isRequired, final ColType colType)
-	{
+	Column(final Table table, final String n, final boolean isRequired,
+			final ColType colType) {
 		this.owningTable = table;
 		this.name = n;
 		this.required = isRequired;
@@ -20,40 +19,41 @@ public class Column
 	/**
 	 * @return the name
 	 */
-	public String getName()
-	{
+	public String getName() {
 		return this.name;
 	}
 
 	/**
 	 * @return the required
 	 */
-	public boolean isRequired()
-	{
+	public boolean isRequired() {
 		return this.required;
 	}
 
 	/**
 	 * @return the type
 	 */
-	public ColType getType()
-	{
+	public ColType getType() {
 		return this.type;
 	}
 
-	public String getJavaTypeName()
-	{
+	public String getJavaTypeName() {
 		return this.type.getJavaName();
 	}
 
-	public String getNameAsProperty()
-	{
-		return CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.LOWER_CAMEL, getName());
+	public String getJavaTypeAccessorName() {
+		return "get" + type.getJavaAccessorName();
 	}
 
-	public String getNameAsAccessor()
-	{
-		return "get" + CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, getName());
+	public String getNameAsProperty() {
+		return CaseFormat.UPPER_UNDERSCORE
+				.to(CaseFormat.LOWER_CAMEL, getName());
+	}
+
+	public String getNameAsAccessor() {
+		return "get"
+				+ CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL,
+						getName());
 	}
 
 }

@@ -3,13 +3,13 @@ skeleton="generator.skeleton" %><%
 final DaoContext ctxt = (DaoContext) argument; 
 final String n = ctxt.getJavaName();
 %>
-
 package <%= ctxt.getPackageName() %>;
 
 import java.io.File;
 import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 
 import <%= ctxt.getPackageName() %>.model.<%= n %>Dto;
@@ -30,40 +30,9 @@ import com.porpoise.dao.database.init.Databases;
 /**
  * Tests for the <%= n %>Dao class
  */
-public class <%= n %>DaoTest
+public class <%= n %>DaoTest extends AbstractDaoTest
 {
-    private static DbConnectionFactory factory;
-    private IDbTransaction      transaction;
-
-    @BeforeClass
-    public static void setupClass()
-    {
-        final DbConnectionDetails config = new DbConnectionDetails();
-
-        final File testDir = new File(System.getProperty("user.dir"));
-        final String url = new File(testDir, "dao-gen-test").getAbsolutePath();
-        config.setDatabaseName(url);
-        factory = Databases.DERBY.init(config);
-    }
-    
-    @Before
-    public void setup()
-    {
-        transaction = factory.startNewTransaction();
-    }
-    
-    @After
-    public void tearDown()
-    {
-        transaction.rollback();
-    }
-
-    @AfterClass
-    public static void tearDownClass()
-    {
-        factory.closeAllConnections();
-    }
-
+<% if (ctxt.hasIdField()) { %>
     /**
      * test the DAO can create and find an entry 
      */
@@ -74,10 +43,10 @@ public class <%= n %>DaoTest
         final <%= n %>Dto dto = new <%= n %>Dto(<%= ctxt.getTestValues() %>);
  
         final <%= n %>Dao dao = new <%= n %>Dao(); 
-        dao.insert(transaction, dto);
+        dao.insert(getTransaction(), dto);
 
         // find our new entry        
-        final <%= n %>Dto read = dao.findById(transaction, Long.valueOf(1));
+        final <%= n %>Dto read = dao.findById(getTransaction(), Long.valueOf(1));
         Assert.assertEquals(dto, read);
     }
 
@@ -91,11 +60,11 @@ public class <%= n %>DaoTest
         final <%= n %>Dto dto = new <%= n %>Dto(<%= ctxt.getTestValues() %>);
  
         final <%= n %>Dao dao = new <%= n %>Dao(); 
-        dao.insert(transaction, dto);
+        dao.insert(getTransaction(), dto);
 
         // find our new entry        
-        final <%= n %>Dto read = dao.findById(transaction, Long.valueOf(1));
+        final <%= n %>Dto read = dao.findById(getTransaction(), Long.valueOf(1));
         Assert.assertEquals(dto, read);
     }
-
+<% } // end if has id  %>
 }

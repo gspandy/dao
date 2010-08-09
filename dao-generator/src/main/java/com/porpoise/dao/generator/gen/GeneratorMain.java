@@ -31,7 +31,7 @@ public class GeneratorMain
 			final DbConnectionFactory f = Databases.ACCESS.init(connectionDetails);
 			final Collection<Table> tables = AccessTables.getTables(f);
 
-			final File pom = new File("C:/Program Files/dev/sandbox/dao/meteor");
+			final File pom = new File("C:/temp/dao");
 			generate(tables, pom, "por.poise");
 
 			System.out.println("Done");

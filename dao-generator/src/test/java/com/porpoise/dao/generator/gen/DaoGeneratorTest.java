@@ -23,86 +23,86 @@ import com.porpoise.dao.generator.model.Table;
 
 public class DaoGeneratorTest
 {
-    private static DbConnectionFactory factory;
-    private static File                codeGenDir;
-    private static File                srcDir;
-    private static File                testDir;
-    private static File                derbyDir;
-    private IDbTransaction             transaction;
+	private static DbConnectionFactory factory;
+	private static File codeGenDir;
+	private static File srcDir;
+	private static File testDir;
+	private static File derbyDir;
+	private IDbTransaction transaction;
 
-    @BeforeClass
-    public static void setupClass() throws IOException
-    {
-        final DbConnectionDetails details = new DbConnectionDetails();
-        final String userDir = System.getProperty("user.dir");
-        codeGenDir = new File(userDir, "dao-test");
-        srcDir = new File(codeGenDir, "src/main/java");
-        testDir = new File(codeGenDir, "src/test/java");
+	@BeforeClass
+	public static void setupClass() throws IOException
+	{
+		final DbConnectionDetails details = new DbConnectionDetails();
+		final String userDir = System.getProperty("user.dir");
+		codeGenDir = new File(userDir, "dao-test");
+		srcDir = new File(codeGenDir, "src/main/java");
+		testDir = new File(codeGenDir, "src/test/java");
 
-        derbyDir = new File(codeGenDir, "dao-gen-test");
-        if (derbyDir.exists())
-        {
-            Files.deleteRecursively(derbyDir);
-        }
+		derbyDir = new File(codeGenDir, "dao-gen-test");
+		if (derbyDir.exists())
+		{
+			Files.deleteRecursively(derbyDir);
+		}
 
-        details.setDatabaseName(derbyDir.getAbsolutePath());
-        factory = Databases.DERBY.init(details);
-    }
+		details.setDatabaseName(derbyDir.getAbsolutePath());
+		factory = Databases.DERBY.init(details);
+	}
 
-    @Before
-    public void setup()
-    {
-        this.transaction = factory.startNewTransaction();
-    }
+	@Before
+	public void setup()
+	{
+		this.transaction = factory.startNewTransaction();
+	}
 
-    @After
-    public void tearDown()
-    {
-        this.transaction.close();
-    }
+	@After
+	public void tearDown()
+	{
+		this.transaction.close();
+	}
 
-    @AfterClass
-    public static void tearDownClass() throws IOException
-    {
-        factory.closeAllConnections();
-        // Files.deleteRecursively(codeGenDir);
-    }
+	@AfterClass
+	public static void tearDownClass() throws IOException
+	{
+		factory.closeAllConnections();
+		// Files.deleteRecursively(codeGenDir);
+	}
 
-    /**
-     * Test we can generate a DAO for a simple table
-     * 
-     * @throws IOException
-     */
-    @Test
-    public void test_generateDao() throws IOException
-    {
-        // create a table
-        DbScriptExecutor.executeSQL(this.transaction,// 
-                "CREATE TABLE TEST_TABLE (id int," + //
-                        "LastName varchar(255)," + //
-                        "FirstName varchar(255))" //
-        );
+	/**
+	 * Test we can generate a DAO for a simple table
+	 * 
+	 * @throws IOException
+	 */
+	@Test
+	public void test_generateDao() throws IOException
+	{
+		// create a table
+		DbScriptExecutor.executeSQL(this.transaction,// 
+				"CREATE TABLE TEST_TABLE (id int," + //
+						"LastName varchar(255)," + //
+						"FirstName varchar(255))" //
+		);
 
-        this.transaction.commit();
+		this.transaction.commit();
 
-        // represent the table in code:
-        final Table table = new Table("TEST_TABLE");
-        table.addColumn("id", false, ColType.Long);
-        table.addColumn("LastName", false, ColType.String);
-        table.addColumn("FirstName", false, ColType.String);
+		// represent the table in code:
+		final Table table = new Table("TEST_TABLE");
+		table.addColumn("id", false, ColType.Long);
+		table.addColumn("LastName", false, ColType.String);
+		table.addColumn("FirstName", false, ColType.String);
 
-        // generate a DAO for the table:
-        final DaoContext ctxt = new DaoContext("test.pack.age", table);
-        DaoGenerator.generateMainJavaSource(srcDir, ctxt);
-        DaoGenerator.generateTestJavaSource(testDir, ctxt);
-        DaoGenerator.generatePom("dao.test", "dao-test", "1.0.0", codeGenDir);
+		// generate a DAO for the table:
+		final DaoContext ctxt = new DaoContext("test.pack.age", table);
+		DaoGenerator.generateMainJavaSource(srcDir, ctxt);
+		DaoGenerator.generateTestJavaSource(testDir, ctxt);
+		DaoGenerator.generatePom("dao.test", "dao-test", "1.0.0", codeGenDir);
 
-        // execute the pom for the generated code - have it run the generated tests
-        final Process process = Runtime.getRuntime().exec("mvn test", new String[0], codeGenDir);
-        final Readable supplier = new InputStreamReader(process.getInputStream());
-        final String output = CharStreams.toString(supplier);
-        System.out.println(output);
-        Assert.assertTrue(output, output.contains("SUCCESS"));
+		// execute the pom for the generated code - have it run the generated tests
+		final Process process = Runtime.getRuntime().exec("cmd mvn test", new String[0], codeGenDir);
+		final Readable supplier = new InputStreamReader(process.getInputStream());
+		final String output = CharStreams.toString(supplier);
+		System.out.println(output);
+		Assert.assertTrue(output, output.contains("SUCCESS"));
 
-    }
+	}
 }

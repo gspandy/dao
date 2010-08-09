@@ -1,10 +1,7 @@
 <%@ jet package="com.porpoise.dao.generator.templates" imports="java.util.* com.porpoise.dao.generator.gen.*" class="SqlTemplate"  
-skeleton="generator.skeleton" %>
-
-<% final DaoContext ctxt = (DaoContext) argument; 
+skeleton="generator.skeleton" %><% final DaoContext ctxt = (DaoContext) argument; 
 final String n = ctxt.getJavaName();
 %>
-
 package <%= ctxt.getPackageName() %>;
 
 import <%= ctxt.getPackageName() %>.model.<%= n%>Dto;
@@ -44,13 +41,15 @@ public class <%= n %>Sql
         return Field.asUpdateList(alias, <%= n %>Metadata.FIELDS);
     }
 
+<% if (ctxt.hasIdField()) { %>
     /**
      * @return the 'WHERE' clause for retrieving a <%= n %> object by ID
      */
     public static String byId()
     {
-        return by(<%= n %>Metadata.id);
+        return by(<%= n %>Metadata.ID_FIELD);
     }
+<% } %>
 
     /**
      * @return the 'WHERE' clause for retrieving a <%= n %> object by its given field property

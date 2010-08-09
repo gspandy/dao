@@ -1,16 +1,14 @@
 <%@ jet package="com.porpoise.dao.generator.templates" imports="java.util.* com.porpoise.dao.generator.gen.* com.porpoise.dao.generator.model.*" class="DaoTemplate" 
-skeleton="generator.skeleton" %>
-
-<% final DaoContext ctxt = (DaoContext) argument; 
+skeleton="generator.skeleton" %><% final DaoContext ctxt = (DaoContext) argument; 
 final String n = ctxt.getJavaName();
 %>
-
 package <%= ctxt.getPackageName() %>;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Date;
 
 import <%= ctxt.getPackageName() %>.model.<%= n %>Dto;
 
@@ -45,7 +43,7 @@ public class <%= n %>Dao extends AbstractDao
             int columnIndex = 1;
 
 <% for (final Column c : ctxt.getColumns()) { %>
-            final <%= c.getJavaTypeName() %> <%= ctxt.asProperty(c.getName()) %> = get<%= c.getJavaTypeName() %>(resultSet, columnIndex++);
+            final <%= c.getJavaTypeName() %> <%= ctxt.asProperty(c.getName()) %> = <%= c.getJavaTypeAccessorName() %>(resultSet, columnIndex++);
 <%} // end for %>
 
             final <%= n %>Dto dto  = new <%= n %>Dto(<%=  ctxt.getColumnParameterList() %>);
@@ -72,7 +70,7 @@ public class <%= n %>Dao extends AbstractDao
             return Iterables.getOnlyElement(this.dtoResults);
         }
     }
-    
+<% if (ctxt.hasIdField()) { %>
     /**
      * @param transaction the transaction used to retrieve the object
      * @param id the Id for the <%= n %> object
@@ -84,7 +82,8 @@ public class <%= n %>Dao extends AbstractDao
         final Visitor visitor = transaction.executeQuery(new Visitor(), querySql, id);
         return visitor.getSingleResult();
     }
-    
+<% } %>
+
     /** 
      * create a new entry for the given dto
      * @param transaction
@@ -101,7 +100,7 @@ public class <%= n %>Dao extends AbstractDao
      * @param id the ID of the element to update
      * @param dto
      */
-    public void <T> update(final IDbTransaction transaction, T id, final <%= n %>Dto dto)
+    public <T> void update(final IDbTransaction transaction, T id, final <%= n %>Dto dto)
     {
         final String sql = <%= n %>Sql.update() + " WHERE id=?";
         transaction.executeUpdate(sql, <%= ctxt.getColumnAccessorMethods("dto") %>, id); 
