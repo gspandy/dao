@@ -2,7 +2,6 @@ package com.porpoise.dao.database.init;
 
 import java.io.File;
 import java.io.PrintWriter;
-import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -93,7 +92,7 @@ class AccessInit
             
             // Initialize the JdbcOdbc Bridge Driver
             
-            final File database = new File( new URL(details.getUrl()).toURI());
+            final File database = new File( details.getUrl());
             final String databaseURL = prefix + database.getAbsolutePath() + suffix;
             return  DriverManager.getConnection(databaseURL, details.getUser(), details.getPassword());
         }
