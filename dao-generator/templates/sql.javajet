@@ -20,6 +20,7 @@ import java.util.List;
 
 
 /**
+ * Class used to encapsulate the SQL required for interacting with an underlying relational database for <%= n %> object
  */
 public class <%= n %>Sql
 {
@@ -27,40 +28,69 @@ public class <%= n %>Sql
 
     private static final String TABLE_NAME = "<%=ctxt.getTableName() %>";
 
+    /**
+     * @return a comma-separated list of <%= n %> attributes in string form 
+     */
     public static String attributeListAsString(final String alias)
     {
         return Field.asAttributeList(alias, <%= n %>Metadata.FIELDS);
     }
     
+    /**
+     * @return the <%= n %> attributes in a comma-separated &quot;KEY-N=?&quot; form  
+     */
     public static String attributeListAsUpdateString(final String alias)
     {
         return Field.asUpdateList(alias, <%= n %>Metadata.FIELDS);
     }
 
+    /**
+     * @return the 'WHERE' clause for retrieving a <%= n %> object by ID
+     */
     public static String byId()
     {
         return by(<%= n %>Metadata.id);
     }
 
+    /**
+     * @return the 'WHERE' clause for retrieving a <%= n %> object by its given field property
+     */
     public static String by(final Field<?> field)
     {
         return String.format("%s WHERE %s=?", select(), field.getName());
     }
 
+    /**
+     * @return the 'INSERT' SQL used to create a new <%= n %> entry
+     */
     public static String insert()
     {
         final String propertyPlaceholders = Strings.repeat("?,", <%= n %>Metadata.FIELDS.size() - 1) + "?";
         return String.format("INSERT INTO %s (%s) VALUES (%s)", TABLE_NAME, attributeListAsString(null), propertyPlaceholders);
     }
 
+    /**
+     * @return the 'UPDATE' SQL used to create a new <%= n %> entry
+     */
     public static String update()
     {
         return String.format("UPDATE %s SET %s", TABLE_NAME, attributeListAsUpdateString(null));
     }
 
+    /**
+     * @return the 'SELECT' SQL for querying the database
+     */
     public static String select()
     {
-        return String.format("SELECT %s FROM %s", attributeListAsString(null), TABLE_NAME);
+        return select(null);
+    }
+
+    /**
+     * @return the 'SELECT' SQL for querying the database using the given alias for the table entry
+     */
+    public static String select(final String alias)
+    {
+        return String.format("SELECT %s FROM %s", attributeListAsString(alias), TABLE_NAME);
     }
     
 }

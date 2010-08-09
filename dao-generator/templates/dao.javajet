@@ -23,11 +23,13 @@ import com.porpoise.dao.database.dao.AbstractDao;
 import com.porpoise.dao.database.visitors.AbstractResultSetVisitor;
 
 /**
- * Functional Data Access class for <%= n %>Dto objects
+ * Functional Data Access class used to operate on <%= n %>Dto objects
  */
 public class <%= n %>Dao extends AbstractDao
 {
-    
+    /**
+     * This 'visitor' is able to transform ResultSets into <%= n %>Dto instances 
+     */
     private static class Visitor extends AbstractResultSetVisitor {
         
         private final List<<%= n %>Dto> dtoResults;
@@ -52,24 +54,29 @@ public class <%= n %>Dao extends AbstractDao
         }
 
         /**
-         * @return the dtoResults
+         * @return the results as a DTO object
          */
         public List<<%= n %>Dto> getDtoResults()
         {
             return ImmutableList.copyOf(this.dtoResults);
         }
 
+        /**
+         * convenience method used when only a single <%= n %>Dto entry was expected
+         * @return the single <%= n %>Dto instance 
+         * @throws NoSuchElementException if no results were returned
+         * @throws IllegalArgumentException if multiple results were returned
+         */
         public <%= n %>Dto getSingleResult()
         {
             return Iterables.getOnlyElement(this.dtoResults);
         }
-        
     }
     
     /**
-     * @param transaction
-     * @param id
-     * @return
+     * @param transaction the transaction used to retrieve the object
+     * @param id the Id for the <%= n %> object
+     * @return the <%= n %> object with the given ID
      */
     public <%= n %>Dto findById(final IDbTransaction transaction, final Long id)
     {
@@ -79,8 +86,9 @@ public class <%= n %>Dao extends AbstractDao
     }
     
     /** 
+     * create a new entry for the given dto
      * @param transaction
-     * @param dto
+     * @param dto the dto to insert
      */
     public void insert(final IDbTransaction transaction, final <%= n %>Dto dto)
     {
