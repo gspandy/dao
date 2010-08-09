@@ -41,8 +41,8 @@ public class Column {
 		return this.type.getJavaName();
 	}
 
-	public String getJavaTypeAccessorName() {
-		return "get" + type.getJavaAccessorName();
+	public String getResultSetAccessorName() {
+		return type.getResultSetAccessorName();
 	}
 
 	public String getNameAsProperty() {

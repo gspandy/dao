@@ -11,6 +11,49 @@ public class DaoContext {
 	private final Table table;
 	private final String packageName;
 
+	private static interface Visitor {
+		void onColumn(Column c, boolean hasNext);
+	}
+
+	private static abstract class BufferVisitor implements Visitor {
+		private final StringBuilder buffer = new StringBuilder();
+
+		BufferVisitor(final String value) {
+			buffer.append(value);
+		}
+
+		@Override
+		public String toString() {
+			return buffer.toString();
+		}
+
+		public StringBuilder append(final Object str) {
+			buffer.append(str);
+			return buffer;
+		}
+	}
+
+	private static abstract class CommasSeparatedBufferVisitor extends
+			BufferVisitor {
+		CommasSeparatedBufferVisitor() {
+			this("");
+		}
+
+		CommasSeparatedBufferVisitor(final String value) {
+			super(value);
+		}
+
+		@Override
+		public final void onColumn(final Column c, final boolean hasNext) {
+			onColumn(c);
+			if (hasNext) {
+				append(", ");
+			}
+		}
+
+		protected abstract void onColumn(Column c);
+	}
+
 	public DaoContext(final String packageName, final Table t) {
 		this.packageName = packageName;
 		this.table = t;
@@ -54,64 +97,71 @@ public class DaoContext {
 		return this.table.getTableName();
 	}
 
-	public String getColumnDeclarations() {
-		final StringBuilder b = new StringBuilder();
-
+	private <T extends Visitor> T traverse(final T visitor) {
 		for (final Iterator<Column> iter = this.table.getColumns().iterator(); iter
 				.hasNext();) {
 			final Column c = iter.next();
-			b.append("final ");
-			b.append(c.getJavaTypeName());
-			b.append(" ");
-			b.append(c.getNameAsProperty());
-			if (iter.hasNext()) {
-				b.append(", ");
-			}
+			visitor.onColumn(c, iter.hasNext());
 		}
-		return b.toString();
+		return visitor;
+	}
+
+	public String getColumnDeclarations() {
+
+		return traverse(new CommasSeparatedBufferVisitor() {
+			@Override
+			protected void onColumn(final Column c) {
+				append("final ").append(c.getJavaTypeName()).append(" ")
+						.append(c.getNameAsProperty());
+			}
+		}).toString();
 	}
 
 	public String getColumnAccessorMethods(final String varName) {
-		final StringBuilder b = new StringBuilder();
 
-		for (final Iterator<Column> iter = this.table.getColumns().iterator(); iter
-				.hasNext();) {
-			final Column c = iter.next();
-			b.append(varName).append(".").append(c.getNameAsAccessor())
-					.append("()");
-			if (iter.hasNext()) {
-				b.append(", ");
+		return traverse(new CommasSeparatedBufferVisitor() {
+			@Override
+			protected void onColumn(final Column c) {
+				append(varName).append(".").append(c.getNameAsAccessor())
+						.append("()");
 			}
-		}
-		return b.toString();
+		}).toString();
 	}
 
 	public String getColumnParameterList() {
-		final StringBuilder b = new StringBuilder();
-
-		for (final Iterator<Column> iter = this.table.getColumns().iterator(); iter
-				.hasNext();) {
-			final Column c = iter.next();
-			b.append(c.getNameAsProperty());
-			if (iter.hasNext()) {
-				b.append(", ");
+		return traverse(new CommasSeparatedBufferVisitor() {
+			@Override
+			protected void onColumn(final Column c) {
+				append(c.getNameAsProperty());
 			}
-		}
-		return b.toString();
+		}).toString();
+	}
+
+	public String getColumnParameterListAsToString() {
+		return traverse(new CommasSeparatedBufferVisitor() {
+			@Override
+			protected void onColumn(final Column c) {
+				append(c.getNameAsProperty()).append("=%s");
+			}
+		}).toString();
+	}
+
+	public String getColumnNames() {
+		return traverse(new CommasSeparatedBufferVisitor() {
+			@Override
+			protected void onColumn(final Column c) {
+				append(c.getName());
+			}
+		}).toString();
 	}
 
 	public String getTestValues() {
-		final StringBuilder b = new StringBuilder();
-
-		for (final Iterator<Column> iter = this.table.getColumns().iterator(); iter
-				.hasNext();) {
-			final Column c = iter.next();
-			b.append(newTestValue(c));
-			if (iter.hasNext()) {
-				b.append(", ");
+		return traverse(new CommasSeparatedBufferVisitor() {
+			@Override
+			protected void onColumn(final Column c) {
+				append(newTestValue(c));
 			}
-		}
-		return b.toString();
+		}).toString();
 	}
 
 	private String newTestValue(final Column c) {
@@ -138,20 +188,6 @@ public class DaoContext {
 		}
 		throw new IllegalArgumentException(String.format(
 				"Unknown column type for %s: %s", c.toString(), c.getType()));
-	}
-
-	public String getColumnNames() {
-		final StringBuilder b = new StringBuilder();
-
-		for (final Iterator<Column> iter = this.table.getColumns().iterator(); iter
-				.hasNext();) {
-			final Column c = iter.next();
-			b.append(c.getName());
-			if (iter.hasNext()) {
-				b.append(", ");
-			}
-		}
-		return b.toString();
 	}
 
 	public Iterable<Column> getColumns() {

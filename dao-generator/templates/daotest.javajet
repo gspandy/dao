@@ -10,6 +10,7 @@ import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.Collection;
 import java.util.List;
 
 import <%= ctxt.getPackageName() %>.model.<%= n %>Dto;
@@ -32,6 +33,21 @@ import com.porpoise.dao.database.init.Databases;
  */
 public class <%= n %>DaoTest extends AbstractDaoTest
 {
+    /**
+     * test the DAO can create and find an entry 
+     */
+    @Test
+    public void test_listAll()
+    {
+        final Collection<<%= n %>Dto> values = new <%= n %>Dao().listAll(getTransaction());
+        for (final <%= n %>Dto value : values)
+        {
+            System.out.println(value);
+        }
+ 
+        Assert.assertFalse(values.isEmpty());
+    }
+
 <% if (ctxt.hasIdField()) { %>
     /**
      * test the DAO can create and find an entry 
@@ -46,7 +62,7 @@ public class <%= n %>DaoTest extends AbstractDaoTest
         dao.insert(getTransaction(), dto);
 
         // find our new entry        
-        final <%= n %>Dto read = dao.findById(getTransaction(), Long.valueOf(1));
+        final <%= n %>Dto read = dao.findById(getTransaction(), <%= ctxt.getIdField().getJavaTypeName() %>.valueOf(1));
         Assert.assertEquals(dto, read);
     }
 
@@ -63,7 +79,7 @@ public class <%= n %>DaoTest extends AbstractDaoTest
         dao.insert(getTransaction(), dto);
 
         // find our new entry        
-        final <%= n %>Dto read = dao.findById(getTransaction(), Long.valueOf(1));
+        final <%= n %>Dto read = dao.findById(getTransaction(), <%= ctxt.getIdField().getJavaTypeName() %>.valueOf(1));
         Assert.assertEquals(dto, read);
     }
 <% } // end if has id  %>

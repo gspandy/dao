@@ -45,13 +45,17 @@ public abstract class AbstractDaoTest
     {
         if (factory == null)
         {
-            final DbConnectionDetails config = new DbConnectionDetails();
-
-            final File testDir = new File(System.getProperty("user.dir"));
-            final String url = new File(testDir, "dao-gen-test").getAbsolutePath();
-            config.setDatabaseName(url);
-            factory = Databases.DERBY.init(config);
+            factory = initDerby();
         }
+    }
+    
+    private static DbConnectionFactory initDerby()
+    {
+        final DbConnectionDetails config = new DbConnectionDetails();
+        final File testDir = new File(System.getProperty("user.dir"));
+        final String url = new File(testDir, "dao-gen-test").getAbsolutePath();
+        config.setDatabaseName(url);
+        return Databases.DERBY.init(config);
     }
     
     @Before

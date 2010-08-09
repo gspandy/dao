@@ -17,7 +17,7 @@ public class DaoTemplate implements IGenerator
 
   public final String NL = nl == null ? (System.getProperties().getProperty("line.separator")) : nl;
   protected final String TEXT_1 = "package ";
-  protected final String TEXT_2 = ";" + NL + "" + NL + "import java.math.BigDecimal;" + NL + "import java.sql.ResultSet;" + NL + "import java.sql.SQLException;" + NL + "import java.util.List;" + NL + "import java.util.Date;" + NL + "" + NL + "import ";
+  protected final String TEXT_2 = ";" + NL + "" + NL + "import java.math.BigDecimal;" + NL + "import java.sql.ResultSet;" + NL + "import java.sql.SQLException;" + NL + "import java.util.Collection;" + NL + "import java.util.List;" + NL + "import java.util.Date;" + NL + "" + NL + "import ";
   protected final String TEXT_3 = ".model.";
   protected final String TEXT_4 = "Dto;" + NL + "" + NL + "import com.google.common.collect.ImmutableList;" + NL + "import com.google.common.collect.Iterables;" + NL + "import com.google.common.collect.Lists;" + NL + "import com.porpoise.dao.database.IDbTransaction;" + NL + "import com.porpoise.dao.database.DbConnectionFactory;" + NL + "import com.porpoise.dao.database.dao.AbstractDao;" + NL + "import com.porpoise.dao.database.visitors.AbstractResultSetVisitor;" + NL + "" + NL + "/**" + NL + " * Functional Data Access class used to operate on ";
   protected final String TEXT_5 = "Dto objects" + NL + " */" + NL + "public class ";
@@ -39,16 +39,20 @@ public class DaoTemplate implements IGenerator
   protected final String TEXT_21 = NL + "    /**" + NL + "     * @param transaction the transaction used to retrieve the object" + NL + "     * @param id the Id for the ";
   protected final String TEXT_22 = " object" + NL + "     * @return the ";
   protected final String TEXT_23 = " object with the given ID" + NL + "     */" + NL + "    public ";
-  protected final String TEXT_24 = "Dto findById(final IDbTransaction transaction, final Long id)" + NL + "    {" + NL + "        final String querySql = ";
-  protected final String TEXT_25 = "Sql.byId();" + NL + "        final Visitor visitor = transaction.executeQuery(new Visitor(), querySql, id);" + NL + "        return visitor.getSingleResult();" + NL + "    }";
-  protected final String TEXT_26 = NL + NL + "    /** " + NL + "     * create a new entry for the given dto" + NL + "     * @param transaction" + NL + "     * @param dto the dto to insert" + NL + "     */" + NL + "    public void insert(final IDbTransaction transaction, final ";
-  protected final String TEXT_27 = "Dto dto)" + NL + "    {" + NL + "        final String sql = ";
-  protected final String TEXT_28 = "Sql.insert();" + NL + "        transaction.executeUpdate(sql, ";
-  protected final String TEXT_29 = "); " + NL + "    }    " + NL + "    " + NL + "    /** " + NL + "     * @param transaction" + NL + "     * @param id the ID of the element to update" + NL + "     * @param dto" + NL + "     */" + NL + "    public <T> void update(final IDbTransaction transaction, T id, final ";
-  protected final String TEXT_30 = "Dto dto)" + NL + "    {" + NL + "        final String sql = ";
-  protected final String TEXT_31 = "Sql.update() + \" WHERE id=?\";" + NL + "        transaction.executeUpdate(sql, ";
-  protected final String TEXT_32 = ", id); " + NL + "    }    " + NL + "}";
-  protected final String TEXT_33 = NL;
+  protected final String TEXT_24 = "Dto findById(final IDbTransaction transaction, final ";
+  protected final String TEXT_25 = " id)" + NL + "    {" + NL + "        final String querySql = ";
+  protected final String TEXT_26 = "Sql.byId();" + NL + "        final Visitor visitor = transaction.executeQuery(new Visitor(), querySql, id);" + NL + "        return visitor.getSingleResult();" + NL + "    }";
+  protected final String TEXT_27 = NL + NL + "    /**" + NL + "     * @param transaction the transaction used to retrieve the object" + NL + "     * @return all ";
+  protected final String TEXT_28 = " objects" + NL + "     */" + NL + "    public Collection<";
+  protected final String TEXT_29 = "Dto> listAll(final IDbTransaction transaction)" + NL + "    {" + NL + "        final String querySql = ";
+  protected final String TEXT_30 = "Sql.select();" + NL + "        final Visitor visitor = transaction.executeQuery(new Visitor(), querySql);" + NL + "        return visitor.getDtoResults();" + NL + "    }" + NL + "" + NL + "    /** " + NL + "     * create a new entry for the given dto" + NL + "     * @param transaction" + NL + "     * @param dto the dto to insert" + NL + "     */" + NL + "    public void insert(final IDbTransaction transaction, final ";
+  protected final String TEXT_31 = "Dto dto)" + NL + "    {" + NL + "        final String sql = ";
+  protected final String TEXT_32 = "Sql.insert();" + NL + "        transaction.executeUpdate(sql, ";
+  protected final String TEXT_33 = "); " + NL + "    }    " + NL + "    " + NL + "    /** " + NL + "     * @param transaction" + NL + "     * @param id the ID of the element to update" + NL + "     * @param dto" + NL + "     */" + NL + "    public <T> void update(final IDbTransaction transaction, T id, final ";
+  protected final String TEXT_34 = "Dto dto)" + NL + "    {" + NL + "        final String sql = ";
+  protected final String TEXT_35 = "Sql.update() + \" WHERE id=?\";" + NL + "        transaction.executeUpdate(sql, ";
+  protected final String TEXT_36 = ", id); " + NL + "    }    " + NL + "}";
+  protected final String TEXT_37 = NL;
 
    /* (non-javadoc)
     * @see IGenerator#generate(Object)
@@ -80,7 +84,7 @@ final String n = ctxt.getJavaName();
     stringBuffer.append(TEXT_10);
     stringBuffer.append( ctxt.asProperty(c.getName()) );
     stringBuffer.append(TEXT_11);
-    stringBuffer.append( c.getJavaTypeAccessorName() );
+    stringBuffer.append( c.getResultSetAccessorName() );
     stringBuffer.append(TEXT_12);
     } // end for 
     stringBuffer.append(TEXT_13);
@@ -106,23 +110,31 @@ final String n = ctxt.getJavaName();
     stringBuffer.append(TEXT_23);
     stringBuffer.append( n );
     stringBuffer.append(TEXT_24);
-    stringBuffer.append( n );
+    stringBuffer.append( ctxt.getIdField().getJavaTypeName() );
     stringBuffer.append(TEXT_25);
-     } 
-    stringBuffer.append(TEXT_26);
     stringBuffer.append( n );
+    stringBuffer.append(TEXT_26);
+     } 
     stringBuffer.append(TEXT_27);
     stringBuffer.append( n );
     stringBuffer.append(TEXT_28);
-    stringBuffer.append( ctxt.getColumnAccessorMethods("dto") );
+    stringBuffer.append( n );
     stringBuffer.append(TEXT_29);
     stringBuffer.append( n );
     stringBuffer.append(TEXT_30);
     stringBuffer.append( n );
     stringBuffer.append(TEXT_31);
-    stringBuffer.append( ctxt.getColumnAccessorMethods("dto") );
+    stringBuffer.append( n );
     stringBuffer.append(TEXT_32);
+    stringBuffer.append( ctxt.getColumnAccessorMethods("dto") );
     stringBuffer.append(TEXT_33);
+    stringBuffer.append( n );
+    stringBuffer.append(TEXT_34);
+    stringBuffer.append( n );
+    stringBuffer.append(TEXT_35);
+    stringBuffer.append( ctxt.getColumnAccessorMethods("dto") );
+    stringBuffer.append(TEXT_36);
+    stringBuffer.append(TEXT_37);
     return stringBuffer.toString();
   }
 }

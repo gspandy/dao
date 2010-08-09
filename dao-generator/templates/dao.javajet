@@ -7,6 +7,7 @@ package <%= ctxt.getPackageName() %>;
 import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Collection;
 import java.util.List;
 import java.util.Date;
 
@@ -43,7 +44,7 @@ public class <%= n %>Dao extends AbstractDao
             int columnIndex = 1;
 
 <% for (final Column c : ctxt.getColumns()) { %>
-            final <%= c.getJavaTypeName() %> <%= ctxt.asProperty(c.getName()) %> = <%= c.getJavaTypeAccessorName() %>(resultSet, columnIndex++);
+            final <%= c.getJavaTypeName() %> <%= ctxt.asProperty(c.getName()) %> = <%= c.getResultSetAccessorName() %>(resultSet, columnIndex++);
 <%} // end for %>
 
             final <%= n %>Dto dto  = new <%= n %>Dto(<%=  ctxt.getColumnParameterList() %>);
@@ -76,13 +77,24 @@ public class <%= n %>Dao extends AbstractDao
      * @param id the Id for the <%= n %> object
      * @return the <%= n %> object with the given ID
      */
-    public <%= n %>Dto findById(final IDbTransaction transaction, final Long id)
+    public <%= n %>Dto findById(final IDbTransaction transaction, final <%= ctxt.getIdField().getJavaTypeName() %> id)
     {
         final String querySql = <%= n %>Sql.byId();
         final Visitor visitor = transaction.executeQuery(new Visitor(), querySql, id);
         return visitor.getSingleResult();
     }
 <% } %>
+
+    /**
+     * @param transaction the transaction used to retrieve the object
+     * @return all <%= n %> objects
+     */
+    public Collection<<%= n %>Dto> listAll(final IDbTransaction transaction)
+    {
+        final String querySql = <%= n %>Sql.select();
+        final Visitor visitor = transaction.executeQuery(new Visitor(), querySql);
+        return visitor.getDtoResults();
+    }
 
     /** 
      * create a new entry for the given dto

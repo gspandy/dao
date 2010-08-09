@@ -10,8 +10,18 @@ public enum ColType {
 	}, //
 	Boolean, //
 	Integer, //
-	Date, //
+	Date {
+		@Override
+		public String getResultSetAccessorName() {
+			return "getTime";
+		}
+	}, //
 	Timestamp {
+		@Override
+		public String getResultSetAccessorName() {
+			return "getTime";
+		}
+
 		@Override
 		public String getJavaName() {
 			return "Date";
@@ -27,8 +37,8 @@ public enum ColType {
 		}
 
 		@Override
-		public String getJavaAccessorName() {
-			return "Bytes";
+		public String getResultSetAccessorName() {
+			return "getBytes";
 		}
 	};
 
@@ -36,8 +46,8 @@ public enum ColType {
 		return name();
 	}
 
-	public String getJavaAccessorName() {
-		return getJavaName();
+	public String getResultSetAccessorName() {
+		return "get" + getJavaName();
 	}
 
 	public static ColType forClass(final Class<?> c1ass) {

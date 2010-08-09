@@ -49,7 +49,7 @@ public final class <%= n %>Dto
     @Override
     public String toString()
     {
-        return "<%= n %>Dto";
+        return String.format("<%= n %>Dto [<%= ctxt.getColumnParameterListAsToString() %>]", <%= ctxt.getColumnAccessorMethods("this") %>);
     }
 
     /* (non-Javadoc)
