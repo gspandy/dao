@@ -17,14 +17,34 @@ public class GeneratorTemplate implements IGenerator
 
   public final String NL = nl == null ? (System.getProperties().getProperty("line.separator")) : nl;
   protected final String TEXT_1 = "package ";
-  protected final String TEXT_2 = ";" + NL + "" + NL + "import java.math.BigDecimal;" + NL + "import java.sql.ResultSet;" + NL + "import java.sql.SQLException;" + NL + "import java.util.Collection;" + NL + "import java.util.List;" + NL + "import java.util.Date;" + NL + "" + NL + "import com.google.common.collect.ImmutableList;" + NL + "import com.google.common.collect.Iterables;" + NL + "import com.google.common.collect.Lists;" + NL + "import com.porpoise.dao.database.IDbTransaction;" + NL + "import com.porpoise.dao.database.DbConnectionFactory;" + NL + "import com.porpoise.dao.database.dao.AbstractDao;" + NL + "import com.porpoise.dao.database.visitors.AbstractResultSetVisitor;" + NL + "" + NL + "/**" + NL + " * Generator class used to create source code/resources from an in-memory schema" + NL + " */" + NL + "public class Generator" + NL + "{" + NL + "public class GeneratorMain {" + NL + "" + NL + "\tpublic static void main(final String[] args) throws IOException {" + NL + "\t    final Collection<Table> tables = createTables();" + NL + "" + NL + "\t\tfinal File dest = new File(System.getProperty(\"user.dir\")," + NL + "\t\t\t\t\"generator-main\");" + NL + "\t\tfinal String packageName = args.length == 1 ? args[0] : \"com.example\";" + NL + "\t\tDaoGenerator.generateProject(new ProjectDefinition(tables, dest, packageName + \".dao\", \"main-test-dao\", packageName));\t    " + NL + "\t}" + NL + "" + NL + "\tprivate static Collection<Table> createTables() throws IOException {" + NL + "\t\tfinal Collection<Table> tables = Lists.newArrayList();" + NL + NL + NL;
-  protected final String TEXT_3 = NL;
-  protected final String TEXT_4 = NL;
-  protected final String TEXT_5 = NL;
-  protected final String TEXT_6 = NL + "//============ COLUMN =============";
-  protected final String TEXT_7 = NL;
-  protected final String TEXT_8 = NL + NL + "\t\tfinal Table tbl = new Table(\"Aaron\");" + NL + "\t\ttbl.addColumn(\"ID\", true, ColType.Long);" + NL + "\t\ttbl.addColumn(\"Name\", false, ColType.String);" + NL + "" + NL + "\t\tfinal Table tbl2 = new Table(\"Benjamin\");" + NL + "\t\ttbl2.addColumn(\"ID\", true, ColType.Long);" + NL + "\t\tfinal Column fk = tbl2.addColumn(\"AARON_ID\", true, ColType.Long);" + NL + "\t\ttbl2.addColumn(\"Name\", false, ColType.String);" + NL + "" + NL + "\t\ttbl.oneToMany(fk);" + NL + "" + NL + "\t\ttables.add(tbl);" + NL + "\t\ttables.add(tbl2);" + NL + "" + NL + "        return tables;" + NL + "\t}" + NL + "}";
-  protected final String TEXT_9 = NL;
+  protected final String TEXT_2 = ";" + NL + "" + NL + "import java.io.File;" + NL + "import java.io.IOException;" + NL + "import java.util.*;" + NL + "" + NL + "import com.google.common.collect.Lists;" + NL + "import com.google.common.collect.ImmutableList;" + NL + "import com.porpoise.dao.generator.gen.DaoGenerator;" + NL + "import com.porpoise.dao.generator.gen.ProjectDefinition;" + NL + "import com.porpoise.dao.generator.model.ColType;" + NL + "import com.porpoise.dao.generator.model.Column;" + NL + "import com.porpoise.dao.generator.model.Table;" + NL + "" + NL + "/**" + NL + " * Generator class used to create source code/resources from an in-memory schema" + NL + " */" + NL + "public class Generator" + NL + "{" + NL + "       private final ImmutableList<Table> tables;";
+  protected final String TEXT_3 = NL + "        // =======================================================================================" + NL + "        // ";
+  protected final String TEXT_4 = NL + "        // =======================================================================================" + NL + "\t\tpublic final Table ";
+  protected final String TEXT_5 = ";";
+  protected final String TEXT_6 = NL + "\t\tpublic final Column ";
+  protected final String TEXT_7 = "__";
+  protected final String TEXT_8 = ";";
+  protected final String TEXT_9 = NL + NL + "\tpublic static void main(final String[] args) throws IOException {" + NL + "\t    final Collection<Table> tables = new Generator().getTables();" + NL + "" + NL + "\t\tfinal File dest = new File(System.getProperty(\"user.dir\")," + NL + "\t\t\t\t\"generator-main\");" + NL + "\t\tfinal String packageName = args.length == 1 ? args[0] : \"com.example\";" + NL + "\t\tDaoGenerator.generateProject(new ProjectDefinition(tables, dest, packageName + \".dao\", \"main-test-dao\", \"1.0.0\", packageName));\t    " + NL + "\t}" + NL + "\t" + NL + "\t/** " + NL + "\t * @return the tables;" + NL + "\t */" + NL + "\tpublic Collection<Table> getTables()" + NL + "\t{" + NL + "\t    return this.tables;" + NL + "\t}" + NL + "" + NL + "    /** " + NL + "     * default constructor" + NL + "     */" + NL + "\tpublic Generator() throws IOException {" + NL + "\t\tfinal List<Table> allTables = Lists.newArrayList();" + NL;
+  protected final String TEXT_10 = NL + "        // =======================================================================================" + NL + "        // ";
+  protected final String TEXT_11 = NL + "        // =======================================================================================" + NL + "\t\t";
+  protected final String TEXT_12 = " = new Table(\"";
+  protected final String TEXT_13 = "\");";
+  protected final String TEXT_14 = NL + "\t\t";
+  protected final String TEXT_15 = " = ";
+  protected final String TEXT_16 = ".";
+  protected final String TEXT_17 = "(\"";
+  protected final String TEXT_18 = "\", ";
+  protected final String TEXT_19 = ", ColType.";
+  protected final String TEXT_20 = ");" + NL + "" + NL + "\t\tallTables.add(";
+  protected final String TEXT_21 = ");" + NL;
+  protected final String TEXT_22 = NL + NL + "       makeJoins();" + NL + "       tables = ImmutableList.copyOf(allTables);" + NL + "\t}" + NL + "\t" + NL + "\tprivate void makeJoins()" + NL + "\t{" + NL + "\t";
+  protected final String TEXT_23 = NL + "        // =======================================================================================" + NL + "        // ";
+  protected final String TEXT_24 = NL + "        // =======================================================================================";
+  protected final String TEXT_25 = NL + "        ";
+  protected final String TEXT_26 = ".fkReferenceTo(";
+  protected final String TEXT_27 = ");" + NL + "        ";
+  protected final String TEXT_28 = NL + "\t}" + NL + "}";
+  protected final String TEXT_29 = NL;
 
    /* (non-javadoc)
     * @see IGenerator#generate(Object)
@@ -38,21 +58,86 @@ public class GeneratorTemplate implements IGenerator
     stringBuffer.append( ctxt.getPackageName() );
     stringBuffer.append(TEXT_2);
      for (final Table t : ctxt.getTables()) { 
-    stringBuffer.append(TEXT_3);
-    } // end for 
-    stringBuffer.append(TEXT_4);
-     for (final Column c : t.getColumns()) { 
-    stringBuffer.append(TEXT_5);
-     if (t.hasIdColumn() && t.getIdColumn().equals(c)) { 
-//============ ID COLUMN =============
+       final String table = t.getTableName(); 
 
-     } else { 
+    stringBuffer.append(TEXT_3);
+    stringBuffer.append( table );
+    stringBuffer.append(TEXT_4);
+    stringBuffer.append( table );
+    stringBuffer.append(TEXT_5);
+     for (final Column c : t.getColumns()) { 
     stringBuffer.append(TEXT_6);
-     } 
+    stringBuffer.append( table );
     stringBuffer.append(TEXT_7);
-    } // end for 
+    stringBuffer.append( c.getName() );
     stringBuffer.append(TEXT_8);
+    } // end for column 
+    } // end for table 
     stringBuffer.append(TEXT_9);
+     for (final Table t : ctxt.getTables()) { 
+       final String table = t.getTableName(); 
+
+    stringBuffer.append(TEXT_10);
+    stringBuffer.append( table );
+    stringBuffer.append(TEXT_11);
+    stringBuffer.append( table );
+    stringBuffer.append(TEXT_12);
+    stringBuffer.append( table );
+    stringBuffer.append(TEXT_13);
+     for (final Column c : t.getColumns()) {
+       final String column = c.getName();
+       final String addMethod;
+       final String field = table  + "__" + column;
+       if (t.hasIdColumn() && t.getIdColumn().equals(c)) {
+           addMethod = "addKeyColumn";
+       } else { 
+           addMethod = "addColumn";
+       } 
+
+    stringBuffer.append(TEXT_14);
+    stringBuffer.append( field );
+    stringBuffer.append(TEXT_15);
+    stringBuffer.append( table );
+    stringBuffer.append(TEXT_16);
+    stringBuffer.append( addMethod );
+    stringBuffer.append(TEXT_17);
+    stringBuffer.append( column );
+    stringBuffer.append(TEXT_18);
+    stringBuffer.append( c.isRequired() );
+    stringBuffer.append(TEXT_19);
+    stringBuffer.append( c.getType() );
+    stringBuffer.append(TEXT_20);
+    stringBuffer.append( table );
+    stringBuffer.append(TEXT_21);
+    } // end for column 
+    } // end for table 
+    stringBuffer.append(TEXT_22);
+     for (final Table t : ctxt.getTables()) {
+	   
+	   if (!t.hasForeignKeyReferences())
+	   {
+	       continue;
+	   }
+       final String table = t.getTableName();
+
+    stringBuffer.append(TEXT_23);
+    stringBuffer.append( table );
+    stringBuffer.append(TEXT_24);
+    
+       for (final Reference r : t.getForeignKeyReferences()) {
+           final String column = r.getFrom().getName();
+           final String field = table  + "__" + column;
+           final String other = r.getTo().getTable().getTableName() + "__" + r.getTo().getName();
+
+    stringBuffer.append(TEXT_25);
+    stringBuffer.append( field );
+    stringBuffer.append(TEXT_26);
+    stringBuffer.append( other );
+    stringBuffer.append(TEXT_27);
+         } // end for column 
+      } // end for table 
+    stringBuffer.append(TEXT_28);
+    stringBuffer.append(TEXT_29);
     return stringBuffer.toString();
   }
 }

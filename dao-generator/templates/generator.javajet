@@ -3,71 +3,109 @@ skeleton="generator.skeleton" %><% final GeneratorContext ctxt = (GeneratorConte
 %>
 package <%= ctxt.getPackageName() %>;
 
-import java.math.BigDecimal;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.Collection;
-import java.util.List;
-import java.util.Date;
+import java.io.File;
+import java.io.IOException;
+import java.util.*;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
-import com.porpoise.dao.database.IDbTransaction;
-import com.porpoise.dao.database.DbConnectionFactory;
-import com.porpoise.dao.database.dao.AbstractDao;
-import com.porpoise.dao.database.visitors.AbstractResultSetVisitor;
+import com.google.common.collect.ImmutableList;
+import com.porpoise.dao.generator.gen.DaoGenerator;
+import com.porpoise.dao.generator.gen.ProjectDefinition;
+import com.porpoise.dao.generator.model.ColType;
+import com.porpoise.dao.generator.model.Column;
+import com.porpoise.dao.generator.model.Table;
 
 /**
  * Generator class used to create source code/resources from an in-memory schema
  */
 public class Generator
 {
-public class GeneratorMain {
+       private final ImmutableList<Table> tables;
+<% for (final Table t : ctxt.getTables()) { 
+       final String table = t.getTableName(); 
+%>
+        // =======================================================================================
+        // <%= table %>
+        // =======================================================================================
+		public final Table <%= table %>;
+<% for (final Column c : t.getColumns()) { %>
+		public final Column <%= table %>__<%= c.getName() %>;
+<%} // end for column %>
+<%} // end for table %>
 
 	public static void main(final String[] args) throws IOException {
-	    final Collection<Table> tables = createTables();
+	    final Collection<Table> tables = new Generator().getTables();
 
 		final File dest = new File(System.getProperty("user.dir"),
 				"generator-main");
 		final String packageName = args.length == 1 ? args[0] : "com.example";
-		DaoGenerator.generateProject(new ProjectDefinition(tables, dest, packageName + ".dao", "main-test-dao", packageName));	    
+		DaoGenerator.generateProject(new ProjectDefinition(tables, dest, packageName + ".dao", "main-test-dao", "1.0.0", packageName));	    
+	}
+	
+	/** 
+	 * @return the tables;
+	 */
+	public Collection<Table> getTables()
+	{
+	    return this.tables;
 	}
 
-	private static Collection<Table> createTables() throws IOException {
-		final Collection<Table> tables = Lists.newArrayList();
+    /** 
+     * default constructor
+     */
+	public Generator() throws IOException {
+		final List<Table> allTables = Lists.newArrayList();
 
-
-
-<% for (final Table t : ctxt.getTables()) { %>
-
-<%} // end for %>
-
-<% for (final Column c : t.getColumns()) { %>
-
-<% if (t.hasIdColumn() && t.getIdColumn().equals(c)) { 
-//============ ID COLUMN =============
+<% for (final Table t : ctxt.getTables()) { 
+       final String table = t.getTableName(); 
 %>
-<% } else { %>
-//============ COLUMN =============
-<% } %>
+        // =======================================================================================
+        // <%= table %>
+        // =======================================================================================
+		<%= table %> = new Table("<%= table %>");
+<% for (final Column c : t.getColumns()) {
+       final String column = c.getName();
+       final String addMethod;
+       final String field = table  + "__" + column;
+       if (t.hasIdColumn() && t.getIdColumn().equals(c)) {
+           addMethod = "addKeyColumn";
+       } else { 
+           addMethod = "addColumn";
+       } 
+%>
+		<%= field %> = <%= table %>.<%= addMethod %>("<%= column %>", <%= c.isRequired() %>, ColType.<%= c.getType() %>);
 
-<%} // end for %>
+		allTables.add(<%= table %>);
 
-		final Table tbl = new Table("Aaron");
-		tbl.addColumn("ID", true, ColType.Long);
-		tbl.addColumn("Name", false, ColType.String);
+<%} // end for column %>
+<%} // end for table %>
 
-		final Table tbl2 = new Table("Benjamin");
-		tbl2.addColumn("ID", true, ColType.Long);
-		final Column fk = tbl2.addColumn("AARON_ID", true, ColType.Long);
-		tbl2.addColumn("Name", false, ColType.String);
-
-		tbl.oneToMany(fk);
-
-		tables.add(tbl);
-		tables.add(tbl2);
-
-        return tables;
+       makeJoins();
+       tables = ImmutableList.copyOf(allTables);
+	}
+	
+	private void makeJoins()
+	{
+	<% for (final Table t : ctxt.getTables()) {
+	   
+	   if (!t.hasForeignKeyReferences())
+	   {
+	       continue;
+	   }
+       final String table = t.getTableName();
+%>
+        // =======================================================================================
+        // <%= table %>
+        // =======================================================================================
+<%
+       for (final Reference r : t.getForeignKeyReferences()) {
+           final String column = r.getFrom().getName();
+           final String field = table  + "__" + column;
+           final String other = r.getTo().getTable().getTableName() + "__" + r.getTo().getName();
+%>
+        <%= field %>.fkReferenceTo(<%= other %>);
+        
+<%     } // end for column %>
+<%  } // end for table %>
 	}
 }

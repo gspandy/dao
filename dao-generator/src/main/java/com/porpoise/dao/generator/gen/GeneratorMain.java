@@ -36,15 +36,14 @@ public class GeneratorMain {
 		final Column fk = tbl2.addColumn("AARON_ID", true, ColType.Long);
 		tbl2.addColumn("Name", false, ColType.String);
 
-		tbl.oneToMany(fk);
-
 		tables.add(tbl);
 		tables.add(tbl2);
 
 		final File pom = new File(System.getProperty("user.dir"),
 				"generator-main");
 		final String packageName = "test.ing";
-		DaoGenerator.generateProject(new ProjectDefinition(tables, pom, packageName + ".dao", "main-test-dao", packageName));
+		DaoGenerator.generateProject(new ProjectDefinition(tables, pom,
+				packageName + ".dao", "main-test-dao", "1.0.0", packageName));
 	}
 
 }

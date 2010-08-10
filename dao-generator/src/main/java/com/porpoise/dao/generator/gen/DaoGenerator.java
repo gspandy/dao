@@ -14,6 +14,7 @@ import com.porpoise.dao.generator.templates.AbstractDaoTestTemplate;
 import com.porpoise.dao.generator.templates.DaoTemplate;
 import com.porpoise.dao.generator.templates.DaoTestTemplate;
 import com.porpoise.dao.generator.templates.DtoTemplate;
+import com.porpoise.dao.generator.templates.GeneratorTemplate;
 import com.porpoise.dao.generator.templates.MetadataTemplate;
 import com.porpoise.dao.generator.templates.PomTemplate;
 import com.porpoise.dao.generator.templates.SqlTemplate;
@@ -151,15 +152,14 @@ public class DaoGenerator {
 
 	public static void generateGeneratorProject(final ProjectDefinition def)
 			throws IOException {
-		generateProject(def.getTables(), def.getTargetDirectory(),
-				def.getArtifactId(), def.getGroupId(), srcDir(def),
-				testDir(def), def.getPackageName());
+		if (def.hasPomDefinition()) {
+			generatePom(def.getArtifactId(), def.getGroupId(),
+					def.getVersion(), def.getTargetDirectory());
+		}
 
-		final File destFolder = def.getTargetDirectory();
-		final IGenerator generator = null;
-		final AbstractJavaContext ctxt = null;
-		final String fileName = "Generator";
-		generate(destFolder, generator, ctxt, fileName);
+		final AbstractJavaContext ctxt = new GeneratorContext(
+				def.getPackageName(), def.getTables());
+		generate(srcDir(def), new GeneratorTemplate(), ctxt, "Generator");
 	}
 
 	/**

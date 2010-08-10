@@ -11,7 +11,6 @@ import com.google.common.collect.Lists;
 public class Table {
 	private final String name;
 	private final List<Column> columns;
-	private final List<Column> oneToMany = Lists.newArrayList();
 	private Column idColumn;
 
 	public Table(final String n) {
@@ -48,25 +47,44 @@ public class Table {
 
 	public Column getIdColumn() {
 		if (idColumn == null) {
-			final String nameLowerCase = name.toLowerCase();
-			final Collection<Column> probables = Lists.newArrayList();
-			for (final Column c : getColumns()) {
-				final String colName = c.getName().toLowerCase();
-				if (colName.endsWith("_id")) {
-					final String idName = colName.substring(0, "_id".length());
-					if (nameLowerCase.startsWith(idName)) {
+			final Column pk = computePrimaryKey();
+			idColumn = pk;
+		}
+		return idColumn;
+	}
+
+	private Column computePrimaryKey() {
+		final String tableNameLowerCase = name.toLowerCase();
+		final Collection<Column> probables = Lists.newArrayList();
+
+		for (final Column c : getColumns()) {
+			final String colName = c.getName().toLowerCase();
+			if (colName.endsWith("_id")) {
+				final String idName = colName.substring(0, colName.length()
+						- "_id".length());
+				if (tableNameLowerCase.startsWith(idName)) {
+					final int subsequentUnderscore = tableNameLowerCase
+							.indexOf('_', idName.length());
+					final boolean tableNameHasSubsequentUnderscore = subsequentUnderscore >= 0;
+					if (tableNameHasSubsequentUnderscore) {
+						System.out.println(String.format(
+								"Ignoring possible PK '%s' for table '%s'",
+								colName, tableNameLowerCase));
+					} else {
 						probables.add(c);
 					}
 				}
 			}
-			if (probables.size() != 1) {
-				System.err
-						.println("No single possible ID suggestion found for "
-								+ name);
-			}
-			idColumn = Iterables.getOnlyElement(probables);
 		}
-		return idColumn;
+		Column pk;
+		if (probables.size() != 1) {
+			System.err.println("No single possible ID suggestion found for "
+					+ name);
+			pk = null;
+		} else {
+			pk = Iterables.getOnlyElement(probables);
+		}
+		return pk;
 	}
 
 	public String getJavaName() {
@@ -76,10 +94,6 @@ public class Table {
 
 	public String getTableName() {
 		return this.name;
-	}
-
-	public void oneToMany(final Column fk) {
-		this.oneToMany.add(fk);
 	}
 
 	public Column addKeyColumn(final String colName, final boolean required,
@@ -106,5 +120,21 @@ public class Table {
 	 */
 	public boolean hasColumns() {
 		return !this.columns.isEmpty();
+	}
+
+	public Collection<Reference> getForeignKeyReferences() {
+		final Collection<Reference> references = Lists.newArrayList();
+		for (final Column c : columns) {
+			references.addAll(c.getForeignKeyReferences());
+		}
+
+		return references;
+	}
+
+	/**
+	 * @return true if there are any FK references
+	 */
+	public boolean hasForeignKeyReferences() {
+		return !getForeignKeyReferences().isEmpty();
 	}
 }
