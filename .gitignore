@@ -12,3 +12,4 @@ dao-derby/.settings
 test/ing
 *.log
 *.dat
+dao-test

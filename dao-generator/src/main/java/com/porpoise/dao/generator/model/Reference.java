@@ -12,6 +12,13 @@ public class Reference {
 		to = Preconditions.checkNotNull(t);
 	}
 
+	public Column getFromTablePrimaryKey() {
+		if (from.getTable().hasIdColumn()) {
+			return from.getTable().getIdColumn();
+		}
+		return from;
+	}
+
 	public Column getFrom() {
 		return from;
 	}

@@ -1,0 +1,28 @@
+<%@ jet package="com.porpoise.dao.generator.templates" imports="java.util.* com.porpoise.dao.generator.gen.* com.porpoise.dao.generator.model.*" class="AbstractDtoTemplate" 
+skeleton="generator.skeleton" %><% final DaoContext ctxt = (DaoContext) argument; 
+%>
+package <%= ctxt.getPackageName() %>.model;
+
+import java.util.Date;
+
+/**
+ */
+public abstract class AbstractDto
+{
+	protected final boolean equals(final Date d1, final Date d2) {
+		// equals is assumed to be within 1 second
+		final int marginForErrorInMillis = 1000;
+		return within(d1, d2, marginForErrorInMillis);
+	}
+
+	private boolean within(final Date d1, final Date d2,
+			final int marginForErrorInMillis) {
+		if (d1 == null) {
+			return d2 == null;
+		} else if (d2 != null) {
+			final long diff = Math.abs(d1.getTime() - d2.getTime());
+			return diff < marginForErrorInMillis;
+		}
+		return false;
+	}
+}

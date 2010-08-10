@@ -18,12 +18,22 @@ final class ColumnBuilderVisitor implements IResultSetVisitor {
 		this.table = new Table(tableName.toUpperCase()) {
 
 			@Override
-			public Column getIdColumn() {
-				if (getTableName().endsWith("_REF")) {
-					return null;
+			public boolean isJoinTable() {
+
+				int refCount = 0;
+				for (final Column c : getColumns()) {
+					if (isRefCol(c)) {
+						refCount++;
+					} else {
+						// there may be 'created on' and 'modified on' columns
+						// in addition to the fk columns
+						if (c.getType() != ColType.Timestamp) {
+							return false;
+						}
+					}
 				}
-				return super.getIdColumn();
-			};
+				return refCount == 2;
+			}
 		};
 	}
 

@@ -37,14 +37,16 @@ public class GeneratorTemplate implements IGenerator
   protected final String TEXT_19 = ", ColType.";
   protected final String TEXT_20 = ");" + NL + "" + NL + "\t\tallTables.add(";
   protected final String TEXT_21 = ");" + NL;
-  protected final String TEXT_22 = NL + NL + "       makeJoins();" + NL + "       tables = ImmutableList.copyOf(allTables);" + NL + "\t}" + NL + "\t" + NL + "\tprivate void makeJoins()" + NL + "\t{" + NL + "\t";
+  protected final String TEXT_22 = NL + NL + "       makeJoins();" + NL + "       tables = ImmutableList.copyOf(allTables);" + NL + "\t}" + NL + "\t" + NL + "\t/** " + NL + "\t *" + NL + "\t */" + NL + "\tprivate void makeJoins()" + NL + "\t{" + NL + "\t";
   protected final String TEXT_23 = NL + "        // =======================================================================================" + NL + "        // ";
-  protected final String TEXT_24 = NL + "        // =======================================================================================";
-  protected final String TEXT_25 = NL + "        ";
-  protected final String TEXT_26 = ".fkReferenceTo(";
-  protected final String TEXT_27 = ");" + NL + "        ";
-  protected final String TEXT_28 = NL + "\t}" + NL + "}";
-  protected final String TEXT_29 = NL;
+  protected final String TEXT_24 = "JOIN TABLE";
+  protected final String TEXT_25 = " ";
+  protected final String TEXT_26 = NL + "        // =======================================================================================";
+  protected final String TEXT_27 = NL + "        ";
+  protected final String TEXT_28 = ".fkReferenceTo(";
+  protected final String TEXT_29 = ");" + NL + "        ";
+  protected final String TEXT_30 = NL + "\t}" + NL + "}";
+  protected final String TEXT_31 = NL;
 
    /* (non-javadoc)
     * @see IGenerator#generate(Object)
@@ -121,23 +123,27 @@ public class GeneratorTemplate implements IGenerator
        final String table = t.getTableName();
 
     stringBuffer.append(TEXT_23);
-    stringBuffer.append( table );
+     if (t.isJoinTable()) { 
     stringBuffer.append(TEXT_24);
+     } 
+    stringBuffer.append(TEXT_25);
+    stringBuffer.append( table );
+    stringBuffer.append(TEXT_26);
     
        for (final Reference r : t.getForeignKeyReferences()) {
            final String column = r.getFrom().getName();
            final String field = table  + "__" + column;
            final String other = r.getTo().getTable().getTableName() + "__" + r.getTo().getName();
 
-    stringBuffer.append(TEXT_25);
-    stringBuffer.append( field );
-    stringBuffer.append(TEXT_26);
-    stringBuffer.append( other );
     stringBuffer.append(TEXT_27);
+    stringBuffer.append( field );
+    stringBuffer.append(TEXT_28);
+    stringBuffer.append( other );
+    stringBuffer.append(TEXT_29);
          } // end for column 
       } // end for table 
-    stringBuffer.append(TEXT_28);
-    stringBuffer.append(TEXT_29);
+    stringBuffer.append(TEXT_30);
+    stringBuffer.append(TEXT_31);
     return stringBuffer.toString();
   }
 }

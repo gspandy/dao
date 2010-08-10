@@ -8,6 +8,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.Date;
 
 /**
@@ -103,11 +104,11 @@ final class DbTransaction implements IDbTransaction {
 					} else if (param instanceof byte[]) {
 						statement.setBytes(parameterIndex++, ((byte[]) param));
 					} else if (param instanceof Date) {
-						statement.setDate(parameterIndex++, new java.sql.Date(
+						statement.setTimestamp(parameterIndex++, new Timestamp(
 								((Date) param).getTime()));
-					} else if (param instanceof java.sql.Date) {
-						statement.setDate(parameterIndex++,
-								((java.sql.Date) param));
+					} else if (param instanceof Timestamp) {
+						statement.setTimestamp(parameterIndex++,
+								((Timestamp) param));
 					} else if (param instanceof Boolean) {
 						statement.setBoolean(parameterIndex++,
 								((Boolean) param));

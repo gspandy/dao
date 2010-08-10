@@ -55,14 +55,18 @@ public class <%= n %>DaoTest extends AbstractDaoTest
     @Test
     public void test_createAndFindById()
     {
+        // create the DAO to test
+        final <%= n %>Dao dao = new <%= n %>Dao();
+         
+        final <%= ctxt.getIdField().getJavaTypeName() %> id = dao.nextId(getTransaction());
+
         // create an entry to find
         final <%= n %>Dto dto = new <%= n %>Dto(<%= ctxt.getTestValues() %>);
  
-        final <%= n %>Dao dao = new <%= n %>Dao(); 
         dao.insert(getTransaction(), dto);
 
-        // find our new entry        
-        final <%= n %>Dto read = dao.findById(getTransaction(), <%= ctxt.getIdField().getJavaTypeName() %>.valueOf(1));
+        // call the method under test - find our new entry        
+        final <%= n %>Dto read = dao.findById(getTransaction(), id);
         Assert.assertEquals(dto, read);
     }
 
@@ -72,14 +76,16 @@ public class <%= n %>DaoTest extends AbstractDaoTest
     @Test
     public void test_update()
     {
+        final <%= n %>Dao dao = new <%= n %>Dao();
+        final <%= ctxt.getIdField().getJavaTypeName() %> id = dao.nextId(getTransaction());
+        
         // create an entry to find
         final <%= n %>Dto dto = new <%= n %>Dto(<%= ctxt.getTestValues() %>);
  
-        final <%= n %>Dao dao = new <%= n %>Dao(); 
         dao.insert(getTransaction(), dto);
 
         // find our new entry        
-        final <%= n %>Dto read = dao.findById(getTransaction(), <%= ctxt.getIdField().getJavaTypeName() %>.valueOf(1));
+        final <%= n %>Dto read = dao.findById(getTransaction(), id);
         Assert.assertEquals(dto, read);
     }
 <% } // end if has id  %>

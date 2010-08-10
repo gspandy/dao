@@ -108,4 +108,27 @@ public class Column {
 
 		return references;
 	}
+
+	public Collection<Reference> getReferencingColumns() {
+		final Collection<Reference> references = Lists.newArrayList();
+
+		for (final Column fk : referencedBy) {
+			references.add(new Reference(fk, this));
+		}
+
+		return references;
+	}
+
+	public boolean hasFkReferences() {
+		return !fkReferences.isEmpty();
+	}
+
+	public boolean isBigDecimal() {
+		return getType() == ColType.BigDecimal;
+	}
+
+	public boolean isDate() {
+		return getType() == ColType.Date || getType() == ColType.Timestamp;
+	}
+
 }

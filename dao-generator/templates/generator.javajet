@@ -84,6 +84,9 @@ public class Generator
        tables = ImmutableList.copyOf(allTables);
 	}
 	
+	/** 
+	 *
+	 */
 	private void makeJoins()
 	{
 	<% for (final Table t : ctxt.getTables()) {
@@ -95,7 +98,7 @@ public class Generator
        final String table = t.getTableName();
 %>
         // =======================================================================================
-        // <%= table %>
+        // <% if (t.isJoinTable()) { %>JOIN TABLE<% } %> <%= table %>
         // =======================================================================================
 <%
        for (final Reference r : t.getForeignKeyReferences()) {

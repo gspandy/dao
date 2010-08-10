@@ -2,6 +2,7 @@ package com.porpoise.dao.generator.templates;
 
 import java.util.*;
 import com.porpoise.dao.generator.gen.*;
+import com.porpoise.dao.generator.model.*;
 
 public class SqlTemplate implements IGenerator
 {
@@ -30,13 +31,21 @@ public class SqlTemplate implements IGenerator
   protected final String TEXT_13 = "Metadata.FIELDS);" + NL + "    }" + NL;
   protected final String TEXT_14 = NL + "    /**" + NL + "     * @return the 'WHERE' clause for retrieving a ";
   protected final String TEXT_15 = " object by ID" + NL + "     */" + NL + "    public static String byId()" + NL + "    {" + NL + "        return by(";
-  protected final String TEXT_16 = "Metadata.ID_FIELD);" + NL + "    }";
-  protected final String TEXT_17 = NL + NL + "    public static String createTable()" + NL + "    {" + NL + "        return String.format(\"CREATE TABLE %s \", TABLE_NAME);" + NL + "    }" + NL + "" + NL + "    /**" + NL + "     * @return the 'WHERE' clause for retrieving a ";
-  protected final String TEXT_18 = " object by its given field property" + NL + "     */" + NL + "    public static String by(final Field<?> field)" + NL + "    {" + NL + "        return String.format(\"%s WHERE %s=?\", select(), field.getName());" + NL + "    }" + NL + "" + NL + "    /**" + NL + "     * @return the 'INSERT' SQL used to create a new ";
-  protected final String TEXT_19 = " entry" + NL + "     */" + NL + "    public static String insert()" + NL + "    {" + NL + "        final String propertyPlaceholders = Strings.repeat(\"?,\", ";
-  protected final String TEXT_20 = "Metadata.FIELDS.size() - 1) + \"?\";" + NL + "        return String.format(\"INSERT INTO %s (%s) VALUES (%s)\", TABLE_NAME, attributeListAsString(null), propertyPlaceholders);" + NL + "    }" + NL + "" + NL + "    /**" + NL + "     * @return the 'UPDATE' SQL used to create a new ";
-  protected final String TEXT_21 = " entry" + NL + "     */" + NL + "    public static String update()" + NL + "    {" + NL + "        return String.format(\"UPDATE %s SET %s\", TABLE_NAME, attributeListAsUpdateString(null));" + NL + "    }" + NL + "" + NL + "    /**" + NL + "     * @return the 'SELECT' SQL for querying the database" + NL + "     */" + NL + "    public static String select()" + NL + "    {" + NL + "        return select(null);" + NL + "    }" + NL + "" + NL + "    /**" + NL + "     * @return the 'SELECT' SQL for querying the database using the given alias for the table entry" + NL + "     */" + NL + "    public static String select(final String alias)" + NL + "    {" + NL + "        return String.format(\"SELECT %s FROM %s\", attributeListAsString(alias), TABLE_NAME);" + NL + "    }" + NL + "    " + NL + "}";
-  protected final String TEXT_22 = NL;
+  protected final String TEXT_16 = "Metadata.ID_FIELD);" + NL + "    }" + NL + "" + NL + "    /**" + NL + "     * @return a query which will return the max id" + NL + "     */" + NL + "\tpublic static String selectMaxId() {" + NL + "\t\treturn String.format(\"SELECT MAX(";
+  protected final String TEXT_17 = ") FROM %s\", TABLE_NAME);" + NL + "\t}";
+  protected final String TEXT_18 = NL;
+  protected final String TEXT_19 = NL + NL + "    /**" + NL + "     */" + NL + "    public static String findBy";
+  protected final String TEXT_20 = "()" + NL + "    {" + NL + "        final String select = select(\"a\");" + NL + "        final StringBuilder querySql = new StringBuilder(select);" + NL + "        querySql.append(\" JOIN ";
+  protected final String TEXT_21 = " b \");" + NL + "        querySql.append(\"ON b.";
+  protected final String TEXT_22 = "=a.";
+  protected final String TEXT_23 = " \");" + NL + "        querySql.append(\"WHERE b.";
+  protected final String TEXT_24 = "=?\");" + NL + "        final String sql = querySql.toString();" + NL + "        return sql;" + NL + "    }" + NL;
+  protected final String TEXT_25 = NL + NL + NL + "    /**" + NL + "     * @return the 'WHERE' clause for retrieving a ";
+  protected final String TEXT_26 = " object by its given field property" + NL + "     */" + NL + "    public static String by(final Field<?> field)" + NL + "    {" + NL + "        return String.format(\"%s WHERE %s=?\", select(), field.getName());" + NL + "    }" + NL + "" + NL + "    /**" + NL + "     * @return the 'INSERT' SQL used to create a new ";
+  protected final String TEXT_27 = " entry" + NL + "     */" + NL + "    public static String insert()" + NL + "    {" + NL + "        final String propertyPlaceholders = Strings.repeat(\"?,\", ";
+  protected final String TEXT_28 = "Metadata.FIELDS.size() - 1) + \"?\";" + NL + "        return String.format(\"INSERT INTO %s (%s) VALUES (%s)\", TABLE_NAME, attributeListAsString(null), propertyPlaceholders);" + NL + "    }" + NL + "" + NL + "    /**" + NL + "     * @return the 'UPDATE' SQL used to create a new ";
+  protected final String TEXT_29 = " entry" + NL + "     */" + NL + "    public static String update()" + NL + "    {" + NL + "        return String.format(\"UPDATE %s SET %s\", TABLE_NAME, attributeListAsUpdateString(null));" + NL + "    }" + NL + "" + NL + "    /**" + NL + "     * @return the 'SELECT' SQL for querying the database" + NL + "     */" + NL + "    public static String select()" + NL + "    {" + NL + "        return select(null);" + NL + "    }" + NL + "" + NL + "    /**" + NL + "     * @return the 'SELECT' SQL for querying the database using the given alias for the table entry" + NL + "     */" + NL + "    public static String select(final String alias)" + NL + "    {" + NL + "        return String.format(\"SELECT %s FROM %s\", attributeListAsString(alias), TABLE_NAME);" + NL + "    }" + NL + "    " + NL + "}";
+  protected final String TEXT_30 = NL;
 
    /* (non-javadoc)
     * @see IGenerator#generate(Object)
@@ -78,17 +87,33 @@ final String n = ctxt.getJavaName();
     stringBuffer.append(TEXT_15);
     stringBuffer.append( n );
     stringBuffer.append(TEXT_16);
-     } 
+    stringBuffer.append( ctxt.getIdField().getName() );
     stringBuffer.append(TEXT_17);
-    stringBuffer.append( n );
+     } 
     stringBuffer.append(TEXT_18);
-    stringBuffer.append( n );
+     for (final Reference r : ctxt.getReferencesToThisTable()) { 
     stringBuffer.append(TEXT_19);
-    stringBuffer.append( n );
+    stringBuffer.append( ctxt.getReferenceName(r) );
     stringBuffer.append(TEXT_20);
-    stringBuffer.append( n );
+    stringBuffer.append(  r.getFrom().getTable().getTableName() );
     stringBuffer.append(TEXT_21);
+    stringBuffer.append( r.getFrom().getName() );
     stringBuffer.append(TEXT_22);
+    stringBuffer.append( r.getTo().getName() );
+    stringBuffer.append(TEXT_23);
+    stringBuffer.append( r.getFromTablePrimaryKey().getName() );
+    stringBuffer.append(TEXT_24);
+     } 
+    stringBuffer.append(TEXT_25);
+    stringBuffer.append( n );
+    stringBuffer.append(TEXT_26);
+    stringBuffer.append( n );
+    stringBuffer.append(TEXT_27);
+    stringBuffer.append( n );
+    stringBuffer.append(TEXT_28);
+    stringBuffer.append( n );
+    stringBuffer.append(TEXT_29);
+    stringBuffer.append(TEXT_30);
     return stringBuffer.toString();
   }
 }

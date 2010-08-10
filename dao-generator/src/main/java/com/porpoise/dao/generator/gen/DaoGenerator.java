@@ -11,6 +11,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.io.Files;
 import com.porpoise.dao.generator.model.Table;
 import com.porpoise.dao.generator.templates.AbstractDaoTestTemplate;
+import com.porpoise.dao.generator.templates.AbstractDtoTemplate;
 import com.porpoise.dao.generator.templates.DaoTemplate;
 import com.porpoise.dao.generator.templates.DaoTestTemplate;
 import com.porpoise.dao.generator.templates.DtoTemplate;
@@ -72,6 +73,9 @@ public class DaoGenerator {
 	 */
 	public static void generateMainJavaSource(final File destFolder,
 			final DaoContext ctxt) throws IOException {
+		final IGenerator generator = AbstractDtoTemplate.create(newLine());
+		generate(destFolder, generator, ctxt, "model/AbstractDto");
+
 		generateAll(destFolder, ctxt, mainSourceTemplateByFilename);
 	}
 

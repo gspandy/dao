@@ -20,6 +20,7 @@ import com.porpoise.dao.database.IDbTransaction;
 import com.porpoise.dao.database.DbConnectionFactory;
 import com.porpoise.dao.database.dao.AbstractDao;
 import com.porpoise.dao.database.visitors.AbstractResultSetVisitor;
+import com.porpoise.dao.database.visitors.SingleScalarResultVisitor;
 
 /**
  * Functional Data Access class used to operate on <%= n %>Dto objects
@@ -71,15 +72,6 @@ public class <%= n %>Dao extends AbstractDao
             return Iterables.getOnlyElement(this.dtoResults);
         }
     }
-
-    /**
-     * execute the create table script on the given transaction 
-     */
-    public void createTable(final IDbTransaction transaction)
-    {
-        final String sql = <%= n %>Sql.createTable();
-        transaction.executeUpdate(sql);
-    }
     
 <% if (ctxt.hasIdField()) { %>
     /**
@@ -93,7 +85,39 @@ public class <%= n %>Dao extends AbstractDao
         final Visitor visitor = transaction.executeQuery(new Visitor(), querySql, id);
         return visitor.getSingleResult();
     }
+
+    /**
+     * @return the next available ID
+     */
+	public <%= ctxt.getIdField().getJavaTypeName() %> nextId(final IDbTransaction transaction) {
+	    final <%= ctxt.getIdField().getJavaTypeName() %> max = transaction.executeQuery(new SingleScalarResultVisitor(),
+				<%= n %>Sql.selectMaxId()).get<%= ctxt.getIdField().getJavaTypeName() %>();
+	    if (max == null)
+	    {
+            return <%= ctxt.getIdField().getJavaTypeName() %>.valueOf(1);
+	    }
+		return <%= ctxt.getIdField().getJavaTypeName() %>.valueOf(max + 1);
+	}
+	
 <% } %>
+
+<% for (final Reference r : ctxt.getReferencesToThisTable()) { %>
+
+    /**
+     * @param transaction the transaction used to retrieve the object
+     * @param id the Id for the <%= n %> object
+     * @return the <%= n %> object with the given ID
+     */
+    public <%= n %>Dto findBy<%= ctxt.getReferenceName(r) %>(
+    final IDbTransaction transaction, final <%= r.getFromTablePrimaryKey().getJavaTypeName() %> id)
+    {
+        final String sql = <%= n %>Sql.findBy<%= ctxt.getReferenceName(r) %>();
+        final Visitor visitor = transaction.executeQuery(new Visitor(), sql, id);
+        return visitor.getSingleResult();
+    }
+
+<% } %>
+    
 
     /**
      * @param transaction the transaction used to retrieve the object
@@ -116,7 +140,8 @@ public class <%= n %>Dao extends AbstractDao
         final String sql = <%= n %>Sql.insert();
         transaction.executeUpdate(sql, <%= ctxt.getColumnAccessorMethods("dto") %>); 
     }    
-    
+
+<% if (ctxt.hasIdField()) { %>
     /** 
      * @param transaction
      * @param id the ID of the element to update
@@ -127,4 +152,5 @@ public class <%= n %>Dao extends AbstractDao
         final String sql = <%= n %>Sql.update() + " WHERE id=?";
         transaction.executeUpdate(sql, <%= ctxt.getColumnAccessorMethods("dto") %>, id); 
     }    
+<% } %>
 }

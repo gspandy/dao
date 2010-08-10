@@ -1,4 +1,4 @@
-<%@ jet package="com.porpoise.dao.generator.templates" imports="java.util.* com.porpoise.dao.generator.gen.*" class="SqlTemplate"  
+<%@ jet package="com.porpoise.dao.generator.templates" imports="java.util.* com.porpoise.dao.generator.gen.* com.porpoise.dao.generator.model.*" class="SqlTemplate"  
 skeleton="generator.skeleton" %><% final DaoContext ctxt = (DaoContext) argument; 
 final String n = ctxt.getJavaName();
 %>
@@ -49,12 +49,32 @@ public class <%= n %>Sql
     {
         return by(<%= n %>Metadata.ID_FIELD);
     }
+
+    /**
+     * @return a query which will return the max id
+     */
+	public static String selectMaxId() {
+		return String.format("SELECT MAX(<%= ctxt.getIdField().getName() %>) FROM %s", TABLE_NAME);
+	}
 <% } %>
 
-    public static String createTable()
+<% for (final Reference r : ctxt.getReferencesToThisTable()) { %>
+
+    /**
+     */
+    public static String findBy<%= ctxt.getReferenceName(r) %>()
     {
-        return String.format("CREATE TABLE %s ", TABLE_NAME);
+        final String select = select("a");
+        final StringBuilder querySql = new StringBuilder(select);
+        querySql.append(" JOIN <%=  r.getFrom().getTable().getTableName() %> b ");
+        querySql.append("ON b.<%= r.getFrom().getName() %>=a.<%= r.getTo().getName() %> ");
+        querySql.append("WHERE b.<%= r.getFromTablePrimaryKey().getName() %>=?");
+        final String sql = querySql.toString();
+        return sql;
     }
+
+<% } %>
+
 
     /**
      * @return the 'WHERE' clause for retrieving a <%= n %> object by its given field property

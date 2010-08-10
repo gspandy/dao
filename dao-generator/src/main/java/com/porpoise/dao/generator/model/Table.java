@@ -12,6 +12,7 @@ public class Table {
 	private final String name;
 	private final List<Column> columns;
 	private Column idColumn;
+	private boolean idComputed = false;
 
 	public Table(final String n) {
 		this.name = n;
@@ -46,7 +47,8 @@ public class Table {
 	}
 
 	public Column getIdColumn() {
-		if (idColumn == null) {
+		if (idColumn == null && !idComputed) {
+			idComputed = true;
 			final Column pk = computePrimaryKey();
 			idColumn = pk;
 		}
@@ -122,6 +124,15 @@ public class Table {
 		return !this.columns.isEmpty();
 	}
 
+	public Collection<Reference> getReferencesToThisTable() {
+		final Collection<Reference> references = Lists.newArrayList();
+		for (final Column c : columns) {
+			references.addAll(c.getReferencingColumns());
+		}
+
+		return references;
+	}
+
 	public Collection<Reference> getForeignKeyReferences() {
 		final Collection<Reference> references = Lists.newArrayList();
 		for (final Column c : columns) {
@@ -132,9 +143,38 @@ public class Table {
 	}
 
 	/**
+	 * This table is a join table if it only consists of two columns, each of
+	 * which is a FK to another table
+	 * 
+	 * @return
+	 */
+	public boolean isJoinTable() {
+		if (columns.size() != 2) {
+			return false;
+		}
+		for (final Column c : columns) {
+			if (!isRefCol(c)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	protected boolean isRefCol(final Column col) {
+		if (col.isPrimaryKey()) {
+			return false;
+		}
+		if (!col.hasFkReferences()) {
+			return false;
+		}
+		return true;
+	}
+
+	/**
 	 * @return true if there are any FK references
 	 */
 	public boolean hasForeignKeyReferences() {
 		return !getForeignKeyReferences().isEmpty();
 	}
+
 }

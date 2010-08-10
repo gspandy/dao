@@ -1,9 +1,11 @@
 package com.porpoise.dao.generator.gen;
 
+import java.util.Collection;
 import java.util.Iterator;
 
 import com.google.common.base.CaseFormat;
 import com.porpoise.dao.generator.model.Column;
+import com.porpoise.dao.generator.model.Reference;
 import com.porpoise.dao.generator.model.Table;
 
 public class DaoContext extends AbstractJavaContext {
@@ -144,7 +146,11 @@ public class DaoContext extends AbstractJavaContext {
 		return traverse(new CommasSeparatedBufferVisitor() {
 			@Override
 			protected void onColumn(final Column c) {
-				append(newTestValue(c));
+				if (c.isPrimaryKey()) {
+					append("id");
+				} else {
+					append(newTestValue(c));
+				}
 			}
 		}).toString();
 	}
@@ -179,8 +185,17 @@ public class DaoContext extends AbstractJavaContext {
 		return this.table.getColumns();
 	}
 
+	public Collection<Reference> getReferencesToThisTable() {
+		return table.getReferencesToThisTable();
+	}
+
 	public String asProperty(final String name) {
 		return CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.LOWER_CAMEL,
 				name.toUpperCase());
 	}
+
+	public String getReferenceName(final Reference r) {
+		return r.getFrom().getTable().getJavaName() + "Id";
+	}
+
 }

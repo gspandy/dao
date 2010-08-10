@@ -21,7 +21,7 @@ public class DtoTemplate implements IGenerator
   protected final String TEXT_3 = ".model.";
   protected final String TEXT_4 = "Dto;" + NL + "" + NL + "/**" + NL + " * ";
   protected final String TEXT_5 = "Dto" + NL + " */" + NL + "public final class ";
-  protected final String TEXT_6 = "Dto" + NL + "{";
+  protected final String TEXT_6 = "Dto extends AbstractDto" + NL + "{";
   protected final String TEXT_7 = NL + "    /**" + NL + "     * ";
   protected final String TEXT_8 = NL + "     */" + NL + "    private final ";
   protected final String TEXT_9 = " ";
@@ -52,11 +52,18 @@ public class DtoTemplate implements IGenerator
   protected final String TEXT_34 = "Dto) obj;" + NL;
   protected final String TEXT_35 = NL + NL + "        if (";
   protected final String TEXT_36 = "() == null)" + NL + "        {" + NL + "            if (other.";
-  protected final String TEXT_37 = "() != null)" + NL + "            {" + NL + "                return false;" + NL + "            }" + NL + "        }" + NL + "        else if (!";
-  protected final String TEXT_38 = "().equals(other.";
-  protected final String TEXT_39 = "()))" + NL + "        {" + NL + "            return false;" + NL + "        }";
-  protected final String TEXT_40 = NL + "        return true;" + NL + "    }" + NL + "}";
-  protected final String TEXT_41 = NL;
+  protected final String TEXT_37 = "() != null)" + NL + "            {" + NL + "                return false;" + NL + "            }" + NL + "        }";
+  protected final String TEXT_38 = NL + "        else if (!equals(";
+  protected final String TEXT_39 = "(), other.";
+  protected final String TEXT_40 = "()))" + NL + "        {" + NL + "            return false;" + NL + "        }";
+  protected final String TEXT_41 = NL + "        else if (";
+  protected final String TEXT_42 = "().compareTo(other.";
+  protected final String TEXT_43 = "()) != 0)" + NL + "        {" + NL + "            return false;" + NL + "        }";
+  protected final String TEXT_44 = NL + "        else if (!";
+  protected final String TEXT_45 = "().equals(other.";
+  protected final String TEXT_46 = "()))" + NL + "        {" + NL + "            return false;" + NL + "        }";
+  protected final String TEXT_47 = NL + "        return true;" + NL + "    }" + NL + "}";
+  protected final String TEXT_48 = NL;
 
    /* (non-javadoc)
     * @see IGenerator#generate(Object)
@@ -138,13 +145,28 @@ final String n = ctxt.getJavaName();
     stringBuffer.append(TEXT_36);
     stringBuffer.append( col.getNameAsAccessor() );
     stringBuffer.append(TEXT_37);
-    stringBuffer.append( col.getNameAsAccessor() );
+     if (col.isDate()) {
     stringBuffer.append(TEXT_38);
     stringBuffer.append( col.getNameAsAccessor() );
     stringBuffer.append(TEXT_39);
-    }
+    stringBuffer.append( col.getNameAsAccessor() );
     stringBuffer.append(TEXT_40);
+     } else if (col.isBigDecimal()) { 
     stringBuffer.append(TEXT_41);
+    stringBuffer.append( col.getNameAsAccessor() );
+    stringBuffer.append(TEXT_42);
+    stringBuffer.append( col.getNameAsAccessor() );
+    stringBuffer.append(TEXT_43);
+     } else { 
+    stringBuffer.append(TEXT_44);
+    stringBuffer.append( col.getNameAsAccessor() );
+    stringBuffer.append(TEXT_45);
+    stringBuffer.append( col.getNameAsAccessor() );
+    stringBuffer.append(TEXT_46);
+     }
+    }
+    stringBuffer.append(TEXT_47);
+    stringBuffer.append(TEXT_48);
     return stringBuffer.toString();
   }
 }

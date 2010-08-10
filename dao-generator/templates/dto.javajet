@@ -13,7 +13,7 @@ import <%= ctxt.getPackageName() %>.model.<%= n %>Dto;
 /**
  * <%= n %>Dto
  */
-public final class <%= n %>Dto
+public final class <%= n %>Dto extends AbstractDto
 {
 <% for (final Column col : ctxt.getColumns()) { %>
     /**
@@ -89,10 +89,22 @@ public final class <%= n %>Dto
                 return false;
             }
         }
+<% if (col.isDate()) {%>
+        else if (!equals(<%= col.getNameAsAccessor() %>(), other.<%= col.getNameAsAccessor() %>()))
+        {
+            return false;
+        }
+<% } else if (col.isBigDecimal()) { %>
+        else if (<%= col.getNameAsAccessor() %>().compareTo(other.<%= col.getNameAsAccessor() %>()) != 0)
+        {
+            return false;
+        }
+<% } else { %>
         else if (!<%= col.getNameAsAccessor() %>().equals(other.<%= col.getNameAsAccessor() %>()))
         {
             return false;
         }
+<% }%>
 <%}%>
         return true;
     }
