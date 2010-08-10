@@ -5,6 +5,8 @@ final String n = ctxt.getJavaName();
 %>
 package <%= ctxt.getPackageName() %>;
 
+import <%= ctxt.getPackageName() %>.model.*;
+
 import java.io.File;
 import java.math.BigDecimal;
 import java.sql.ResultSet;
@@ -22,6 +24,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.google.common.collect.Iterables;
 import com.porpoise.dao.database.DbConnectionDetails;
 import com.porpoise.dao.database.DbConnectionFactory;
 import com.porpoise.dao.database.IDbTransaction;
@@ -47,6 +50,31 @@ public class <%= n %>DaoTest extends AbstractDaoTest
  
         Assert.assertFalse(values.isEmpty());
     }
+
+<% for (final Reference r : ctxt.getReferencesToThisTable()) { %>
+
+    /**
+     */
+    @Test
+    public void test_findBy<%= ctxt.getReferenceName(r) %>()
+    {
+<%
+        final String fromTable = r.getFrom().getTable().getJavaName();
+%>
+		final <%= n %>Dao dao = new <%= n %>Dao();
+		final Collection<<%= fromTable %>Dto> all = new <%= fromTable %>Dao()
+				.listAll(getTransaction());
+				
+				// from=<%= r.getFrom() %>
+				// pk=<%= r.getFromTablePrimaryKey() %>
+				// to=<%= r.getTo() %>
+				// not <%= r.getTo().getNameAsAccessor() %>
+		final Integer id = Iterables.getLast(all).<%= r.getFromTablePrimaryKey().getNameAsAccessor() %>();
+		final Collection<<%= n %>Dto> results = dao.findBy<%= fromTable %>Id(getTransaction(), id);
+
+		Assert.assertFalse(results.isEmpty());
+    }
+<% } %>
 
 <% if (ctxt.hasIdField()) { %>
     /**

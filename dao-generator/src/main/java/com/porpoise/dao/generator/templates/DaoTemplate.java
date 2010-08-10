@@ -17,7 +17,7 @@ public class DaoTemplate implements IGenerator
 
   public final String NL = nl == null ? (System.getProperties().getProperty("line.separator")) : nl;
   protected final String TEXT_1 = "package ";
-  protected final String TEXT_2 = ";" + NL + "" + NL + "import java.math.BigDecimal;" + NL + "import java.sql.ResultSet;" + NL + "import java.sql.SQLException;" + NL + "import java.util.Collection;" + NL + "import java.util.List;" + NL + "import java.util.Date;" + NL + "" + NL + "import ";
+  protected final String TEXT_2 = ";" + NL + "" + NL + "import java.math.BigDecimal;" + NL + "import java.sql.ResultSet;" + NL + "import java.sql.SQLException;" + NL + "import java.util.Collection;" + NL + "import java.util.List;" + NL + "import java.util.Date;" + NL + "import java.util.Collection;" + NL + "" + NL + "import ";
   protected final String TEXT_3 = ".model.";
   protected final String TEXT_4 = "Dto;" + NL + "" + NL + "import com.google.common.collect.ImmutableList;" + NL + "import com.google.common.collect.Iterables;" + NL + "import com.google.common.collect.Lists;" + NL + "import com.porpoise.dao.database.IDbTransaction;" + NL + "import com.porpoise.dao.database.DbConnectionFactory;" + NL + "import com.porpoise.dao.database.dao.AbstractDao;" + NL + "import com.porpoise.dao.database.visitors.AbstractResultSetVisitor;" + NL + "import com.porpoise.dao.database.visitors.SingleScalarResultVisitor;" + NL + "" + NL + "/**" + NL + " * Functional Data Access class used to operate on ";
   protected final String TEXT_5 = "Dto objects" + NL + " */" + NL + "public class ";
@@ -51,12 +51,12 @@ public class DaoTemplate implements IGenerator
   protected final String TEXT_33 = NL;
   protected final String TEXT_34 = NL + NL + "    /**" + NL + "     * @param transaction the transaction used to retrieve the object" + NL + "     * @param id the Id for the ";
   protected final String TEXT_35 = " object" + NL + "     * @return the ";
-  protected final String TEXT_36 = " object with the given ID" + NL + "     */" + NL + "    public ";
-  protected final String TEXT_37 = "Dto findBy";
+  protected final String TEXT_36 = " object with the given ID" + NL + "     */" + NL + "    public Collection<";
+  protected final String TEXT_37 = "Dto> findBy";
   protected final String TEXT_38 = "(" + NL + "    final IDbTransaction transaction, final ";
   protected final String TEXT_39 = " id)" + NL + "    {" + NL + "        final String sql = ";
   protected final String TEXT_40 = "Sql.findBy";
-  protected final String TEXT_41 = "();" + NL + "        final Visitor visitor = transaction.executeQuery(new Visitor(), sql, id);" + NL + "        return visitor.getSingleResult();" + NL + "    }" + NL;
+  protected final String TEXT_41 = "();" + NL + "        final Visitor visitor = transaction.executeQuery(new Visitor(), sql, id);" + NL + "        return visitor.getDtoResults();" + NL + "    }" + NL;
   protected final String TEXT_42 = NL + "    " + NL + "" + NL + "    /**" + NL + "     * @param transaction the transaction used to retrieve the object" + NL + "     * @return all ";
   protected final String TEXT_43 = " objects" + NL + "     */" + NL + "    public Collection<";
   protected final String TEXT_44 = "Dto> listAll(final IDbTransaction transaction)" + NL + "    {" + NL + "        final String querySql = ";

@@ -10,6 +10,7 @@ import java.sql.SQLException;
 import java.util.Collection;
 import java.util.List;
 import java.util.Date;
+import java.util.Collection;
 
 import <%= ctxt.getPackageName() %>.model.<%= n %>Dto;
 
@@ -108,12 +109,12 @@ public class <%= n %>Dao extends AbstractDao
      * @param id the Id for the <%= n %> object
      * @return the <%= n %> object with the given ID
      */
-    public <%= n %>Dto findBy<%= ctxt.getReferenceName(r) %>(
+    public Collection<<%= n %>Dto> findBy<%= ctxt.getReferenceName(r) %>(
     final IDbTransaction transaction, final <%= r.getFromTablePrimaryKey().getJavaTypeName() %> id)
     {
         final String sql = <%= n %>Sql.findBy<%= ctxt.getReferenceName(r) %>();
         final Visitor visitor = transaction.executeQuery(new Visitor(), sql, id);
-        return visitor.getSingleResult();
+        return visitor.getDtoResults();
     }
 
 <% } %>

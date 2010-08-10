@@ -35,16 +35,16 @@ public class SqlTemplate implements IGenerator
   protected final String TEXT_17 = ") FROM %s\", TABLE_NAME);" + NL + "\t}";
   protected final String TEXT_18 = NL;
   protected final String TEXT_19 = NL + NL + "    /**" + NL + "     */" + NL + "    public static String findBy";
-  protected final String TEXT_20 = "()" + NL + "    {" + NL + "        final String select = select(\"a\");" + NL + "        final StringBuilder querySql = new StringBuilder(select);" + NL + "        querySql.append(\" JOIN ";
-  protected final String TEXT_21 = " b \");" + NL + "        querySql.append(\"ON b.";
+  protected final String TEXT_20 = "()" + NL + "    {" + NL + "        final String select = select(\"a\");" + NL + "        final StringBuilder querySql = new StringBuilder(select);" + NL + "        querySql.append(\", ";
+  protected final String TEXT_21 = " b \");" + NL + "        querySql.append(\"WHERE b.";
   protected final String TEXT_22 = "=a.";
-  protected final String TEXT_23 = " \");" + NL + "        querySql.append(\"WHERE b.";
+  protected final String TEXT_23 = " \");" + NL + "        querySql.append(\"AND b.";
   protected final String TEXT_24 = "=?\");" + NL + "        final String sql = querySql.toString();" + NL + "        return sql;" + NL + "    }" + NL;
   protected final String TEXT_25 = NL + NL + NL + "    /**" + NL + "     * @return the 'WHERE' clause for retrieving a ";
   protected final String TEXT_26 = " object by its given field property" + NL + "     */" + NL + "    public static String by(final Field<?> field)" + NL + "    {" + NL + "        return String.format(\"%s WHERE %s=?\", select(), field.getName());" + NL + "    }" + NL + "" + NL + "    /**" + NL + "     * @return the 'INSERT' SQL used to create a new ";
   protected final String TEXT_27 = " entry" + NL + "     */" + NL + "    public static String insert()" + NL + "    {" + NL + "        final String propertyPlaceholders = Strings.repeat(\"?,\", ";
   protected final String TEXT_28 = "Metadata.FIELDS.size() - 1) + \"?\";" + NL + "        return String.format(\"INSERT INTO %s (%s) VALUES (%s)\", TABLE_NAME, attributeListAsString(null), propertyPlaceholders);" + NL + "    }" + NL + "" + NL + "    /**" + NL + "     * @return the 'UPDATE' SQL used to create a new ";
-  protected final String TEXT_29 = " entry" + NL + "     */" + NL + "    public static String update()" + NL + "    {" + NL + "        return String.format(\"UPDATE %s SET %s\", TABLE_NAME, attributeListAsUpdateString(null));" + NL + "    }" + NL + "" + NL + "    /**" + NL + "     * @return the 'SELECT' SQL for querying the database" + NL + "     */" + NL + "    public static String select()" + NL + "    {" + NL + "        return select(null);" + NL + "    }" + NL + "" + NL + "    /**" + NL + "     * @return the 'SELECT' SQL for querying the database using the given alias for the table entry" + NL + "     */" + NL + "    public static String select(final String alias)" + NL + "    {" + NL + "        return String.format(\"SELECT %s FROM %s\", attributeListAsString(alias), TABLE_NAME);" + NL + "    }" + NL + "    " + NL + "}";
+  protected final String TEXT_29 = " entry" + NL + "     */" + NL + "    public static String update()" + NL + "    {" + NL + "        return String.format(\"UPDATE %s SET %s\", TABLE_NAME, attributeListAsUpdateString(null));" + NL + "    }" + NL + "" + NL + "    /**" + NL + "     * @return the 'SELECT' SQL for querying the database" + NL + "     */" + NL + "    public static String select()" + NL + "    {" + NL + "        return select(null);" + NL + "    }" + NL + "" + NL + "    /**" + NL + "     * @return the 'SELECT' SQL for querying the database using the given alias for the table entry" + NL + "     */" + NL + "    public static String select(final String alias)" + NL + "    {" + NL + "        return String.format(\"SELECT %s FROM %s %s\", attributeListAsString(alias), TABLE_NAME, Strings.nullToEmpty(alias));" + NL + "    }" + NL + "    " + NL + "}";
   protected final String TEXT_30 = NL;
 
    /* (non-javadoc)

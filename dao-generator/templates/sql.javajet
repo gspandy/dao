@@ -66,9 +66,9 @@ public class <%= n %>Sql
     {
         final String select = select("a");
         final StringBuilder querySql = new StringBuilder(select);
-        querySql.append(" JOIN <%=  r.getFrom().getTable().getTableName() %> b ");
-        querySql.append("ON b.<%= r.getFrom().getName() %>=a.<%= r.getTo().getName() %> ");
-        querySql.append("WHERE b.<%= r.getFromTablePrimaryKey().getName() %>=?");
+        querySql.append(", <%=  r.getFrom().getTable().getTableName() %> b ");
+        querySql.append("WHERE b.<%= r.getFrom().getName() %>=a.<%= r.getTo().getName() %> ");
+        querySql.append("AND b.<%= r.getFromTablePrimaryKey().getName() %>=?");
         final String sql = querySql.toString();
         return sql;
     }
@@ -114,7 +114,7 @@ public class <%= n %>Sql
      */
     public static String select(final String alias)
     {
-        return String.format("SELECT %s FROM %s", attributeListAsString(alias), TABLE_NAME);
+        return String.format("SELECT %s FROM %s %s", attributeListAsString(alias), TABLE_NAME, Strings.nullToEmpty(alias));
     }
     
 }

@@ -38,15 +38,8 @@ public abstract class AbstractDaoTest
     public static void setupClass()
     {
 		if (factory == null) {
-			factory = initAccess();
-			// factory = initDerby();
+			factory = initDerby();
 		}
-	}
-
-	private static DbConnectionFactory initAccess() {
-		final DbConnectionDetails config = new DbConnectionDetails();
-		config.setUrl("c:/temp/Meteor12.mdb");
-		return Databases.ACCESS.init(config);
 	}
     
     private static DbConnectionFactory initDerby()
