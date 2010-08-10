@@ -21,8 +21,6 @@ import java.util.List;
  */
 public class <%= n %>Sql
 {
-    ;// uninstantiable
-
     private static final String TABLE_NAME = "<%=ctxt.getTableName() %>";
 
     /**

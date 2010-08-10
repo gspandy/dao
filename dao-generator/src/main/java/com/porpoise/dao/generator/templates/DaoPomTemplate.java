@@ -4,13 +4,13 @@ import java.util.*;
 import com.porpoise.dao.generator.gen.*;
 import com.porpoise.dao.generator.model.*;
 
-public class PomTemplate implements IGenerator
+public class DaoPomTemplate implements IGenerator
 {
   protected static String nl;
-  public static synchronized PomTemplate create(String lineSeparator)
+  public static synchronized DaoPomTemplate create(String lineSeparator)
   {
     nl = lineSeparator;
-    PomTemplate result = new PomTemplate();
+    DaoPomTemplate result = new DaoPomTemplate();
     nl = null;
     return result;
   }

@@ -1,51 +1,60 @@
 package com.porpoise.dao.generator.gen;
 
-public class PomContext
-{
-    private final String name;
-    private final String artifactId;
-    private final String groupId;
-    private final String version;
+import java.util.Collection;
 
-    public PomContext(final String artifact, final String group, final String vers)
-    {
-        this(artifact, group, vers, artifact + "." + group);
-    }
+import com.google.common.collect.Lists;
 
-    public PomContext(final String artifact, final String group, final String vers, final String nameValue)
-    {
-        this.artifactId = artifact;
-        this.groupId = group;
-        this.version = vers;
-        this.name = nameValue;
-    }
+public class PomContext {
+	private final String name;
+	private final String artifactId;
+	private final String groupId;
+	private final String version;
 
-    /**
-     * @return the artifactId
-     */
-    public String getArtifactId()
-    {
-        return this.artifactId;
-    }
+	private final Collection<PomContext> dependencies = Lists.newArrayList();
 
-    /**
-     * @return the groupId
-     */
-    public String getGroupId()
-    {
-        return this.groupId;
-    }
+	public PomContext(final String group, final String artifact,
+			final String vers) {
+		this(group, artifact, vers, group + "." + artifact);
+	}
 
-    /**
-     * @return the version
-     */
-    public String getVersion()
-    {
-        return this.version;
-    }
+	public void addDependency(final PomContext dependency) {
+		dependencies.add(dependency);
+	}
 
-    public String getName()
-    {
-        return this.name;
-    }
+	public Collection<PomContext> getDependencies() {
+		return dependencies;
+	}
+
+	public PomContext(final String group, final String artifact,
+			final String vers, final String nameValue) {
+		this.groupId = group;
+		this.artifactId = artifact;
+		this.version = vers;
+		this.name = nameValue;
+	}
+
+	/**
+	 * @return the artifactId
+	 */
+	public String getArtifactId() {
+		return this.artifactId;
+	}
+
+	/**
+	 * @return the groupId
+	 */
+	public String getGroupId() {
+		return this.groupId;
+	}
+
+	/**
+	 * @return the version
+	 */
+	public String getVersion() {
+		return this.version;
+	}
+
+	public String getName() {
+		return this.name;
+	}
 }

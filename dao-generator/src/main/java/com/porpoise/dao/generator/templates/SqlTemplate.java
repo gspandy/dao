@@ -23,7 +23,7 @@ public class SqlTemplate implements IGenerator
   protected final String TEXT_5 = ".model.";
   protected final String TEXT_6 = "Metadata;" + NL + "" + NL + "import com.porpoise.dao.database.metadata.Field;" + NL + "import com.google.common.base.Strings;" + NL + "" + NL + "import java.math.BigDecimal;" + NL + "import java.sql.ResultSet;" + NL + "import java.sql.SQLException;" + NL + "import java.util.List;" + NL + "" + NL + "" + NL + "/**" + NL + " * Class used to encapsulate the SQL required for interacting with an underlying relational database for ";
   protected final String TEXT_7 = " object" + NL + " */" + NL + "public class ";
-  protected final String TEXT_8 = "Sql" + NL + "{" + NL + "    ;// uninstantiable" + NL + "" + NL + "    private static final String TABLE_NAME = \"";
+  protected final String TEXT_8 = "Sql" + NL + "{" + NL + "    private static final String TABLE_NAME = \"";
   protected final String TEXT_9 = "\";" + NL + "" + NL + "    /**" + NL + "     * @return a comma-separated list of ";
   protected final String TEXT_10 = " attributes in string form " + NL + "     */" + NL + "    public static String attributeListAsString(final String alias)" + NL + "    {" + NL + "        return Field.asAttributeList(alias, ";
   protected final String TEXT_11 = "Metadata.FIELDS);" + NL + "    }" + NL + "    " + NL + "    /**" + NL + "     * @return the ";

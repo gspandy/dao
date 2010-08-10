@@ -26,6 +26,16 @@ public abstract class AbstractDaoTest
     private static DbConnectionFactory factory;
     private IDbTransaction      transaction;
     
+    protected void println(String format, Object ... args)
+    {
+        System.out.println(String.format(format, args));
+    }
+    
+    protected void println(Object obj)
+    {
+        System.out.println(obj);
+    }
+    
     /**
      * @return the transaction
      */
@@ -38,8 +48,15 @@ public abstract class AbstractDaoTest
     public static void setupClass()
     {
 		if (factory == null) {
-			factory = initDerby();
+			factory = initAccess();
+			// factory = initDerby();
 		}
+	}
+
+	private static DbConnectionFactory initAccess() {
+		final DbConnectionDetails config = new DbConnectionDetails();
+		config.setUrl("c:/temp/Meteor12.mdb");
+		return Databases.ACCESS.init(config);
 	}
     
     private static DbConnectionFactory initDerby()

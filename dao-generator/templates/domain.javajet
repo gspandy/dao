@@ -1,0 +1,123 @@
+<%@ jet package="com.porpoise.dao.generator.templates" imports="java.util.* com.porpoise.dao.generator.model.* com.porpoise.dao.generator.gen.*" class="DtoTemplate"  
+skeleton="generator.skeleton" %><% final DaoContext ctxt = (DaoContext) argument; 
+final String n = ctxt.getJavaName();
+%>
+package <%= ctxt.getPackageName() %>.api;
+
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.Date;
+import java.util.Arrays;
+
+import <%= ctxt.getPackageName() %>.model.<%= n %>Dto;
+
+/**
+ * <%= n %>
+ */
+public final class <%= n %> extends AbstractDto
+{
+<% for (final Column col : ctxt.getColumns()) { %>
+    /**
+     * <%= col.getNameAsProperty() %>
+     */
+    private final <%= col.getJavaTypeName() %> <%= col.getNameAsProperty() %>;
+    
+<%}%>
+
+    public <%= n %>Dto(
+<%= ctxt.getColumnDeclarations() %>    
+    )
+    {
+        super();
+<% for (final Column col : ctxt.getColumns()) { %>
+        this.<%= col.getNameAsProperty() %> = <%= col.getNameAsProperty() %>; 
+<%}%>
+    }
+
+<% for (final Column col : ctxt.getColumns()) { %>
+    /**
+     * <%= col.getNameAsProperty() %>
+     */
+    public <%= col.getJavaTypeName() %> <%= col.getNameAsAccessor() %>()
+    {
+        return this.<%= col.getNameAsProperty() %>;
+    }    
+<%}%>
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString()
+    {
+        return String.format("<%= n %>Dto [<%= ctxt.getColumnParameterListAsToString() %>]", <%= ctxt.getColumnAccessorMethods("this") %>);
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode()
+    {
+        final int prime = 31;
+        int result = 1;
+<% for (final Column col : ctxt.getColumns()) { %>
+<% if (col.isDate()) {%>
+        result = prime * result + hashCode(<%= col.getNameAsAccessor() %>());
+<% } else if (col.isByteArray()) { %>
+        result = prime * result + hashCode(<%= col.getNameAsAccessor() %>());
+<% } else { %>
+        result = prime * result + ((<%= col.getNameAsAccessor() %>() == null) ? 0 : <%= col.getNameAsAccessor() %>().hashCode());
+<% } %>
+<%}%>
+        return result;
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        <%= n %>Dto other = (<%= n %>Dto) obj;
+
+<% for (final Column col : ctxt.getColumns()) { %>
+
+        if (<%= col.getNameAsAccessor() %>() == null)
+        {
+            if (other.<%= col.getNameAsAccessor() %>() != null)
+            {
+                return false;
+            }
+        }
+<% if (col.isDate()) {%>
+        else if (!equals(<%= col.getNameAsAccessor() %>(), other.<%= col.getNameAsAccessor() %>()))
+        {
+            return false;
+        }
+<% } else if (col.isBigDecimal()) { %>
+        else if (<%= col.getNameAsAccessor() %>().compareTo(other.<%= col.getNameAsAccessor() %>()) != 0)
+        {
+            return false;
+        }
+<% } else if (col.isByteArray()) { %>
+        else if (!Arrays.equals(<%= col.getNameAsAccessor() %>(), other.<%= col.getNameAsAccessor() %>()))
+        {
+            return false;
+        }
+<% } else { %>
+        else if (!<%= col.getNameAsAccessor() %>().equals(other.<%= col.getNameAsAccessor() %>()))
+        {
+            return false;
+        }
+<% }%>
+<%}%>
+        return true;
+    }
+}

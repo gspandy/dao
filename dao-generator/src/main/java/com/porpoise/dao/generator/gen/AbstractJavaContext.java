@@ -23,4 +23,6 @@ public abstract class AbstractJavaContext {
 	public String getPackageNameAsPath() {
 		return this.packageName.replace('.', '/');
 	}
+
+	public abstract String getJavaName();
 }

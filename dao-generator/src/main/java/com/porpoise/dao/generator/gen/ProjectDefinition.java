@@ -22,8 +22,9 @@ public class ProjectDefinition {
 	}
 
 	public ProjectDefinition(final Collection<Table> tables,
-			final File destinationDirectory, final String artifact,
-			final String group, final String version, final String packageName) {
+			final File destinationDirectory, final String group,
+			final String artifact, final String version,
+			final String packageName) {
 		this.tables = tables;
 		this.destination = destinationDirectory;
 		this.artifact = artifact;

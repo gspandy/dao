@@ -45,7 +45,7 @@ public class <%= n %>DaoTest extends AbstractDaoTest
         final Collection<<%= n %>Dto> values = new <%= n %>Dao().listAll(getTransaction());
         for (final <%= n %>Dto value : values)
         {
-            System.out.println(value);
+            println(value);
         }
  
         Assert.assertFalse(values.isEmpty());
@@ -54,6 +54,7 @@ public class <%= n %>DaoTest extends AbstractDaoTest
 <% for (final Reference r : ctxt.getReferencesToThisTable()) { %>
 
     /**
+     * data-dependant test for the findBy<%= ctxt.getReferenceName(r) %> method
      */
     @Test
     public void test_findBy<%= ctxt.getReferenceName(r) %>()
@@ -65,10 +66,6 @@ public class <%= n %>DaoTest extends AbstractDaoTest
 		final Collection<<%= fromTable %>Dto> all = new <%= fromTable %>Dao()
 				.listAll(getTransaction());
 				
-				// from=<%= r.getFrom() %>
-				// pk=<%= r.getFromTablePrimaryKey() %>
-				// to=<%= r.getTo() %>
-				// not <%= r.getTo().getNameAsAccessor() %>
 		final Integer id = Iterables.getLast(all).<%= r.getFromTablePrimaryKey().getNameAsAccessor() %>();
 		final Collection<<%= n %>Dto> results = dao.findBy<%= fromTable %>Id(getTransaction(), id);
 

@@ -20,4 +20,9 @@ public class GeneratorContext extends AbstractJavaContext {
 		return tables;
 	}
 
+	@Override
+	public String getJavaName() {
+		throw new UnsupportedOperationException();
+	}
+
 }

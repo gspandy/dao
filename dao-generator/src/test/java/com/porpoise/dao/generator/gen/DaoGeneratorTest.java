@@ -39,7 +39,7 @@ public class DaoGeneratorTest {
 
 		derbyDir = new File(codeGenDir, "dao-gen-test");
 		if (derbyDir.exists()) {
-			 Files.deleteRecursively(derbyDir);
+			Files.deleteRecursively(derbyDir);
 		}
 
 		details.setDatabaseName(derbyDir.getAbsolutePath());
@@ -93,9 +93,10 @@ public class DaoGeneratorTest {
 
 		// generate a DAO for the table:
 		final DaoContext ctxt = new DaoContext("test.pack.age", table);
-		DaoGenerator.generateMainJavaSource(srcDir, ctxt);
-		DaoGenerator.generateTestJavaSource(testDir, ctxt);
-		DaoGenerator.generatePom("dao.test", "dao-test", "1.0.0", codeGenDir);
+		final DaoGenerator daoGenerator = new DaoGenerator();
+		daoGenerator.generateMainJavaSource(srcDir, ctxt);
+		daoGenerator.generateTestJavaSource(testDir, ctxt);
+		daoGenerator.generatePom("dao.test", "dao-test", "1.0.0", codeGenDir);
 
 		// execute the pom for the generated code - have it run the generated
 		// tests

@@ -76,6 +76,7 @@ public class DaoContext extends AbstractJavaContext {
 		return this.table.getIdColumn();
 	}
 
+	@Override
 	public String getJavaName() {
 		return this.table.getJavaName();
 	}

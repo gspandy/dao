@@ -7,7 +7,6 @@ import java.util.Collection;
 
 import com.google.common.collect.Lists;
 import com.porpoise.dao.generator.model.ColType;
-import com.porpoise.dao.generator.model.Column;
 import com.porpoise.dao.generator.model.Table;
 
 public class GeneratorMain {
@@ -33,7 +32,7 @@ public class GeneratorMain {
 
 		final Table tbl2 = new Table("Benjamin");
 		tbl2.addColumn("ID", true, ColType.Long);
-		final Column fk = tbl2.addColumn("AARON_ID", true, ColType.Long);
+		tbl2.addColumn("AARON_ID", true, ColType.Long);
 		tbl2.addColumn("Name", false, ColType.String);
 
 		tables.add(tbl);
@@ -42,7 +41,7 @@ public class GeneratorMain {
 		final File pom = new File(System.getProperty("user.dir"),
 				"generator-main");
 		final String packageName = "test.ing";
-		DaoGenerator.generateProject(new ProjectDefinition(tables, pom,
+		new DaoGenerator().generateProject(new ProjectDefinition(tables, pom,
 				packageName + ".dao", "main-test-dao", "1.0.0", packageName));
 	}
 
