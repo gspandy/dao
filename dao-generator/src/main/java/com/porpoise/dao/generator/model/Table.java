@@ -12,6 +12,7 @@ public class Table {
 	private final String name;
 	private final List<Column> columns;
 	private final List<Column> oneToMany = Lists.newArrayList();
+	private Column idColumn;
 
 	public Table(final String n) {
 		this.name = n;
@@ -41,31 +42,31 @@ public class Table {
 		return ImmutableList.copyOf(this.columns);
 	}
 
-	public Column getIdColumn() {
-		final String nameLowerCase = name.toLowerCase();
-		final Collection<Column> probables = Lists.newArrayList();
-		for (final Column c : getColumns()) {
-			final String colName = c.getName().toLowerCase();
-			if (colName.endsWith("_id")) {
-				final String idName = colName.substring(0, "_id".length());
-				if (nameLowerCase.startsWith(idName)) {
-					probables.add(c);
-				}
-			}
-		}
-		if (probables.size() != 1) {
-			System.err.println("No single possible ID suggestion found for "
-					+ name);
-			return null;
-		}
-		return Iterables.getOnlyElement(probables);
+	public boolean hasIdColumn() {
+		return getIdColumn() != null;
 	}
 
-	private String stripSuffix(final String word, final String suffix) {
-		if (word.endsWith(suffix)) {
-			return word.substring(0, word.length() - suffix.length());
+	public Column getIdColumn() {
+		if (idColumn == null) {
+			final String nameLowerCase = name.toLowerCase();
+			final Collection<Column> probables = Lists.newArrayList();
+			for (final Column c : getColumns()) {
+				final String colName = c.getName().toLowerCase();
+				if (colName.endsWith("_id")) {
+					final String idName = colName.substring(0, "_id".length());
+					if (nameLowerCase.startsWith(idName)) {
+						probables.add(c);
+					}
+				}
+			}
+			if (probables.size() != 1) {
+				System.err
+						.println("No single possible ID suggestion found for "
+								+ name);
+			}
+			idColumn = Iterables.getOnlyElement(probables);
 		}
-		return word;
+		return idColumn;
 	}
 
 	public String getJavaName() {
@@ -79,6 +80,20 @@ public class Table {
 
 	public void oneToMany(final Column fk) {
 		this.oneToMany.add(fk);
+	}
+
+	public Column addKeyColumn(final String colName, final boolean required,
+			final ColType colType) {
+		if (idColumn != null) {
+			throw new IllegalStateException(
+					String.format(
+							"The id column '%s' has already been defined -- only one primary key is currently supported per table",
+							idColumn));
+		}
+		final Column keyColumn = addColumn(new Column(this, colName, required,
+				colType));
+		idColumn = keyColumn;
+		return keyColumn;
 	}
 
 	public Column addColumn(final String colName, final boolean required,

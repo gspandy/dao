@@ -51,6 +51,11 @@ public class <%= n %>Sql
     }
 <% } %>
 
+    public static String createTable()
+    {
+        return String.format("CREATE TABLE %s ", TABLE_NAME);
+    }
+
     /**
      * @return the 'WHERE' clause for retrieving a <%= n %> object by its given field property
      */

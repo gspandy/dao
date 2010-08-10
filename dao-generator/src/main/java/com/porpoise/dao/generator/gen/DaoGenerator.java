@@ -2,12 +2,14 @@ package com.porpoise.dao.generator.gen;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.Map;
 import java.util.Map.Entry;
 
 import com.google.common.base.Charsets;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.io.Files;
+import com.porpoise.dao.generator.model.Table;
 import com.porpoise.dao.generator.templates.AbstractDaoTestTemplate;
 import com.porpoise.dao.generator.templates.DaoTemplate;
 import com.porpoise.dao.generator.templates.DaoTestTemplate;
@@ -99,7 +101,7 @@ public class DaoGenerator {
 	}
 
 	private static void generate(final File destFolder,
-			final IGenerator template, final DaoContext ctxt,
+			final IGenerator template, final AbstractJavaContext ctxt,
 			final String javaFileName) throws IOException {
 		final String basePackagePath = ctxt.getPackageNameAsPath();
 		final File file = createJavaFile(destFolder, basePackagePath,
@@ -146,4 +148,67 @@ public class DaoGenerator {
 		}
 		return destFolder;
 	}
+
+	public static void generateGeneratorProject(final ProjectDefinition def)
+			throws IOException {
+		generateProject(def.getTables(), def.getTargetDirectory(),
+				def.getArtifactId(), def.getGroupId(), srcDir(def),
+				testDir(def), def.getPackageName());
+
+		final File destFolder = def.getTargetDirectory();
+		final IGenerator generator = null;
+		final AbstractJavaContext ctxt = null;
+		final String fileName = "Generator";
+		generate(destFolder, generator, ctxt, fileName);
+	}
+
+	/**
+	 * generate the given tables and pom
+	 * 
+	 * @param def
+	 *            TODO
+	 * 
+	 * @throws IOException
+	 */
+	public static void generateProject(final ProjectDefinition def)
+			throws IOException {
+		generateProject(def.getTables(), def.getTargetDirectory(),
+				def.getArtifactId(), def.getGroupId(), srcDir(def),
+				testDir(def), def.getPackageName());
+	}
+
+	private static File testDir(final ProjectDefinition parameterObject) {
+		return new File(parameterObject.getTargetDirectory(), "src/test/java");
+	}
+
+	private static File srcDir(final ProjectDefinition parameterObject) {
+		return new File(parameterObject.getTargetDirectory(), "src/main/java");
+	}
+
+	private static void generateProject(final Collection<Table> tables,
+			final File pomDest, final String artifact, final String group,
+			final File srcDest, final File testDest, final String packageName)
+			throws IOException {
+		if (pomDest != null) {
+			generatePom(artifact, group, "1.0.0", pomDest);
+		}
+
+		for (final Table table : tables) {
+			generateMainJavaSourceForTable(srcDest, packageName, table);
+			generateTestJavaSourceForTable(testDest, packageName, table);
+		}
+	}
+
+	private static void generateMainJavaSourceForTable(final File mainDest,
+			final String packageName, final Table tbl) throws IOException {
+		final DaoContext c = new DaoContext(packageName, tbl);
+		generateMainJavaSource(mainDest, c);
+	}
+
+	private static void generateTestJavaSourceForTable(final File testDest,
+			final String packageName, final Table tbl) throws IOException {
+		final DaoContext c = new DaoContext(packageName, tbl);
+		generateTestJavaSource(testDest, c);
+	}
+
 }

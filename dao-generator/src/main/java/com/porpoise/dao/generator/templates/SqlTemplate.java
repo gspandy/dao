@@ -31,7 +31,7 @@ public class SqlTemplate implements IGenerator
   protected final String TEXT_14 = NL + "    /**" + NL + "     * @return the 'WHERE' clause for retrieving a ";
   protected final String TEXT_15 = " object by ID" + NL + "     */" + NL + "    public static String byId()" + NL + "    {" + NL + "        return by(";
   protected final String TEXT_16 = "Metadata.ID_FIELD);" + NL + "    }";
-  protected final String TEXT_17 = NL + NL + "    /**" + NL + "     * @return the 'WHERE' clause for retrieving a ";
+  protected final String TEXT_17 = NL + NL + "    public static String createTable()" + NL + "    {" + NL + "        return String.format(\"CREATE TABLE %s \", TABLE_NAME);" + NL + "    }" + NL + "" + NL + "    /**" + NL + "     * @return the 'WHERE' clause for retrieving a ";
   protected final String TEXT_18 = " object by its given field property" + NL + "     */" + NL + "    public static String by(final Field<?> field)" + NL + "    {" + NL + "        return String.format(\"%s WHERE %s=?\", select(), field.getName());" + NL + "    }" + NL + "" + NL + "    /**" + NL + "     * @return the 'INSERT' SQL used to create a new ";
   protected final String TEXT_19 = " entry" + NL + "     */" + NL + "    public static String insert()" + NL + "    {" + NL + "        final String propertyPlaceholders = Strings.repeat(\"?,\", ";
   protected final String TEXT_20 = "Metadata.FIELDS.size() - 1) + \"?\";" + NL + "        return String.format(\"INSERT INTO %s (%s) VALUES (%s)\", TABLE_NAME, attributeListAsString(null), propertyPlaceholders);" + NL + "    }" + NL + "" + NL + "    /**" + NL + "     * @return the 'UPDATE' SQL used to create a new ";

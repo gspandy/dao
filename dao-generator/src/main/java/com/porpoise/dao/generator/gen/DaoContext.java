@@ -6,10 +6,9 @@ import com.google.common.base.CaseFormat;
 import com.porpoise.dao.generator.model.Column;
 import com.porpoise.dao.generator.model.Table;
 
-public class DaoContext {
+public class DaoContext extends AbstractJavaContext {
 
 	private final Table table;
-	private final String packageName;
 
 	private static interface Visitor {
 		void onColumn(Column c, boolean hasNext);
@@ -55,7 +54,7 @@ public class DaoContext {
 	}
 
 	public DaoContext(final String packageName, final Table t) {
-		this.packageName = packageName;
+		super(packageName);
 		this.table = t;
 
 	}
@@ -73,20 +72,6 @@ public class DaoContext {
 
 	public Column getIdField() {
 		return this.table.getIdColumn();
-	}
-
-	/**
-	 * @return the packageName
-	 */
-	public String getPackageName() {
-		return this.packageName;
-	}
-
-	/**
-	 * @return the packageName
-	 */
-	public String getPackageNameAsPath() {
-		return this.packageName.replace('.', '/');
 	}
 
 	public String getJavaName() {

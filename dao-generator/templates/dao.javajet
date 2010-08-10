@@ -71,6 +71,16 @@ public class <%= n %>Dao extends AbstractDao
             return Iterables.getOnlyElement(this.dtoResults);
         }
     }
+
+    /**
+     * execute the create table script on the given transaction 
+     */
+    public void createTable(final IDbTransaction transaction)
+    {
+        final String sql = <%= n %>Sql.createTable();
+        transaction.executeUpdate(sql);
+    }
+    
 <% if (ctxt.hasIdField()) { %>
     /**
      * @param transaction the transaction used to retrieve the object

@@ -1,0 +1,73 @@
+<%@ jet package="com.porpoise.dao.generator.templates" imports="java.util.* com.porpoise.dao.generator.gen.* com.porpoise.dao.generator.model.*" class="GeneratorTemplate" 
+skeleton="generator.skeleton" %><% final GeneratorContext ctxt = (GeneratorContext) argument; 
+%>
+package <%= ctxt.getPackageName() %>;
+
+import java.math.BigDecimal;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Collection;
+import java.util.List;
+import java.util.Date;
+
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
+import com.porpoise.dao.database.IDbTransaction;
+import com.porpoise.dao.database.DbConnectionFactory;
+import com.porpoise.dao.database.dao.AbstractDao;
+import com.porpoise.dao.database.visitors.AbstractResultSetVisitor;
+
+/**
+ * Generator class used to create source code/resources from an in-memory schema
+ */
+public class Generator
+{
+public class GeneratorMain {
+
+	public static void main(final String[] args) throws IOException {
+	    final Collection<Table> tables = createTables();
+
+		final File dest = new File(System.getProperty("user.dir"),
+				"generator-main");
+		final String packageName = args.length == 1 ? args[0] : "com.example";
+		DaoGenerator.generateProject(new ProjectDefinition(tables, dest, packageName + ".dao", "main-test-dao", packageName));	    
+	}
+
+	private static Collection<Table> createTables() throws IOException {
+		final Collection<Table> tables = Lists.newArrayList();
+
+
+
+<% for (final Table t : ctxt.getTables()) { %>
+
+<%} // end for %>
+
+<% for (final Column c : t.getColumns()) { %>
+
+<% if (t.hasIdColumn() && t.getIdColumn().equals(c)) { 
+//============ ID COLUMN =============
+%>
+<% } else { %>
+//============ COLUMN =============
+<% } %>
+
+<%} // end for %>
+
+		final Table tbl = new Table("Aaron");
+		tbl.addColumn("ID", true, ColType.Long);
+		tbl.addColumn("Name", false, ColType.String);
+
+		final Table tbl2 = new Table("Benjamin");
+		tbl2.addColumn("ID", true, ColType.Long);
+		final Column fk = tbl2.addColumn("AARON_ID", true, ColType.Long);
+		tbl2.addColumn("Name", false, ColType.String);
+
+		tbl.oneToMany(fk);
+
+		tables.add(tbl);
+		tables.add(tbl2);
+
+        return tables;
+	}
+}
