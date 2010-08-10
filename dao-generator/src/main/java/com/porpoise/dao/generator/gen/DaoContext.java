@@ -149,33 +149,52 @@ public class DaoContext extends AbstractJavaContext {
 				if (c.isPrimaryKey()) {
 					append("id");
 				} else {
-					append(newTestValue(c));
+					append(newTestValue(c, true));
 				}
 			}
 		}).toString();
 	}
 
-	private String newTestValue(final Column c) {
+	public String getOtherTestValues() {
+		return traverse(new CommasSeparatedBufferVisitor() {
+			@Override
+			protected void onColumn(final Column c) {
+				if (c.isPrimaryKey()) {
+					append("id");
+				} else {
+					append(newTestValue(c, false));
+				}
+			}
+		}).toString();
+	}
+
+	private String newTestValue(final Column c, final boolean firstValue) {
+		final String seed = firstValue ? "1" : "2";
 		switch (c.getType()) {
 		case BigDecimal: {
-			return "Integer.valueOf(1)";
+			return String.format("Integer.valueOf(%s)", seed);
 		}
 		case String:
 		case Text:
-			return String.format("\"%s\"", c.getName().substring(0, 3));
+			String string = String
+					.format("\"%s\"", c.getName().substring(0, 3));
+			if (!firstValue) {
+				string = new StringBuilder(string).reverse().toString();
+			}
+			return string;
 		case Boolean:
-			return String.format("Boolean.TRUE");
+			return firstValue ? "Boolean.TRUE" : "Boolean.FALSE";
 		case Long:
-			return "Long.valueOf(1)";
+			return String.format("Long.valueOf(%s)", seed);
 		case Integer:
-			return "Integer.valueOf(1)";
+			return String.format("Integer.valueOf(%s)", seed);
 		case Short:
-			return "Short.valueOf((short) 1)";
+			return String.format("Short.valueOf((short) %s)", seed);
 		case Bytes:
-			return "new byte[0]";
+			return firstValue ? "new byte[0]" : "new byte[1]";
 		case Timestamp:
 		case Date:
-			return "new Date()";
+			return firstValue ? "new Date()" : "new Date(100000)";
 		}
 		throw new IllegalArgumentException(String.format(
 				"Unknown column type for %s: %s", c.toString(), c.getType()));

@@ -1,0 +1,34 @@
+<%@ jet package="com.porpoise.dao.generator.templates" imports="java.util.* com.porpoise.dao.generator.gen.* com.porpoise.dao.generator.model.*" class="AbstractDtoTestTemplate" 
+skeleton="generator.skeleton" %><% final DaoContext ctxt = (DaoContext) argument; 
+%>
+package <%= ctxt.getPackageName() %>;
+
+import org.junit.Assert;
+import org.junit.Ignore;
+
+/**
+ */
+@Ignore
+public abstract class AbstractDtoTest {
+	protected final static void assertEquals(final Object dto1,
+			final Object dto2) {
+		Assert.assertEquals(dto1, dto2);
+		Assert.assertEquals(dto1, dto1);
+		Assert.assertEquals(dto2, dto2);
+
+		Assert.assertEquals(dto2.hashCode(), dto2.hashCode());
+		Assert.assertEquals(dto1.hashCode(), dto1.hashCode());
+		Assert.assertEquals(dto1.hashCode(), dto2.hashCode());
+	}
+
+	protected final static void assertNotEquals(final Object dto1,
+			final Object dto2) {
+		Assert.assertFalse(dto1.equals(dto2));
+		Assert.assertEquals(dto1, dto1);
+		Assert.assertEquals(dto2, dto2);
+
+		Assert.assertEquals(dto2.hashCode(), dto2.hashCode());
+		Assert.assertEquals(dto1.hashCode(), dto1.hashCode());
+		Assert.assertFalse(dto1.hashCode() == dto2.hashCode());
+	}
+}

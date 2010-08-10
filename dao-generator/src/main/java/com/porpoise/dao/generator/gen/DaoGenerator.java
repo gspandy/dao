@@ -12,9 +12,11 @@ import com.google.common.io.Files;
 import com.porpoise.dao.generator.model.Table;
 import com.porpoise.dao.generator.templates.AbstractDaoTestTemplate;
 import com.porpoise.dao.generator.templates.AbstractDtoTemplate;
+import com.porpoise.dao.generator.templates.AbstractDtoTestTemplate;
 import com.porpoise.dao.generator.templates.DaoTemplate;
 import com.porpoise.dao.generator.templates.DaoTestTemplate;
 import com.porpoise.dao.generator.templates.DtoTemplate;
+import com.porpoise.dao.generator.templates.DtoTestTemplate;
 import com.porpoise.dao.generator.templates.GeneratorTemplate;
 import com.porpoise.dao.generator.templates.MetadataTemplate;
 import com.porpoise.dao.generator.templates.PomTemplate;
@@ -35,9 +37,9 @@ public class DaoGenerator {
 				"%sSql", new SqlTemplate()//
 				);
 
-		final IGenerator testGen = new DaoTestTemplate();
 		testSourceTemplateByFilename = ImmutableMap.of(//
-				"%sDaoTest", testGen//
+				"%sDaoTest", new DaoTestTemplate(),//
+				"%sDtoTest", new DtoTestTemplate()//
 				);
 	}
 
@@ -88,8 +90,10 @@ public class DaoGenerator {
 
 	private static void generateStaticTestClasses(final File destFolder,
 			final DaoContext ctxt) throws IOException {
-		final IGenerator generator = AbstractDaoTestTemplate.create(newLine());
-		generate(destFolder, generator, ctxt, "AbstractDaoTest");
+		generate(destFolder, AbstractDaoTestTemplate.create(newLine()), ctxt,
+				"AbstractDaoTest");
+		generate(destFolder, AbstractDtoTestTemplate.create(newLine()), ctxt,
+				"AbstractDtoTest");
 	}
 
 	private static void generateAll(final File destFolder,

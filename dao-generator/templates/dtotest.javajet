@@ -1,0 +1,59 @@
+<%@ jet package="com.porpoise.dao.generator.templates" imports="java.util.* com.porpoise.dao.generator.gen.* com.porpoise.dao.generator.model.*" class="DtoTestTemplate" 
+skeleton="generator.skeleton" %><% 
+final DaoContext ctxt = (DaoContext) argument; 
+final String n = ctxt.getJavaName();
+%>
+package <%= ctxt.getPackageName() %>;
+
+import java.io.File;
+import java.math.BigDecimal;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Date;
+import java.util.Collection;
+import java.util.List;
+
+import <%= ctxt.getPackageName() %>.model.<%= n %>Dto;
+
+import org.junit.Assert;
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
+
+
+/**
+ * Tests for the <%= n %>Dto class
+ */
+public class <%= n %>DtoTest extends AbstractDtoTest
+{
+    /**
+     * test the DAO can create and find an entry 
+     */
+    @Test
+    public void test_equalsAndHashCodeForTwoEquivalentObjects()
+    {
+<% if (ctxt.hasIdField()) { %>
+        final <%= ctxt.getIdField().getJavaTypeName() %> id = <%= ctxt.getIdField().getJavaTypeName() %>.valueOf(1);
+<% } %>
+        final <%= n %>Dto dto1 = new <%= n %>Dto(<%= ctxt.getTestValues() %>);
+        final <%= n %>Dto dto2 = new <%= n %>Dto(<%= ctxt.getTestValues() %>);
+
+        assertEquals(dto1, dto2);        
+    }
+    /**
+     * test the DAO can create and find an entry 
+     */
+    @Test
+    public void test_equalsAndHashCodeForTwoDifferenceObjects()
+    {
+<% if (ctxt.hasIdField()) { %>
+        final <%= ctxt.getIdField().getJavaTypeName() %> id = <%= ctxt.getIdField().getJavaTypeName() %>.valueOf(1);
+<% } %>
+        final <%= n %>Dto dto1 = new <%= n %>Dto(<%= ctxt.getTestValues() %>);
+        final <%= n %>Dto dto2 = new <%= n %>Dto(<%= ctxt.getOtherTestValues() %>);
+
+        assertNotEquals(dto1, dto2);        
+    }
+}
