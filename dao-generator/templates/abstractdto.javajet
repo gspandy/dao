@@ -4,18 +4,36 @@ skeleton="generator.skeleton" %><% final DaoContext ctxt = (DaoContext) argument
 package <%= ctxt.getPackageName() %>.model;
 
 import java.util.Date;
+import java.util.Arrays;
 
 /**
  */
 public abstract class AbstractDto
 {
-	protected final boolean equals(final Date d1, final Date d2) {
+	protected static final boolean equals(final Date d1, final Date d2) {
 		// equals is assumed to be within 1 second
 		final int marginForErrorInMillis = 1000;
 		return within(d1, d2, marginForErrorInMillis);
 	}
+	
+	protected static final int hashCode(final Date date) {
+		if (date == null)
+		{
+		    return 0;
+		}
+		final int hash = (int)(date.getTime() / 1000);
+		return hash;
+	}
+	
+	protected static final int hashCode(final byte[] bytes) {
+		if (bytes == null)
+		{
+		    return 0;
+		}
+		return Arrays.hashCode(bytes);
+	}
 
-	private boolean within(final Date d1, final Date d2,
+	private static boolean within(final Date d1, final Date d2,
 			final int marginForErrorInMillis) {
 		if (d1 == null) {
 			return d2 == null;

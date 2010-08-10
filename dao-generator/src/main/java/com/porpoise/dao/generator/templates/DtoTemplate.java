@@ -17,7 +17,7 @@ public class DtoTemplate implements IGenerator
 
   public final String NL = nl == null ? (System.getProperties().getProperty("line.separator")) : nl;
   protected final String TEXT_1 = "package ";
-  protected final String TEXT_2 = ".model;" + NL + "" + NL + "import java.math.BigDecimal;" + NL + "import java.util.List;" + NL + "import java.util.Date;" + NL + "" + NL + "import ";
+  protected final String TEXT_2 = ".model;" + NL + "" + NL + "import java.math.BigDecimal;" + NL + "import java.util.List;" + NL + "import java.util.Date;" + NL + "import java.util.Arrays;" + NL + "" + NL + "import ";
   protected final String TEXT_3 = ".model.";
   protected final String TEXT_4 = "Dto;" + NL + "" + NL + "/**" + NL + " * ";
   protected final String TEXT_5 = "Dto" + NL + " */" + NL + "public final class ";
@@ -43,27 +43,34 @@ public class DtoTemplate implements IGenerator
   protected final String TEXT_25 = "Dto [";
   protected final String TEXT_26 = "]\", ";
   protected final String TEXT_27 = ");" + NL + "    }" + NL + "" + NL + "    /* (non-Javadoc)" + NL + "     * @see java.lang.Object#hashCode()" + NL + "     */" + NL + "    @Override" + NL + "    public int hashCode()" + NL + "    {" + NL + "        final int prime = 31;" + NL + "        int result = 1;";
-  protected final String TEXT_28 = NL + "        result = prime * result + ((";
-  protected final String TEXT_29 = "() == null) ? 0 : ";
-  protected final String TEXT_30 = "().hashCode());";
-  protected final String TEXT_31 = NL + "        return result;" + NL + "    }" + NL + "" + NL + "    /* (non-Javadoc)" + NL + "     * @see java.lang.Object#equals(java.lang.Object)" + NL + "     */" + NL + "    @Override" + NL + "    public boolean equals(Object obj)" + NL + "    {" + NL + "        if (this == obj)" + NL + "            return true;" + NL + "        if (obj == null)" + NL + "            return false;" + NL + "        if (getClass() != obj.getClass())" + NL + "            return false;";
-  protected final String TEXT_32 = NL + "        ";
-  protected final String TEXT_33 = "Dto other = (";
-  protected final String TEXT_34 = "Dto) obj;" + NL;
-  protected final String TEXT_35 = NL + NL + "        if (";
-  protected final String TEXT_36 = "() == null)" + NL + "        {" + NL + "            if (other.";
-  protected final String TEXT_37 = "() != null)" + NL + "            {" + NL + "                return false;" + NL + "            }" + NL + "        }";
-  protected final String TEXT_38 = NL + "        else if (!equals(";
-  protected final String TEXT_39 = "(), other.";
-  protected final String TEXT_40 = "()))" + NL + "        {" + NL + "            return false;" + NL + "        }";
-  protected final String TEXT_41 = NL + "        else if (";
-  protected final String TEXT_42 = "().compareTo(other.";
-  protected final String TEXT_43 = "()) != 0)" + NL + "        {" + NL + "            return false;" + NL + "        }";
-  protected final String TEXT_44 = NL + "        else if (!";
-  protected final String TEXT_45 = "().equals(other.";
-  protected final String TEXT_46 = "()))" + NL + "        {" + NL + "            return false;" + NL + "        }";
-  protected final String TEXT_47 = NL + "        return true;" + NL + "    }" + NL + "}";
-  protected final String TEXT_48 = NL;
+  protected final String TEXT_28 = NL + "        result = prime * result + hashCode(";
+  protected final String TEXT_29 = "());";
+  protected final String TEXT_30 = NL + "        result = prime * result + hashCode(";
+  protected final String TEXT_31 = "());";
+  protected final String TEXT_32 = NL + "        result = prime * result + ((";
+  protected final String TEXT_33 = "() == null) ? 0 : ";
+  protected final String TEXT_34 = "().hashCode());";
+  protected final String TEXT_35 = NL + "        return result;" + NL + "    }" + NL + "" + NL + "    /* (non-Javadoc)" + NL + "     * @see java.lang.Object#equals(java.lang.Object)" + NL + "     */" + NL + "    @Override" + NL + "    public boolean equals(Object obj)" + NL + "    {" + NL + "        if (this == obj)" + NL + "            return true;" + NL + "        if (obj == null)" + NL + "            return false;" + NL + "        if (getClass() != obj.getClass())" + NL + "            return false;";
+  protected final String TEXT_36 = NL + "        ";
+  protected final String TEXT_37 = "Dto other = (";
+  protected final String TEXT_38 = "Dto) obj;" + NL;
+  protected final String TEXT_39 = NL + NL + "        if (";
+  protected final String TEXT_40 = "() == null)" + NL + "        {" + NL + "            if (other.";
+  protected final String TEXT_41 = "() != null)" + NL + "            {" + NL + "                return false;" + NL + "            }" + NL + "        }";
+  protected final String TEXT_42 = NL + "        else if (!equals(";
+  protected final String TEXT_43 = "(), other.";
+  protected final String TEXT_44 = "()))" + NL + "        {" + NL + "            return false;" + NL + "        }";
+  protected final String TEXT_45 = NL + "        else if (";
+  protected final String TEXT_46 = "().compareTo(other.";
+  protected final String TEXT_47 = "()) != 0)" + NL + "        {" + NL + "            return false;" + NL + "        }";
+  protected final String TEXT_48 = NL + "        else if (!Arrays.equals(";
+  protected final String TEXT_49 = "(), other.";
+  protected final String TEXT_50 = "()))" + NL + "        {" + NL + "            return false;" + NL + "        }";
+  protected final String TEXT_51 = NL + "        else if (!";
+  protected final String TEXT_52 = "().equals(other.";
+  protected final String TEXT_53 = "()))" + NL + "        {" + NL + "            return false;" + NL + "        }";
+  protected final String TEXT_54 = NL + "        return true;" + NL + "    }" + NL + "}";
+  protected final String TEXT_55 = NL;
 
    /* (non-javadoc)
     * @see IGenerator#generate(Object)
@@ -127,46 +134,62 @@ final String n = ctxt.getJavaName();
     stringBuffer.append( ctxt.getColumnAccessorMethods("this") );
     stringBuffer.append(TEXT_27);
      for (final Column col : ctxt.getColumns()) { 
+     if (col.isDate()) {
     stringBuffer.append(TEXT_28);
     stringBuffer.append( col.getNameAsAccessor() );
     stringBuffer.append(TEXT_29);
-    stringBuffer.append( col.getNameAsAccessor() );
+     } else if (col.isByteArray()) { 
     stringBuffer.append(TEXT_30);
-    }
+    stringBuffer.append( col.getNameAsAccessor() );
     stringBuffer.append(TEXT_31);
+     } else { 
     stringBuffer.append(TEXT_32);
-    stringBuffer.append( n );
+    stringBuffer.append( col.getNameAsAccessor() );
     stringBuffer.append(TEXT_33);
-    stringBuffer.append( n );
+    stringBuffer.append( col.getNameAsAccessor() );
     stringBuffer.append(TEXT_34);
-     for (final Column col : ctxt.getColumns()) { 
+     } 
+    }
     stringBuffer.append(TEXT_35);
-    stringBuffer.append( col.getNameAsAccessor() );
     stringBuffer.append(TEXT_36);
-    stringBuffer.append( col.getNameAsAccessor() );
+    stringBuffer.append( n );
     stringBuffer.append(TEXT_37);
-     if (col.isDate()) {
+    stringBuffer.append( n );
     stringBuffer.append(TEXT_38);
-    stringBuffer.append( col.getNameAsAccessor() );
+     for (final Column col : ctxt.getColumns()) { 
     stringBuffer.append(TEXT_39);
     stringBuffer.append( col.getNameAsAccessor() );
     stringBuffer.append(TEXT_40);
-     } else if (col.isBigDecimal()) { 
-    stringBuffer.append(TEXT_41);
     stringBuffer.append( col.getNameAsAccessor() );
+    stringBuffer.append(TEXT_41);
+     if (col.isDate()) {
     stringBuffer.append(TEXT_42);
     stringBuffer.append( col.getNameAsAccessor() );
     stringBuffer.append(TEXT_43);
-     } else { 
-    stringBuffer.append(TEXT_44);
     stringBuffer.append( col.getNameAsAccessor() );
+    stringBuffer.append(TEXT_44);
+     } else if (col.isBigDecimal()) { 
     stringBuffer.append(TEXT_45);
     stringBuffer.append( col.getNameAsAccessor() );
     stringBuffer.append(TEXT_46);
+    stringBuffer.append( col.getNameAsAccessor() );
+    stringBuffer.append(TEXT_47);
+     } else if (col.isByteArray()) { 
+    stringBuffer.append(TEXT_48);
+    stringBuffer.append( col.getNameAsAccessor() );
+    stringBuffer.append(TEXT_49);
+    stringBuffer.append( col.getNameAsAccessor() );
+    stringBuffer.append(TEXT_50);
+     } else { 
+    stringBuffer.append(TEXT_51);
+    stringBuffer.append( col.getNameAsAccessor() );
+    stringBuffer.append(TEXT_52);
+    stringBuffer.append( col.getNameAsAccessor() );
+    stringBuffer.append(TEXT_53);
      }
     }
-    stringBuffer.append(TEXT_47);
-    stringBuffer.append(TEXT_48);
+    stringBuffer.append(TEXT_54);
+    stringBuffer.append(TEXT_55);
     return stringBuffer.toString();
   }
 }

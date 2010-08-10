@@ -68,6 +68,7 @@ public class <%= n %>DaoTest extends AbstractDaoTest
         // call the method under test - find our new entry        
         final <%= n %>Dto read = dao.findById(getTransaction(), id);
         Assert.assertEquals(dto, read);
+        Assert.assertEquals(dto.hashCode(), read.hashCode());
     }
 
     /**
@@ -87,6 +88,7 @@ public class <%= n %>DaoTest extends AbstractDaoTest
         // find our new entry        
         final <%= n %>Dto read = dao.findById(getTransaction(), id);
         Assert.assertEquals(dto, read);
+        Assert.assertEquals(dto.hashCode(), read.hashCode());
     }
 <% } // end if has id  %>
 }

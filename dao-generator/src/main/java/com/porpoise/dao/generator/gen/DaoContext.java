@@ -162,7 +162,7 @@ public class DaoContext extends AbstractJavaContext {
 		}
 		case String:
 		case Text:
-			return String.format("\"%s\"", c.getName());
+			return String.format("\"%s\"", c.getName().substring(0, 3));
 		case Boolean:
 			return String.format("Boolean.TRUE");
 		case Long:

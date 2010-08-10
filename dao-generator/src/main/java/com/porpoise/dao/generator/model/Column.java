@@ -131,4 +131,8 @@ public class Column {
 		return getType() == ColType.Date || getType() == ColType.Timestamp;
 	}
 
+	public boolean isByteArray() {
+		return getType() == ColType.Bytes;
+	}
+
 }

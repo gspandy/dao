@@ -32,14 +32,14 @@ public class DaoTestTemplate implements IGenerator
   protected final String TEXT_14 = "Dto dto = new ";
   protected final String TEXT_15 = "Dto(";
   protected final String TEXT_16 = ");" + NL + " " + NL + "        dao.insert(getTransaction(), dto);" + NL + "" + NL + "        // call the method under test - find our new entry        " + NL + "        final ";
-  protected final String TEXT_17 = "Dto read = dao.findById(getTransaction(), id);" + NL + "        Assert.assertEquals(dto, read);" + NL + "    }" + NL + "" + NL + "    /**" + NL + "     * test the DAO can update an entry " + NL + "     */" + NL + "    @Test" + NL + "    public void test_update()" + NL + "    {" + NL + "        final ";
+  protected final String TEXT_17 = "Dto read = dao.findById(getTransaction(), id);" + NL + "        Assert.assertEquals(dto, read);" + NL + "        Assert.assertEquals(dto.hashCode(), read.hashCode());" + NL + "    }" + NL + "" + NL + "    /**" + NL + "     * test the DAO can update an entry " + NL + "     */" + NL + "    @Test" + NL + "    public void test_update()" + NL + "    {" + NL + "        final ";
   protected final String TEXT_18 = "Dao dao = new ";
   protected final String TEXT_19 = "Dao();" + NL + "        final ";
   protected final String TEXT_20 = " id = dao.nextId(getTransaction());" + NL + "        " + NL + "        // create an entry to find" + NL + "        final ";
   protected final String TEXT_21 = "Dto dto = new ";
   protected final String TEXT_22 = "Dto(";
   protected final String TEXT_23 = ");" + NL + " " + NL + "        dao.insert(getTransaction(), dto);" + NL + "" + NL + "        // find our new entry        " + NL + "        final ";
-  protected final String TEXT_24 = "Dto read = dao.findById(getTransaction(), id);" + NL + "        Assert.assertEquals(dto, read);" + NL + "    }";
+  protected final String TEXT_24 = "Dto read = dao.findById(getTransaction(), id);" + NL + "        Assert.assertEquals(dto, read);" + NL + "        Assert.assertEquals(dto.hashCode(), read.hashCode());" + NL + "    }";
   protected final String TEXT_25 = NL + "}";
 
    /* (non-javadoc)
