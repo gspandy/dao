@@ -10,6 +10,11 @@ import java.util.Collection;
 public interface IAccessorService<K, T>
 {
     /**
+     * @return an iterable of all IDs for the given type
+     */
+    public Iterable<K> listAllKeys();
+    
+    /**
      * @return an object for the given key
      */
     public T get(final K key);

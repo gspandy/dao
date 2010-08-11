@@ -54,6 +54,20 @@ public class <%= n %>Sql
 	public static String selectMaxId() {
 		return String.format("SELECT MAX(<%= ctxt.getIdField().getName() %>) FROM %s", TABLE_NAME);
 	}
+	
+    /**
+     * @return a query which will return the number of rows in the database for the given table
+     */
+	public static String selectCount() {
+		return String.format("SELECT COUNT(<%= ctxt.getIdField().getName() %>) FROM %s", TABLE_NAME);
+	}
+	
+    /**
+     * @return a query which will return the max id
+     */
+	public static String selectId() {
+		return String.format("SELECT <%= ctxt.getIdField().getName() %> FROM %s", TABLE_NAME);
+	}
 <% } %>
 
 <% for (final Reference r : ctxt.getReferencesToThisTable()) { %>

@@ -20,8 +20,7 @@ import com.google.common.collect.Lists;
 import com.porpoise.dao.database.IDbTransaction;
 import com.porpoise.dao.database.DbConnectionFactory;
 import com.porpoise.dao.database.dao.AbstractDao;
-import com.porpoise.dao.database.visitors.AbstractResultSetVisitor;
-import com.porpoise.dao.database.visitors.SingleScalarResultVisitor;
+import com.porpoise.dao.database.visitors.*;
 
 /**
  * Functional Data Access class used to operate on <%= n %>Dto objects
@@ -99,6 +98,26 @@ public class <%= n %>Dao extends AbstractDao
 	    }
 		return <%= ctxt.getIdField().getJavaTypeName() %>.valueOf(max + 1);
 	}
+
+    /**
+     * @return the number of rows in the database
+     */
+    public int count(final IDbTransaction transaction)
+    {
+	    final Integer count = transaction.executeQuery(new SingleScalarResultVisitor(),
+				<%= n %>Sql.selectCount()).getInteger();
+		return count.intValue();
+    }
+    /**
+     * @return an iterable of all IDs for the given type
+     */
+    public Iterable<<%= ctxt.getIdField().getJavaTypeName() %>> listAllKeys(final IDbTransaction transaction)
+    {
+	    final List<<%= ctxt.getIdField().getJavaTypeName() %>> keys = transaction.executeQuery(
+	       new MultipleScalarResultVisitor<Integer>(),
+		   <%= n %>Sql.selectId()).getResults();
+		return keys;
+    }
 	
 <% } %>
 

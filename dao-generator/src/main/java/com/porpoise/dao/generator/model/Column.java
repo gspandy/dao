@@ -34,11 +34,11 @@ public class Column extends AbstractField {
 	}
 
 	public boolean fkReferenceTo(final Column other) {
-		return fkReferenceTo(Cardinality.OneToMany, other);
+		return fkReferenceTo(other, Cardinality.OneToMany);
 	}
 
-	public boolean fkReferenceTo(final Cardinality cardinality,
-			final Column other) {
+	public boolean fkReferenceTo(final Column other,
+			final Cardinality cardinality) {
 		if (other == null) {
 			return false;
 		}

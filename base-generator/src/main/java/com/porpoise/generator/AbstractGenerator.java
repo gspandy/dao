@@ -74,8 +74,13 @@ public abstract class AbstractGenerator {
 
 	public void generatePom(final String groupId, final String artifactId,
 			final String version, final File destDir) throws IOException {
-		final IGenerator template = getPomTemplate();
 		final PomContext ctxt = getPomContext(groupId, artifactId, version);
+		generatePom(destDir, ctxt);
+	}
+
+	public void generatePom(final File destDir, final PomContext ctxt)
+			throws IOException {
+		final IGenerator template = getPomTemplate();
 		final CharSequence pom = template.generate(ctxt);
 		File target;
 		if (destDir.getName().endsWith("pom.xml")) {

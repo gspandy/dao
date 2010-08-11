@@ -7,9 +7,11 @@ import java.util.Map;
 
 import com.google.common.collect.ImmutableMap;
 import com.porpoise.dao.generator.model.Table;
+import com.porpoise.dao.generator.templates.AbstractDaoServiceTemplate;
 import com.porpoise.dao.generator.templates.AbstractDaoTestTemplate;
 import com.porpoise.dao.generator.templates.AbstractDtoTemplate;
 import com.porpoise.dao.generator.templates.AbstractDtoTestTemplate;
+import com.porpoise.dao.generator.templates.DaoApiImplTemplate;
 import com.porpoise.dao.generator.templates.DaoPomTemplate;
 import com.porpoise.dao.generator.templates.DaoTemplate;
 import com.porpoise.dao.generator.templates.DaoTestTemplate;
@@ -22,6 +24,7 @@ import com.porpoise.generator.AbstractGenerator;
 import com.porpoise.generator.AbstractJavaContext;
 import com.porpoise.generator.AbstractProjectDefinition;
 import com.porpoise.generator.IGenerator;
+import com.porpoise.generator.PomContext;
 
 /**
  * @author Aaron
@@ -35,6 +38,7 @@ public class DaoGenerator extends AbstractGenerator {
 				"%sDao", new DaoTemplate(),//
 				"model/%sDto", new DtoTemplate(),// /
 				"model/%sMetadata", new MetadataTemplate(),//
+				"impl/%sServiceImpl", new DaoApiImplTemplate(),//
 				"%sSql", new SqlTemplate()//
 				);
 
@@ -75,10 +79,21 @@ public class DaoGenerator extends AbstractGenerator {
 	}
 
 	@Override
+	protected PomContext getPomContext(final String groupId,
+			final String artifactId, final String version) {
+		final PomContext ctxt = super.getPomContext(groupId, artifactId,
+				version);
+		return ctxt;
+	}
+
+	@Override
 	protected void generateStaticMainClasses(final File destFolder,
 			final AbstractJavaContext ctxt) throws IOException {
-		final IGenerator generator = AbstractDtoTemplate.create(newLine());
-		generate(destFolder, generator, ctxt, "model/AbstractDto");
+
+		generate(destFolder, new AbstractDtoTemplate(), ctxt,
+				"model/AbstractDto");
+		generate(destFolder, new AbstractDaoServiceTemplate(), ctxt,
+				"impl/AbstractDaoService");
 	}
 
 	/**
@@ -96,6 +111,33 @@ public class DaoGenerator extends AbstractGenerator {
 	}
 
 	/**
+	 * not all domain objects have IDs -- if they do NOT, then we don't
+	 * generated certain files for them (e.g. services)
+	 */
+	@Override
+	protected void generate(final File destFolder, final IGenerator template,
+			final AbstractJavaContext ctxt, final String javaFileName)
+			throws IOException {
+
+		boolean proceed = true;
+		if (ctxt instanceof DaoContext) {
+			final DaoContext daoContext = (DaoContext) ctxt;
+			{
+				proceed = daoContext.hasIdField()
+						|| shouldGenerateForNonIdObject(javaFileName);
+			}
+		}
+
+		if (proceed) {
+			super.generate(destFolder, template, ctxt, javaFileName);
+		}
+	}
+
+	private boolean shouldGenerateForNonIdObject(final String javaFileName) {
+		return !javaFileName.endsWith("ServiceImpl");
+	}
+
+	/**
 	 * From a given project definition, generate a project which will in-turn be
 	 * able to generate other projects based on the tables in the definition.
 	 * 
@@ -108,6 +150,7 @@ public class DaoGenerator extends AbstractGenerator {
 	public void generateGeneratorProject(final AbstractProjectDefinition def,
 			final GeneratorContext ctxt) throws IOException {
 		if (def.hasPomDefinition()) {
+
 			generatePom(def.getGroupId(), def.getArtifactId(),
 					def.getVersion(), def.getTargetDirectory());
 		}

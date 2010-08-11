@@ -18,7 +18,7 @@ public class AbstractAccessorServiceTemplate implements IGenerator
 
   public final String NL = nl == null ? (System.getProperties().getProperty("line.separator")) : nl;
   protected final String TEXT_1 = "package ";
-  protected final String TEXT_2 = ".service;" + NL + "" + NL + "import java.util.Collection;" + NL + "" + NL + "/**" + NL + " */" + NL + "public interface IAccessorService<K, T>" + NL + "{" + NL + "    /**" + NL + "     * @return an object for the given key" + NL + "     */" + NL + "    public T get(final K key);" + NL + "    " + NL + "    /**" + NL + "     * @return an object for the given key" + NL + "     */" + NL + "    public Collection<T> getAll(final Collection<K> keys);" + NL + "}";
+  protected final String TEXT_2 = ".service;" + NL + "" + NL + "import java.util.Collection;" + NL + "" + NL + "/**" + NL + " */" + NL + "public interface IAccessorService<K, T>" + NL + "{" + NL + "    /**" + NL + "     * @return an iterable of all IDs for the given type" + NL + "     */" + NL + "    public Iterable<K> listAllKeys();" + NL + "    " + NL + "    /**" + NL + "     * @return an object for the given key" + NL + "     */" + NL + "    public T get(final K key);" + NL + "    " + NL + "    /**" + NL + "     * @return an object for the given key" + NL + "     */" + NL + "    public Collection<T> getAll(final Collection<K> keys);" + NL + "}";
   protected final String TEXT_3 = NL;
 
    /* (non-javadoc)

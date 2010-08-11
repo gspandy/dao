@@ -1,0 +1,33 @@
+<%@ jet package="com.porpoise.dao.generator.templates" imports="com.porpoise.generator.* java.util.* com.porpoise.dao.generator.gen.* com.porpoise.dao.generator.model.*" class="AbstractDaoServiceTemplate" 
+skeleton="generator.skeleton" %><% final DaoContext ctxt = (DaoContext) argument; 
+final String n = ctxt.getJavaName();
+%>
+package <%= ctxt.getPackageName() %>.impl;
+
+import java.util.*;
+import com.porpoise.dao.database.DbConnectionFactory;
+import com.google.common.base.Preconditions;
+
+/**
+ * Functional Data Access class used to operate on <%= n %>Dto objects
+ */
+abstract class AbstractDaoService
+{
+    private final DbConnectionFactory connectionFactory;
+
+    /**
+     *
+     */
+    public AbstractDaoService(final DbConnectionFactory factory)
+    {
+        this.connectionFactory = Preconditions.checkNotNull(factory);
+    }
+    
+    /**
+     * @return the DbConnectionFactory 
+     */
+    protected DbConnectionFactory getFactory()
+    {
+        return this.connectionFactory;
+    }
+}

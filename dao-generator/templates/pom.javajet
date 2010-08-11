@@ -20,6 +20,13 @@ skeleton="generator.skeleton" %><% final PomContext ctxt = (PomContext) argument
 			<artifactId>dao-common</artifactId>
 	      <version>0.0.1-SNAPSHOT</version>
 		</dependency>
+<% for(final PomContext d : ctxt.getDependencies()) { %>
+		<dependency>
+			<groupId><%= d.getGroupId() %></groupId>
+			<artifactId><%= d.getArtifactId() %></artifactId>
+	        <version><%= d.getVersion() %></version>
+		</dependency>
+<% } %>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>

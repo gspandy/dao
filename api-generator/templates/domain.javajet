@@ -104,6 +104,19 @@ final String name = f.getJavaName();
 	}
 <%} // end for %>
 
+<% for (final DomainObjectField f : ctxt.getDomainObject().getObjectFields()) { 
+if (!f.getType().hasIdField()) {
+    continue;
+}
+%>
+    /**
+     * @return <%= f.getNameAsProperty() %>
+     */
+    public <%= ctxt.getJavaKeyTypeForField(f) %> <%= f.getNameAsAccessor() %>Id()
+    {
+        return <%= f.getNameAsAccessor() %>() == null ? null : <%= f.getNameAsAccessor() %>().<%= f.getIdAsAccessor() %>();
+    }
+<%}  // end for %>
 
     /* (non-Javadoc)
      * @see java.lang.Object#toString()

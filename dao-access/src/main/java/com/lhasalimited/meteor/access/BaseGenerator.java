@@ -15,6 +15,7 @@ import com.porpoise.dao.generator.gen.ProjectDefinition;
 import com.porpoise.dao.generator.gen.access.AccessTable;
 import com.porpoise.dao.generator.model.Column;
 import com.porpoise.dao.generator.model.Table;
+import com.porpoise.generator.model.Cardinality;
 import com.porpoise.generator.model.FieldType;
 
 /**
@@ -1111,6 +1112,12 @@ public class BaseGenerator {
 		RULE_REF__RULE_ID.fkReferenceTo(RULES__RULE_ID);
 
 		RULE_REF__REF_ID.fkReferenceTo(REFERENCES__REF_ID);
+
+		// =======================================================================================
+		// RULES
+		// =======================================================================================
+		RULES__FORCE_ENTITY_ID.fkReferenceTo(FORCE__Force_ID,
+				Cardinality.OneToOne);
 
 		// =======================================================================================
 		// JOIN TABLE SPECIES_ENZYME
