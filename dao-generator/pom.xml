@@ -12,6 +12,11 @@
 	<dependencies>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
+			<artifactId>base-generator</artifactId>
+			<version>${dao.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
 			<artifactId>dao-common</artifactId>
 			<version>${dao.version}</version>
 		</dependency>

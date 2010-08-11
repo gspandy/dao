@@ -18,8 +18,8 @@ import com.porpoise.dao.database.DbConnectionFactory;
 import com.porpoise.dao.database.IDbTransaction;
 import com.porpoise.dao.database.init.Databases;
 import com.porpoise.dao.database.tools.DbScriptExecutor;
-import com.porpoise.dao.generator.model.ColType;
 import com.porpoise.dao.generator.model.Table;
+import com.porpoise.generator.model.FieldType;
 
 public class DaoGeneratorTest {
 	private static DbConnectionFactory factory;
@@ -87,9 +87,9 @@ public class DaoGeneratorTest {
 
 		// represent the table in code:
 		final Table table = new Table("TEST_TABLE");
-		table.addColumn("id", false, ColType.Long);
-		table.addColumn("LastName", false, ColType.String);
-		table.addColumn("FirstName", false, ColType.String);
+		table.addColumn("id", false, FieldType.Long);
+		table.addColumn("LastName", false, FieldType.String);
+		table.addColumn("FirstName", false, FieldType.String);
 
 		// generate a DAO for the table:
 		final DaoContext ctxt = new DaoContext("test.pack.age", table);

@@ -16,6 +16,8 @@ import com.porpoise.dao.generator.templates.DtoTemplate;
 import com.porpoise.dao.generator.templates.DtoTestTemplate;
 import com.porpoise.dao.generator.templates.MetadataTemplate;
 import com.porpoise.dao.generator.templates.SqlTemplate;
+import com.porpoise.generator.AbstractJavaContext;
+import com.porpoise.generator.IGenerator;
 
 /**
  * @author Aaron

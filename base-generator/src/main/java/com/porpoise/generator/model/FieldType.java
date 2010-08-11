@@ -1,6 +1,6 @@
-package com.porpoise.dao.generator.model;
+package com.porpoise.generator.model;
 
-public enum ColType {
+public enum FieldType {
 	String, //
 	Text {
 		@Override
@@ -50,8 +50,8 @@ public enum ColType {
 		return "get" + getJavaName();
 	}
 
-	public static ColType forClass(final Class<?> c1ass) {
-		for (final ColType t : values()) {
+	public static FieldType forClass(final Class<?> c1ass) {
+		for (final FieldType t : values()) {
 			if (c1ass.getSimpleName().equals(t.name())) {
 				return t;
 			}

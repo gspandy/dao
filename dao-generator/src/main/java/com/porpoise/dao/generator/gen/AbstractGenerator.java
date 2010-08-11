@@ -10,8 +10,11 @@ import com.google.common.base.Charsets;
 import com.google.common.io.Files;
 import com.porpoise.dao.generator.model.Table;
 import com.porpoise.dao.generator.templates.GeneratorTemplate;
+import com.porpoise.generator.AbstractJavaContext;
+import com.porpoise.generator.IGenerator;
+import com.porpoise.generator.PomContext;
 
-abstract class AbstractGenerator {
+public abstract class AbstractGenerator {
 
 	/**
 	 * @param destFolder
@@ -56,6 +59,16 @@ abstract class AbstractGenerator {
 		}
 	}
 
+	/**
+	 * From a given project definition, generate a project which will in-turn be
+	 * able to generate other projects based on the tables in the definition.
+	 * 
+	 * By going about this route, the tables read from the database may be
+	 * further fine-tuned within the java-code generator project itself.
+	 * 
+	 * @param def
+	 * @throws IOException
+	 */
 	public void generateGeneratorProject(final ProjectDefinition def)
 			throws IOException {
 		if (def.hasPomDefinition()) {

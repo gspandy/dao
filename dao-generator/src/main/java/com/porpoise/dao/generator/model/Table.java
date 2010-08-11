@@ -7,6 +7,7 @@ import com.google.common.base.CaseFormat;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
+import com.porpoise.generator.model.FieldType;
 
 public class Table {
 	private final String name;
@@ -99,7 +100,7 @@ public class Table {
 	}
 
 	public Column addKeyColumn(final String colName, final boolean required,
-			final ColType colType) {
+			final FieldType colType) {
 		if (idColumn != null) {
 			throw new IllegalStateException(
 					String.format(
@@ -113,7 +114,7 @@ public class Table {
 	}
 
 	public Column addColumn(final String colName, final boolean required,
-			final ColType colType) {
+			final FieldType colType) {
 		return addColumn(new Column(this, colName, required, colType));
 	}
 

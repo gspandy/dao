@@ -3,6 +3,8 @@ package com.porpoise.dao.generator.templates;
 import java.util.*;
 import com.porpoise.dao.generator.gen.*;
 import com.porpoise.dao.generator.model.*;
+import com.porpoise.generator.IGenerator;
+import com.porpoise.generator.PomContext;
 
 public class ApiPomTemplate implements IGenerator
 {

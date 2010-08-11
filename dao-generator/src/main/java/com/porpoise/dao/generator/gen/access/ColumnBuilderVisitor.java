@@ -5,9 +5,9 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 
 import com.porpoise.dao.database.IResultSetVisitor;
-import com.porpoise.dao.generator.model.ColType;
 import com.porpoise.dao.generator.model.Column;
 import com.porpoise.dao.generator.model.Table;
+import com.porpoise.generator.model.FieldType;
 
 final class ColumnBuilderVisitor implements IResultSetVisitor {
 	private final String tableName;
@@ -27,7 +27,7 @@ final class ColumnBuilderVisitor implements IResultSetVisitor {
 					} else {
 						// there may be 'created on' and 'modified on' columns
 						// in addition to the fk columns
-						if (c.getType() != ColType.Timestamp) {
+						if (c.getType() != FieldType.Timestamp) {
 							return false;
 						}
 					}
@@ -49,11 +49,11 @@ final class ColumnBuilderVisitor implements IResultSetVisitor {
 
 			try {
 				final Class<?> c1ass = Class.forName(className);
-				final ColType colType;
+				final FieldType colType;
 				if (columnTypeName.equals("LONGBINARY")) {
-					colType = ColType.Bytes;
+					colType = FieldType.Bytes;
 				} else {
-					colType = ColType.forClass(c1ass);
+					colType = FieldType.forClass(c1ass);
 				}
 				table.addColumn(label, false, colType);
 			} catch (final Exception e) {

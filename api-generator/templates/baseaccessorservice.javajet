@@ -1,0 +1,21 @@
+<%@ jet package="com.porpoise.api.generator.templates" imports="java.util.* com.porpoise.generator.* com.porpoise.api.generator.model.* com.porpoise.api.generator.gen.*" class="BaseAccessorServiceTemplate"  
+skeleton="generator.skeleton" %><% final ApiContext ctxt = (ApiContext) argument; 
+%>
+package <%= ctxt.getPackageName() %>.api;
+
+import java.util.Collection;
+
+/**
+ */
+public final interface IBaseAccessorService<K, T>
+{
+    /**
+     * @return an object for the given key
+     */
+    public T get(K key);
+    
+    /**
+     * @return an object for the given key
+     */
+    public Collection<T> getAll(Collection<K> keys);
+}

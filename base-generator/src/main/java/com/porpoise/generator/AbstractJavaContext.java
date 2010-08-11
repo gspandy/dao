@@ -1,4 +1,4 @@
-package com.porpoise.dao.generator.gen;
+package com.porpoise.generator;
 
 import com.google.common.base.Preconditions;
 

@@ -6,8 +6,8 @@ import java.io.PrintStream;
 import java.util.Collection;
 
 import com.google.common.collect.Lists;
-import com.porpoise.dao.generator.model.ColType;
 import com.porpoise.dao.generator.model.Table;
+import com.porpoise.generator.model.FieldType;
 
 public class GeneratorMain {
 
@@ -27,13 +27,13 @@ public class GeneratorMain {
 
 		final Collection<Table> tables = Lists.newArrayList();
 		final Table tbl = new Table("Aaron");
-		tbl.addColumn("ID", true, ColType.Long);
-		tbl.addColumn("Name", false, ColType.String);
+		tbl.addColumn("ID", true, FieldType.Long);
+		tbl.addColumn("Name", false, FieldType.String);
 
 		final Table tbl2 = new Table("Benjamin");
-		tbl2.addColumn("ID", true, ColType.Long);
-		tbl2.addColumn("AARON_ID", true, ColType.Long);
-		tbl2.addColumn("Name", false, ColType.String);
+		tbl2.addColumn("ID", true, FieldType.Long);
+		tbl2.addColumn("AARON_ID", true, FieldType.Long);
+		tbl2.addColumn("Name", false, FieldType.String);
 
 		tables.add(tbl);
 		tables.add(tbl2);

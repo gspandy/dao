@@ -1,4 +1,4 @@
-package com.porpoise.dao.generator.gen;
+package com.porpoise.generator;
 
 import java.util.Collection;
 

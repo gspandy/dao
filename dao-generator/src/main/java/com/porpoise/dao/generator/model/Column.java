@@ -9,18 +9,19 @@ import java.util.Set;
 import com.google.common.base.CaseFormat;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import com.porpoise.generator.model.FieldType;
 
 public class Column {
 	private final String name;
 	private final boolean required;
-	private final ColType type;
+	private final FieldType type;
 	private final Table owningTable;
 
 	private final Set<Column> fkReferences = Sets.newHashSet();
 	private final Set<Column> referencedBy = Sets.newHashSet();
 
 	Column(final Table table, final String n, final boolean isRequired,
-			final ColType colType) {
+			final FieldType colType) {
 		this.owningTable = checkNotNull(table);
 		this.name = checkNotNull(n);
 		this.required = isRequired;
@@ -63,7 +64,7 @@ public class Column {
 	/**
 	 * @return the type
 	 */
-	public ColType getType() {
+	public FieldType getType() {
 		return this.type;
 	}
 
@@ -124,15 +125,15 @@ public class Column {
 	}
 
 	public boolean isBigDecimal() {
-		return getType() == ColType.BigDecimal;
+		return getType() == FieldType.BigDecimal;
 	}
 
 	public boolean isDate() {
-		return getType() == ColType.Date || getType() == ColType.Timestamp;
+		return getType() == FieldType.Date || getType() == FieldType.Timestamp;
 	}
 
 	public boolean isByteArray() {
-		return getType() == ColType.Bytes;
+		return getType() == FieldType.Bytes;
 	}
 
 }

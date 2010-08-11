@@ -5,17 +5,27 @@ final String n = ctxt.getJavaName();
 package <%= ctxt.getPackageName() %>.api;
 
 import java.math.BigDecimal;
+import java.io.Serializable;
 import java.util.List;
 import java.util.Date;
 import java.util.Arrays;
-
+import javax.xml.bind.annotation.*;
+import javax.persistence.*;
 import <%= ctxt.getPackageName() %>.model.<%= n %>Dto;
 
 /**
  * <%= n %>
  */
-public final class <%= n %> extends AbstractDto
+@XmlType(name="${form.PropertyName}Type")
+@XmlRootElement(name="${form.PropertyName}")
+@Entity(name="${fileName.toLowerCase()}")
+@Table(name="${tablePrefix}${form.TableName}")
+public final class <%= n %> extends DomainObject implements Serializable
 {
+    /**
+     */
+    private static final long         serialVersionUID = 1L;
+    
 <% for (final Column col : ctxt.getColumns()) { %>
     /**
      * <%= col.getNameAsProperty() %>

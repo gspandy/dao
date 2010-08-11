@@ -7,6 +7,7 @@ import com.google.common.base.CaseFormat;
 import com.porpoise.dao.generator.model.Column;
 import com.porpoise.dao.generator.model.Reference;
 import com.porpoise.dao.generator.model.Table;
+import com.porpoise.generator.AbstractJavaContext;
 
 public class DaoContext extends AbstractJavaContext {
 

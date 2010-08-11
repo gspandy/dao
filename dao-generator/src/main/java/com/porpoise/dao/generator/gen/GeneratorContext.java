@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.google.common.collect.ImmutableList;
 import com.porpoise.dao.generator.model.Table;
+import com.porpoise.generator.AbstractJavaContext;
 
 public class GeneratorContext extends AbstractJavaContext {
 
