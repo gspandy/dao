@@ -1,0 +1,14 @@
+.DS_Store
+*.class
+target
+bin
+dao-common/.classpath
+dao-derby/.classpath
+dao-common/.project
+dao-derby/.project
+dao-common/.settings
+dao-derby/.settings
+*.mdb
+test/ing
+*.log
+*.dat

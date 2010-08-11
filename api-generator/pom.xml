@@ -15,5 +15,10 @@
 			<artifactId>base-generator</artifactId>
 			<version>${dao.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>dao-generator</artifactId>
+			<version>${dao.version}</version>
+		</dependency>
 	</dependencies>
 </project>

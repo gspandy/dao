@@ -1,9 +1,9 @@
 package com.porpoise.dao.generator.templates;
 
+import com.porpoise.generator.*;
 import java.util.*;
 import com.porpoise.dao.generator.gen.*;
 import com.porpoise.dao.generator.model.*;
-import com.porpoise.generator.IGenerator;
 
 public class GeneratorTemplate implements IGenerator
 {
@@ -18,14 +18,14 @@ public class GeneratorTemplate implements IGenerator
 
   public final String NL = nl == null ? (System.getProperties().getProperty("line.separator")) : nl;
   protected final String TEXT_1 = "package ";
-  protected final String TEXT_2 = ";" + NL + "" + NL + "import java.io.File;" + NL + "import java.io.IOException;" + NL + "import java.util.*;" + NL + "" + NL + "import com.google.common.collect.Lists;" + NL + "import com.google.common.collect.ImmutableList;" + NL + "import com.porpoise.dao.generator.gen.DaoGenerator;" + NL + "import com.porpoise.dao.generator.gen.ApiGenerator;" + NL + "import com.porpoise.dao.generator.gen.ProjectDefinition;" + NL + "import com.porpoise.dao.generator.model.ColType;" + NL + "import com.porpoise.dao.generator.model.Column;" + NL + "import com.porpoise.dao.generator.model.Table;" + NL + "" + NL + "/**" + NL + " * Generator class used to create source code/resources from an in-memory schema" + NL + " */" + NL + "public class BaseGenerator" + NL + "{" + NL + "       private final ImmutableList<Table> tables;";
+  protected final String TEXT_2 = ";" + NL + "" + NL + "import java.io.File;" + NL + "import java.io.IOException;" + NL + "import java.util.Collection;" + NL + "import java.util.List;" + NL + "" + NL + "import com.google.common.collect.ImmutableList;" + NL + "import com.google.common.collect.Lists;" + NL + "import com.porpoise.api.generator.gen.ApiGenerator;" + NL + "import com.porpoise.api.generator.gen.ApiProjectDefinition;" + NL + "import com.porpoise.api.generator.model.DomainObject;" + NL + "import com.porpoise.dao.generator.gen.DaoGenerator;" + NL + "import com.porpoise.dao.generator.gen.ProjectDefinition;" + NL + "import com.porpoise.dao.generator.model.Column;" + NL + "import com.porpoise.dao.generator.model.Table;" + NL + "import com.porpoise.generator.model.FieldType;" + NL + "" + NL + "/**" + NL + " * Generator class used to create source code/resources from an in-memory schema" + NL + " */" + NL + "public class BaseGenerator" + NL + "{" + NL + "       private final ImmutableList<Table> tables;";
   protected final String TEXT_3 = NL + "        // =======================================================================================" + NL + "        // ";
   protected final String TEXT_4 = NL + "        // =======================================================================================" + NL + "\t\tpublic final Table ";
   protected final String TEXT_5 = ";";
   protected final String TEXT_6 = NL + "\t\tpublic final Column ";
   protected final String TEXT_7 = "__";
   protected final String TEXT_8 = ";";
-  protected final String TEXT_9 = NL + NL + "\tpublic static void main(final String[] args) throws IOException {" + NL + "\t    final Collection<Table> tables = new BaseGenerator().getTables();" + NL + "" + NL + "\t\tfinal File dest = new File(System.getProperty(\"user.dir\")," + NL + "\t\t\t\t\"generator-main\");" + NL + "" + NL + "\t\tfinal File dao = new File(dest, \"dao\");" + NL + "\t\tfinal File api = new File(dest, \"api\");" + NL + "" + NL + "\t\tfinal String packageName = args.length == 1 ? args[0] : \"com.example\";" + NL + "\t\tfinal String group = packageName;" + NL + "\t\t" + NL + "\t\tnew DaoGenerator().generateProject(new ProjectDefinition(tables, dao, group, \"main-test-dao\", \"1.0.0\", packageName));" + NL + "" + NL + "\t\tnew ApiGenerator().generateProject(new ProjectDefinition(tables, api, group, \"api\", \"1.0.0\", packageName));" + NL + "\t}" + NL + "\t" + NL + "\t/** " + NL + "\t * @return the tables;" + NL + "\t */" + NL + "\tpublic Collection<Table> getTables()" + NL + "\t{" + NL + "\t    return this.tables;" + NL + "\t}" + NL + "" + NL + "    /** " + NL + "     * default constructor" + NL + "     */" + NL + "\tpublic BaseGenerator() throws IOException {" + NL + "\t\tfinal List<Table> allTables = Lists.newArrayList();" + NL;
+  protected final String TEXT_9 = NL + NL + "\tpublic static void main(final String[] args) throws IOException {" + NL + "\t    final Collection<Table> tables = new BaseGenerator().getTables();" + NL + "" + NL + "\t\tfinal File dest = new File(System.getProperty(\"user.dir\")," + NL + "\t\t\t\t\"generator-main\");" + NL + "" + NL + "\t\tfinal File dao = new File(dest, \"dao\");" + NL + "\t\tfinal File api = new File(dest, \"api\");" + NL + "" + NL + "\t\tfinal String packageName = args.length == 1 ? args[0] : \"com.example\";" + NL + "\t\tfinal String group = packageName;" + NL + "\t\t" + NL + "\t\tnew DaoGenerator().generateProject(new ProjectDefinition(tables, dao, group, \"main-test-dao\", \"1.0.0\", packageName));" + NL + "" + NL + "\t\tfinal Collection<DomainObject> objects = null;" + NL + "\t\tnew ApiGenerator().generateProject(new ApiProjectDefinition(objects," + NL + "\t\t\t\tapi, group, \"api\", \"1.0.0\", packageName));" + NL + "\t}" + NL + "\t" + NL + "\t/** " + NL + "\t * @return the tables;" + NL + "\t */" + NL + "\tpublic Collection<Table> getTables()" + NL + "\t{" + NL + "\t    return this.tables;" + NL + "\t}" + NL + "" + NL + "    /** " + NL + "     * default constructor" + NL + "     */" + NL + "\tpublic BaseGenerator() throws IOException {" + NL + "\t\tfinal List<Table> allTables = Lists.newArrayList();" + NL;
   protected final String TEXT_10 = NL + "        // =======================================================================================" + NL + "        // ";
   protected final String TEXT_11 = NL + "        // =======================================================================================" + NL + "\t\t";
   protected final String TEXT_12 = " = new Table(\"";
@@ -35,7 +35,7 @@ public class GeneratorTemplate implements IGenerator
   protected final String TEXT_16 = ".";
   protected final String TEXT_17 = "(\"";
   protected final String TEXT_18 = "\", ";
-  protected final String TEXT_19 = ", ColType.";
+  protected final String TEXT_19 = ", FieldType.";
   protected final String TEXT_20 = ");" + NL + "" + NL + "\t\tallTables.add(";
   protected final String TEXT_21 = ");" + NL;
   protected final String TEXT_22 = NL + NL + "       makeJoins();" + NL + "       tables = ImmutableList.copyOf(allTables);" + NL + "\t}" + NL + "\t" + NL + "\t/** " + NL + "\t *" + NL + "\t */" + NL + "\tprivate void makeJoins()" + NL + "\t{" + NL + "\t";

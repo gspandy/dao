@@ -1,18 +1,12 @@
-package com.porpoise.dao.generator.gen;
+package com.porpoise.generator;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Collection;
 import java.util.Map;
 import java.util.Map.Entry;
 
 import com.google.common.base.Charsets;
 import com.google.common.io.Files;
-import com.porpoise.dao.generator.model.Table;
-import com.porpoise.dao.generator.templates.GeneratorTemplate;
-import com.porpoise.generator.AbstractJavaContext;
-import com.porpoise.generator.IGenerator;
-import com.porpoise.generator.PomContext;
 
 public abstract class AbstractGenerator {
 
@@ -59,68 +53,13 @@ public abstract class AbstractGenerator {
 		}
 	}
 
-	/**
-	 * From a given project definition, generate a project which will in-turn be
-	 * able to generate other projects based on the tables in the definition.
-	 * 
-	 * By going about this route, the tables read from the database may be
-	 * further fine-tuned within the java-code generator project itself.
-	 * 
-	 * @param def
-	 * @throws IOException
-	 */
-	public void generateGeneratorProject(final ProjectDefinition def)
-			throws IOException {
-		if (def.hasPomDefinition()) {
-			generatePom(def.getGroupId(), def.getArtifactId(),
-					def.getVersion(), def.getTargetDirectory());
-		}
-
-		final AbstractJavaContext ctxt = new GeneratorContext(
-				def.getPackageName(), def.getTables());
-		generate(srcDir(def), new GeneratorTemplate(), ctxt, "BaseGenerator");
-	}
-
-	/**
-	 * generate the given tables and pom
-	 * 
-	 * @param def
-	 *            TODO
-	 * 
-	 * @throws IOException
-	 */
-	public void generateProject(final ProjectDefinition def) throws IOException {
-		generateProject(def.getTables(), def.getTargetDirectory(),
-				def.getGroupId(), def.getArtifactId(), srcDir(def),
-				testDir(def), def.getPackageName());
-	}
-
-	private void generateProject(final Collection<Table> tables,
-			final File pomDest, final String group, final String artifact,
-			final File srcDest, final File testDest, final String packageName)
-			throws IOException {
-		if (pomDest != null) {
-			generatePom(group, artifact, "1.0.0", pomDest);
-		}
-
-		for (final Table table : tables) {
-			generateMainJavaSourceForTable(srcDest, packageName, table);
-			generateTestJavaSourceForTable(testDest, packageName, table);
-		}
-	}
-
-	private void generateMainJavaSourceForTable(final File mainDest,
-			final String packageName, final Table tbl) throws IOException {
-		final AbstractJavaContext c = newContext(packageName, tbl);
+	protected void generateMainJavaSourceForTable(final File mainDest,
+			final AbstractJavaContext c) throws IOException {
 		generateMainJavaSource(mainDest, c);
 	}
 
-	protected abstract AbstractJavaContext newContext(final String packageName,
-			final Table tbl);
-
-	private void generateTestJavaSourceForTable(final File testDest,
-			final String packageName, final Table tbl) throws IOException {
-		final AbstractJavaContext c = newContext(packageName, tbl);
+	protected void generateTestJavaSourceForTable(final File testDest,
+			final AbstractJavaContext c) throws IOException {
 		generateTestJavaSource(testDest, c);
 	}
 
@@ -152,13 +91,13 @@ public abstract class AbstractGenerator {
 
 	protected abstract IGenerator getPomTemplate();
 
-	static String newLine() {
+	protected static String newLine() {
 		return String.format("%n");
 	}
 
-	static void generate(final File destFolder, final IGenerator template,
-			final AbstractJavaContext ctxt, final String javaFileName)
-			throws IOException {
+	protected static void generate(final File destFolder,
+			final IGenerator template, final AbstractJavaContext ctxt,
+			final String javaFileName) throws IOException {
 		final String basePackagePath = ctxt.getPackageNameAsPath();
 		final File file = createJavaFile(destFolder, basePackagePath,
 				javaFileName);
@@ -205,11 +144,12 @@ public abstract class AbstractGenerator {
 		return destFolder;
 	}
 
-	static File testDir(final ProjectDefinition parameterObject) {
+	protected static File testDir(
+			final AbstractProjectDefinition parameterObject) {
 		return new File(parameterObject.getTargetDirectory(), "src/test/java");
 	}
 
-	static File srcDir(final ProjectDefinition parameterObject) {
+	protected static File srcDir(final AbstractProjectDefinition parameterObject) {
 		return new File(parameterObject.getTargetDirectory(), "src/main/java");
 	}
 

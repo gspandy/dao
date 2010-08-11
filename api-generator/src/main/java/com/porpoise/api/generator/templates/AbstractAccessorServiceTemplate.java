@@ -5,20 +5,20 @@ import com.porpoise.generator.*;
 import com.porpoise.api.generator.model.*;
 import com.porpoise.api.generator.gen.*;
 
-public class BaseAccessorServiceTemplate implements IGenerator
+public class AbstractAccessorServiceTemplate implements IGenerator
 {
   protected static String nl;
-  public static synchronized BaseAccessorServiceTemplate create(String lineSeparator)
+  public static synchronized AbstractAccessorServiceTemplate create(String lineSeparator)
   {
     nl = lineSeparator;
-    BaseAccessorServiceTemplate result = new BaseAccessorServiceTemplate();
+    AbstractAccessorServiceTemplate result = new AbstractAccessorServiceTemplate();
     nl = null;
     return result;
   }
 
   public final String NL = nl == null ? (System.getProperties().getProperty("line.separator")) : nl;
   protected final String TEXT_1 = "package ";
-  protected final String TEXT_2 = ".api;" + NL + "" + NL + "import java.util.Collection;" + NL + "" + NL + "/**" + NL + " */" + NL + "public final interface IBaseAccessorService<K, T>" + NL + "{" + NL + "    /**" + NL + "     * @return an object for the given key" + NL + "     */" + NL + "    public T get(K key);" + NL + "    " + NL + "    /**" + NL + "     * @return an object for the given key" + NL + "     */" + NL + "    public Collection<T> getAll(Collection<K> keys);" + NL + "}";
+  protected final String TEXT_2 = ".api;" + NL + "" + NL + "import java.util.Collection;" + NL + "" + NL + "/**" + NL + " */" + NL + "public interface IAccessorService<K, T>" + NL + "{" + NL + "    /**" + NL + "     * @return an object for the given key" + NL + "     */" + NL + "    public T get(K key);" + NL + "    " + NL + "    /**" + NL + "     * @return an object for the given key" + NL + "     */" + NL + "    public Collection<T> getAll(Collection<K> keys);" + NL + "}";
   protected final String TEXT_3 = NL;
 
    /* (non-javadoc)

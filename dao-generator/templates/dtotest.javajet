@@ -1,4 +1,4 @@
-<%@ jet package="com.porpoise.dao.generator.templates" imports="java.util.* com.porpoise.dao.generator.gen.* com.porpoise.dao.generator.model.*" class="DtoTestTemplate" 
+<%@ jet package="com.porpoise.dao.generator.templates" imports="com.porpoise.generator.* java.util.* com.porpoise.dao.generator.gen.* com.porpoise.dao.generator.model.*" class="DtoTestTemplate" 
 skeleton="generator.skeleton" %><% 
 final DaoContext ctxt = (DaoContext) argument; 
 final String n = ctxt.getJavaName();

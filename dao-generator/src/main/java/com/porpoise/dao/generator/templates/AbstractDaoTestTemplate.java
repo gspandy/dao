@@ -1,9 +1,9 @@
 package com.porpoise.dao.generator.templates;
 
 import java.util.*;
+import com.porpoise.generator.*;
 import com.porpoise.dao.generator.gen.*;
 import com.porpoise.dao.generator.model.*;
-import com.porpoise.generator.IGenerator;
 
 public class AbstractDaoTestTemplate implements IGenerator
 {

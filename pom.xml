@@ -18,7 +18,10 @@
 	<modules>
 		<module>dao-common</module>
 		<module>dao-derby</module>
+		<module>base-generator</module>
+		<module>api-generator</module>
 		<module>dao-generator</module>
+		<module>dao-access</module>
 <!--
 		<module>dao-from-msaccess</module>
 -->
@@ -105,6 +108,12 @@ or
 
 		<pluginManagement>
 			<plugins>
+
+				<plugin>
+				   <groupId>org.codehaus.mojo</groupId>
+				   <artifactId>dashboard-maven-plugin</artifactId>
+                                   <version>1.0-SNAPSHOT</version>
+				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-site-plugin</artifactId>
@@ -132,7 +141,7 @@ or
 					<artifactId>maven-javadoc-plugin</artifactId>
 					<version>${javaDocVersion}</version>
 				</plugin>
-
+<!--
 				<plugin>
 					<groupId>com.xebia.mojo</groupId>
 					<artifactId>maven-dashboard-plugin</artifactId>
@@ -140,6 +149,7 @@ or
 						<destinationFile>${project.reporting.outputDirectory}/maven-dashboard-report.html</destinationFile>
 					</configuration>
 				</plugin>
+-->
 
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -169,12 +179,12 @@ or
 
 	<reporting>
 		<plugins>
-
+<!--
 			<plugin>
 				<groupId>com.xebia.mojo</groupId>
 				<artifactId>maven-dashboard-plugin</artifactId>
 			</plugin>
-
+-->
 			<plugin>
 				<artifactId>maven-javadoc-plugin</artifactId>
 				<version>${javaDocVersion}</version>
@@ -194,6 +204,11 @@ or
                     </additionalparam>
 				</configuration>
 			</plugin>
+ <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>cobertura-maven-plugin</artifactId>
+        <version>2.4</version>
+      </plugin>
 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>

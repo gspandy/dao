@@ -1,4 +1,4 @@
-<%@ jet package="com.porpoise.dao.generator.templates" imports="java.util.* com.porpoise.dao.generator.gen.* com.porpoise.dao.generator.model.*" class="DaoPomTemplate" 
+<%@ jet package="com.porpoise.dao.generator.templates" imports="com.porpoise.generator.* java.util.* com.porpoise.dao.generator.gen.* com.porpoise.dao.generator.model.*" class="DaoPomTemplate" 
 skeleton="generator.skeleton" %><% final PomContext ctxt = (PomContext) argument; 
 %>
 <?xml version="1.0" encoding="UTF-8"?>

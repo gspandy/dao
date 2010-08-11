@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry including="**/*.java" kind="src" output="target/test-classes" path="src/test/java"/>
+	<classpathentry excluding="**/*.java" kind="src" output="target/test-classes" path="src/test/resources"/>
+	<classpathentry including="**/*.java" kind="src" path="src/main/java"/>
+	<classpathentry excluding="**/*.java" kind="src" path="src/main/resources"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/api-generator"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/base-generator"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/dao-generator"/>
+	<classpathentry kind="var" path="M2_REPO/com/porpoise/dao/api-generator/0.0.1-SNAPSHOT/api-generator-0.0.1-SNAPSHOT.jar"/>
+	<classpathentry kind="var" path="M2_REPO/com/porpoise/dao/base-generator/0.0.1-SNAPSHOT/base-generator-0.0.1-SNAPSHOT.jar"/>
+	<classpathentry kind="var" path="M2_REPO/com/porpoise/dao/dao-common/0.0.1-SNAPSHOT/dao-common-0.0.1-SNAPSHOT.jar"/>
+	<classpathentry kind="var" path="M2_REPO/com/porpoise/dao/dao-generator/0.0.1-SNAPSHOT/dao-generator-0.0.1-SNAPSHOT.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/apache/derby/derby/10.5.3.0_1/derby-10.5.3.0_1.jar"/>
+	<classpathentry kind="var" path="M2_REPO/com/google/guava/guava/r06/guava-r06.jar" sourcepath="M2_REPO/com/google/guava/guava/r06/guava-r06-sources.jar"/>
+	<classpathentry kind="var" path="M2_REPO/junit/junit/4.4/junit-4.4.jar" sourcepath="M2_REPO/junit/junit/4.4/junit-4.4-sources.jar"/>
+	<classpathentry kind="var" path="M2_REPO/log4j/log4j/1.2.14/log4j-1.2.14.jar" sourcepath="M2_REPO/log4j/log4j/1.2.14/log4j-1.2.14-sources.jar"/>
+	<classpathentry kind="var" path="M2_REPO/mysql/mysql-connector-java/5.1.9/mysql-connector-java-5.1.9.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="output" path="target/classes"/>
+</classpath>

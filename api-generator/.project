@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-  <name>api-generator</name>
-  <comment>NO_M2ECLIPSE_SUPPORT: Project files created with the maven-eclipse-plugin are not supported in M2Eclipse.</comment>
-  <projects>
-    <project>base-generator</project>
-  </projects>
-  <buildSpec>
+	<name>api-generator</name>
+	<comment>NO_M2ECLIPSE_SUPPORT: Project files created with the maven-eclipse-plugin are not supported in M2Eclipse.</comment>
+	<projects>
+	</projects>
+	<buildSpec>
 		<buildCommand>
 			<name>org.eclipse.emf.codegen.JETBuilder</name>
 			<arguments>

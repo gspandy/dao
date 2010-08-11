@@ -3,18 +3,11 @@ package com.porpoise.dao.generator.gen;
 import java.io.File;
 import java.util.Collection;
 
-import com.google.common.base.Strings;
 import com.porpoise.dao.generator.model.Table;
+import com.porpoise.generator.AbstractProjectDefinition;
 
-public class ProjectDefinition {
+public class ProjectDefinition extends AbstractProjectDefinition {
 	private final Collection<Table> tables;
-
-	private final File destination;
-	private final String artifact;
-	private final String group;
-	private final String packageName;
-	private final String version;
-	private final boolean hasPomDefinition;
 
 	public ProjectDefinition(final Collection<Table> tables,
 			final File destinationDirectory, final String packageName) {
@@ -25,45 +18,11 @@ public class ProjectDefinition {
 			final File destinationDirectory, final String group,
 			final String artifact, final String version,
 			final String packageName) {
+		super(destinationDirectory, group, artifact, version, packageName);
 		this.tables = tables;
-		this.destination = destinationDirectory;
-		this.artifact = artifact;
-		this.group = group;
-		this.version = version;
-		this.packageName = packageName;
-		hasPomDefinition = hasValue(artifact) && hasValue(group)
-				&& hasValue(version);
-	}
-
-	private boolean hasValue(final String artifact) {
-		return !Strings.isNullOrEmpty(artifact);
 	}
 
 	public Collection<Table> getTables() {
 		return tables;
-	}
-
-	public File getTargetDirectory() {
-		return destination;
-	}
-
-	public String getArtifactId() {
-		return artifact;
-	}
-
-	public String getGroupId() {
-		return group;
-	}
-
-	public String getPackageName() {
-		return packageName;
-	}
-
-	public String getVersion() {
-		return version;
-	}
-
-	public boolean hasPomDefinition() {
-		return hasPomDefinition;
 	}
 }
