@@ -25,7 +25,7 @@ public final class <%= n %>Dto extends AbstractDto
 <%}%>
 
     public <%= n %>Dto(
-<%= ctxt.getColumnDeclarations() %>    
+<%= ctxt.getDeclarations() %>    
     )
     {
         super();
@@ -50,7 +50,7 @@ public final class <%= n %>Dto extends AbstractDto
     @Override
     public String toString()
     {
-        return String.format("<%= n %>Dto [<%= ctxt.getColumnParameterListAsToString() %>]", <%= ctxt.getColumnAccessorMethods("this") %>);
+        return String.format("<%= n %>Dto [<%= ctxt.getParameterListAsToString() %>]", <%= ctxt.getAccessorMethods("this") %>);
     }
 
     /* (non-Javadoc)

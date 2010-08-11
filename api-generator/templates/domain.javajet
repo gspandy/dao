@@ -1,29 +1,158 @@
-<%@ jet package="com.porpoise.api.generator.templates" imports="java.util.* com.porpoise.generator.* com.porpoise.api.generator.model.* com.porpoise.api.generator.gen.*" class="DomainTemplate"  
+<%@ jet package="com.porpoise.api.generator.templates" imports="com.porpoise.generator.model.* java.util.* com.porpoise.generator.* com.porpoise.api.generator.model.* com.porpoise.api.generator.gen.*" class="DomainTemplate"  
 skeleton="generator.skeleton" %><% final ApiContext ctxt = (ApiContext) argument; 
 final String n = ctxt.getJavaName();
 %>
-package <%= ctxt.getPackageName() %>.api;
+package <%= ctxt.getPackageName() %>.domain;
 
 import java.math.BigDecimal;
 import java.io.Serializable;
-import java.util.List;
-import java.util.Date;
-import java.util.Arrays;
+import java.util.*;
 import javax.xml.bind.annotation.*;
-import javax.persistence.*;
-import <%= ctxt.getPackageName() %>.model.<%= n %>Dto;
+import com.google.common.collect.*;
+import com.google.common.primitives.*;
+import <%= ctxt.getPackageName() %>.I<%= n %>;
 
 /**
  * <%= n %>
  */
-@XmlType(name="${form.PropertyName}Type")
-@XmlRootElement(name="${form.PropertyName}")
-@Entity(name="${fileName.toLowerCase()}")
-@Table(name="${tablePrefix}${form.TableName}")
-public final class <%= n %> extends DomainObject implements Serializable
+@XmlType(name="<%= n %>")
+@XmlRootElement(name="<%= n %>")
+//@Entity(name="${fileName.toLowerCase()}")
+//@Table(name="${tablePrefix}${form.TableName}")
+public final class <%= n %> extends AbstractDomainObject implements I<%= n %>
 {
     /**
      */
     private static final long         serialVersionUID = 1L;
-    
+
+<% for (final IField f : ctxt.getSingleFields()) { %>
+    /**
+     * <%= f.getNameAsProperty() %>
+     */
+    private final <%= f.getJavaTypeName() %> <%= f.getNameAsProperty() %>;
+<%}  // end for %>
+
+<% for (final IField f : ctxt.getListFields()) { %>
+    /**
+     * <%= f.getNameAsProperty() %>
+     */
+    private final Collection<<%= f.getJavaTypeName() %>> <%= f.getNameAsProperty() %>;
+<%} // end for %>
+
+    /**
+     */
+    public <%= n %>(<%= ctxt.getDeclarations() %>) {
+<% for (final IField f : ctxt.getSingleFields()) {
+if (f.isDate()) {
+%>
+        this.<%= f.getNameAsProperty() %> = <%= f.getNameAsProperty() %> == null ? null : new Date(<%= f.getNameAsProperty() %>.getTime()); 
+<%} else if (f.isByteArray()) {%>
+        this.<%= f.getNameAsProperty() %> = <%= f.getNameAsProperty() %> == null ? null : ImmutableList.copyOf(Bytes.asList(<%= f.getNameAsProperty() %>)); 
+<%} else { %>
+        this.<%= f.getNameAsProperty() %> = <%= f.getNameAsProperty() %>; 
+<%} // end if %>
+<%}  // end for %>
+
+<% for (final IField f : ctxt.getListFields()) { %>
+        this.<%= f.getNameAsProperty() %> = ImmutableList.copyOf(<%= f.getNameAsProperty() %>);
+<%}  // end for %>
+    }
+
+<% for (final IField f : ctxt.getSingleFields()) { %>
+    /**
+     * @return <%= f.getNameAsProperty() %>
+     */
+    public <%= f.getJavaTypeName() %> <%= f.getNameAsAccessor() %>()
+    {
+        return this.<%= f.getNameAsProperty() %>;
+    }
+<%}  // end for %>
+
+<% for (final IField f : ctxt.getListFields()) { %>
+    /**
+     * @return <%= f.getNameAsProperty() %>
+     */
+    public Collection<<%= f.getJavaTypeName() %>> <%= f.getNameAsAccessor() %>()
+    {
+        return this.<%= f.getNameAsProperty() %>;
+    }
+<%} // end for %>
+
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString()
+    {
+        return String.format("<%= n %>Dto [<%= ctxt.getParameterListAsToString() %>]", <%= ctxt.getAccessorMethods("this") %>);
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode()
+    {
+        final int prime = 31;
+        int result = 1;
+<% for (final IField field : ctxt.getSingleFields()) { %>
+<% if (field.isDate()) {%>
+        result = prime * result + hashCode(<%= field.getNameAsAccessor() %>());
+<% } else if (field.isByteArray()) { %>
+        result = prime * result + hashCode(<%= field.getNameAsAccessor() %>());
+<% } else { %>
+        result = prime * result + ((<%= field.getNameAsAccessor() %>() == null) ? 0 : <%= field.getNameAsAccessor() %>().hashCode());
+<% } %>
+<%}%>
+        return result;
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        <%= n %>Dto other = (<%= n %>Dto) obj;
+
+<% for (final IField field : ctxt.getSingleFields()) { %>
+
+        if (<%= field.getNameAsAccessor() %>() == null)
+        {
+            if (other.<%= field.getNameAsAccessor() %>() != null)
+            {
+                return false;
+            }
+        }
+<% if (field.isDate()) {%>
+        else if (!equals(<%= field.getNameAsAccessor() %>(), other.<%= field.getNameAsAccessor() %>()))
+        {
+            return false;
+        }
+<% } else if (field.isBigDecimal()) { %>
+        else if (<%= field.getNameAsAccessor() %>().compareTo(other.<%= field.getNameAsAccessor() %>()) != 0)
+        {
+            return false;
+        }
+<% } else if (field.isByteArray()) { %>
+        else if (!Arrays.equals(<%= field.getNameAsAccessor() %>(), other.<%= field.getNameAsAccessor() %>()))
+        {
+            return false;
+        }
+<% } else { %>
+        else if (!<%= field.getNameAsAccessor() %>().equals(other.<%= field.getNameAsAccessor() %>()))
+        {
+            return false;
+        }
+<% }%>
+<%}%>
+        return true;
+    }
 }

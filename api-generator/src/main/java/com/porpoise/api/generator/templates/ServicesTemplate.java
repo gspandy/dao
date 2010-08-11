@@ -18,7 +18,7 @@ public class ServicesTemplate implements IGenerator
 
   public final String NL = nl == null ? (System.getProperties().getProperty("line.separator")) : nl;
   protected final String TEXT_1 = "package ";
-  protected final String TEXT_2 = ".api;" + NL + "" + NL + "import java.math.BigDecimal;" + NL + "import java.io.Serializable;" + NL + "import java.util.List;" + NL + "import java.util.Date;" + NL + "import java.util.Arrays;" + NL + "" + NL + "/**" + NL + " */" + NL + "public final class Services" + NL + "{" + NL + "    " + NL + "}";
+  protected final String TEXT_2 = ";" + NL + "" + NL + "import java.math.BigDecimal;" + NL + "import java.io.Serializable;" + NL + "import java.util.List;" + NL + "import java.util.Date;" + NL + "import java.util.Arrays;" + NL + "" + NL + "/**" + NL + " */" + NL + "public final class Services" + NL + "{" + NL + "    " + NL + "}";
   protected final String TEXT_3 = NL;
 
    /* (non-javadoc)

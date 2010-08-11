@@ -2,7 +2,7 @@
 skeleton="generator.skeleton" %><% final ApiContext ctxt = (ApiContext) argument; 
 final String n = ctxt.getJavaName();
 %>
-package <%= ctxt.getPackageName() %>.api;
+package <%= ctxt.getPackageName() %>;
 
 import java.math.BigDecimal;
 import java.io.Serializable;

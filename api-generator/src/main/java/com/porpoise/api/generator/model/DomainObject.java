@@ -3,12 +3,16 @@ package com.porpoise.api.generator.model;
 import static com.google.common.base.Joiner.on;
 import static com.google.common.collect.Collections2.transform;
 
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 import com.google.common.base.Function;
 import com.google.common.base.Functions;
 import com.google.common.collect.Lists;
+import com.porpoise.generator.model.Cardinality;
 import com.porpoise.generator.model.FieldType;
+import com.porpoise.generator.model.IField;
 
 public class DomainObject {
 	private final String javaName;
@@ -18,6 +22,7 @@ public class DomainObject {
 			.newArrayList();
 	private final List<DomainObjectField> manyToManyFields = Lists
 			.newArrayList();
+	private Field idField;
 
 	@Override
 	public String toString() {
@@ -38,17 +43,35 @@ public class DomainObject {
 		javaName = name;
 	}
 
-	public void addPrimitiveField(final String name, final FieldType type,
+	public void addIdField(final String name, final FieldType type,
 			final boolean required) {
-		primitiveFields.add(new Field(this, name, type, required));
+		final Field id = addPrimitiveField(name, type, required);
+		idField = id;
+	}
+
+	public Field addPrimitiveField(final String name, final FieldType type,
+			final boolean required) {
+		final Field field = new Field(this, name, type, required);
+		primitiveFields.add(field);
+		return field;
 	}
 
 	public void addOneToManyField(final String name, final DomainObject obj) {
-		oneToManyFields.add(new DomainObjectField(name, obj));
+		oneToManyFields.add(new DomainObjectField(name, obj,
+				Cardinality.OneToMany));
 	}
 
 	public void addManyToManyField(final String name, final DomainObject obj) {
-		manyToManyFields.add(new DomainObjectField(name, obj));
+		manyToManyFields.add(new DomainObjectField(name, obj,
+				Cardinality.ManyToMany));
+	}
+
+	public Field getIdField() {
+		return idField;
+	}
+
+	public boolean hasIdField() {
+		return getIdField() != null;
 	}
 
 	public String getJavaName() {
@@ -68,6 +91,33 @@ public class DomainObject {
 	}
 
 	public void addObjectField(final String name, final DomainObject obj) {
-		objectFields.add(new DomainObjectField(name, obj));
+		objectFields
+				.add(new DomainObjectField(name, obj, Cardinality.OneToOne));
 	}
+
+	public String getIdTypeName() {
+		return getIdField().getType().getJavaName();
+	}
+
+	public Iterator<? extends IField> getAllFields() {
+		final Collection<IField> all = Lists.newArrayList();
+		all.addAll(getSingleFields());
+		all.addAll(getListFields());
+		return all.iterator();
+	}
+
+	public List<IField> getListFields() {
+		final List<IField> fields = Lists.newArrayList();
+		fields.addAll(oneToManyFields);
+		fields.addAll(manyToManyFields);
+		return fields;
+	}
+
+	public List<IField> getSingleFields() {
+		final List<IField> fields = Lists.newArrayList();
+		fields.addAll(objectFields);
+		fields.addAll(primitiveFields);
+		return fields;
+	}
+
 }

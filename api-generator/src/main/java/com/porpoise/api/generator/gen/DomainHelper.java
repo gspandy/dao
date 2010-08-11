@@ -46,11 +46,14 @@ enum DomainHelper {
 
 	private static void addPropertyForColumn(final DomainObject sourceObject,
 			final Map<String, DomainObject> objByName, final Column col) {
-		final boolean isPrimitive = isPrimitive(col);
-		// if (isPrimitive) {
-		sourceObject.addPrimitiveField(col.getName(), col.getType(),
-				col.isRequired());
-		// }
+
+		if (col.isPrimaryKey()) {
+			sourceObject.addIdField(col.getNameAsProperty(), col.getType(),
+					col.isRequired());
+		} else {
+			sourceObject.addPrimitiveField(col.getNameAsProperty(),
+					col.getType(), col.isRequired());
+		}
 
 		addReferencesProperties(sourceObject, objByName, col);
 	}

@@ -9,6 +9,7 @@ import com.porpoise.api.generator.model.DomainObject;
 import com.porpoise.api.generator.templates.AbstractAccessorServiceTemplate;
 import com.porpoise.api.generator.templates.AbstractAssemblerTemplate;
 import com.porpoise.api.generator.templates.AbstractDomainObjectTemplate;
+import com.porpoise.api.generator.templates.AbstractObjectTemplate;
 import com.porpoise.api.generator.templates.AccessorServiceTemplate;
 import com.porpoise.api.generator.templates.AccessorTemplate;
 import com.porpoise.api.generator.templates.ApiPomTemplate;
@@ -46,13 +47,37 @@ public class ApiGenerator extends AbstractGenerator {
 
 		mainSourceTemplateByFilename = ImmutableMap.of( //
 				SERVICE_DIR + "I%sAccessorService", accessorService,//
-				ASSEMBLER_DIR + "I%sAssembler", assembler,//
+				ASSEMBLER_DIR + "%sAssembler", assembler,//
 				DOMAIN_DIR + "%s", domain,//
-				"I%sAccessor", accessor//
+				"I%s", accessor//
 				);
 
 		testSourceTemplateByFilename = ImmutableMap.of(//
 				);
+	}
+
+	/**
+	 * not all domain objects have IDs -- if they do NOT, then we don't
+	 * generated certain files for them (e.g. services)
+	 */
+	@Override
+	protected void generate(final File destFolder, final IGenerator template,
+			final AbstractJavaContext ctxt, final String javaFileName)
+			throws IOException {
+
+		final ApiContext apiContext = (ApiContext) ctxt;
+		if (apiContext.hasId()) {
+			super.generate(destFolder, template, ctxt, javaFileName);
+		} else {
+			// NO ID -- should we still generate?
+			if (shouldGenerateForNonIdObject(javaFileName)) {
+				super.generate(destFolder, template, ctxt, javaFileName);
+			}
+		}
+	}
+
+	private boolean shouldGenerateForNonIdObject(final String javaFileName) {
+		return !javaFileName.endsWith("Service");
 	}
 
 	public void generateProject(final ApiProjectDefinition def)
@@ -79,6 +104,8 @@ public class ApiGenerator extends AbstractGenerator {
 				ASSEMBLER_DIR + "AbstractAssembler");
 		generate(destFolder, AbstractDomainObjectTemplate.create(newLine()),
 				ctxt, DOMAIN_DIR + "AbstractDomainObject");
+		generate(destFolder, AbstractObjectTemplate.create(newLine()), ctxt,
+				"AbstractObject");
 		generate(destFolder, RepositoryTemplate.create(newLine()), ctxt,
 				"Repository");
 		generate(destFolder, ServicesTemplate.create(newLine()), ctxt,

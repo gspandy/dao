@@ -18,7 +18,7 @@ public class AbstractDomainObjectTemplate implements IGenerator
 
   public final String NL = nl == null ? (System.getProperties().getProperty("line.separator")) : nl;
   protected final String TEXT_1 = "package ";
-  protected final String TEXT_2 = ".api;" + NL + "" + NL + "import java.util.Collection;" + NL + "" + NL + "/**" + NL + " */" + NL + "abstract class AbstractDomainObject" + NL + "{" + NL + "" + NL + "}";
+  protected final String TEXT_2 = ".domain;" + NL + "" + NL + "import java.io.Serializable;" + NL + "import java.util.*;" + NL + "" + NL + "/**" + NL + " */" + NL + "abstract class AbstractObject extends AbstractObject implements Serializable" + NL + "{" + NL + "    /**" + NL + "     */" + NL + "    private static final long         serialVersionUID = 1L;" + NL + "" + NL + "}";
   protected final String TEXT_3 = NL;
 
    /* (non-javadoc)

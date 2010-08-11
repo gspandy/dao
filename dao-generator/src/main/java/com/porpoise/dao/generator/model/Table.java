@@ -66,8 +66,13 @@ public class Table {
 		for (final Column c : getColumns()) {
 			final String colName = c.getName().toLowerCase();
 			if (colName.endsWith("_id")) {
-				final String idName = colName.substring(0, colName.length()
-						- "_id".length());
+				String idName = colName.substring(0,
+						colName.length() - "_id".length());
+
+				// try to avoid plural y => ies issues
+				if (idName.endsWith("y")) {
+					idName = idName.substring(0, idName.length() - 1);
+				}
 				if (tableNameLowerCase.startsWith(idName)) {
 					final int subsequentUnderscore = tableNameLowerCase
 							.indexOf('_', idName.length());

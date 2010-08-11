@@ -49,7 +49,7 @@ public class <%= n %>Dao extends AbstractDao
             final <%= c.getJavaTypeName() %> <%= ctxt.asProperty(c.getName()) %> = <%= c.getResultSetAccessorName() %>(resultSet, columnIndex++);
 <%} // end for %>
 
-            final <%= n %>Dto dto  = new <%= n %>Dto(<%=  ctxt.getColumnParameterList() %>);
+            final <%= n %>Dto dto  = new <%= n %>Dto(<%=  ctxt.getParameterList() %>);
             this.dtoResults.add(dto);
             return true;
         }
@@ -139,7 +139,7 @@ public class <%= n %>Dao extends AbstractDao
     public void insert(final IDbTransaction transaction, final <%= n %>Dto dto)
     {
         final String sql = <%= n %>Sql.insert();
-        transaction.executeUpdate(sql, <%= ctxt.getColumnAccessorMethods("dto") %>); 
+        transaction.executeUpdate(sql, <%= ctxt.getAccessorMethods("dto") %>); 
     }    
 
 <% if (ctxt.hasIdField()) { %>
@@ -151,7 +151,7 @@ public class <%= n %>Dao extends AbstractDao
     public <T> void update(final IDbTransaction transaction, T id, final <%= n %>Dto dto)
     {
         final String sql = <%= n %>Sql.update() + " WHERE id=?";
-        transaction.executeUpdate(sql, <%= ctxt.getColumnAccessorMethods("dto") %>, id); 
+        transaction.executeUpdate(sql, <%= ctxt.getAccessorMethods("dto") %>, id); 
     }    
 <% } %>
 }

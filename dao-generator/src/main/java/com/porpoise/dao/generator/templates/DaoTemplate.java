@@ -110,7 +110,7 @@ final String n = ctxt.getJavaName();
     stringBuffer.append(TEXT_14);
     stringBuffer.append( n );
     stringBuffer.append(TEXT_15);
-    stringBuffer.append(  ctxt.getColumnParameterList() );
+    stringBuffer.append(  ctxt.getParameterList() );
     stringBuffer.append(TEXT_16);
     stringBuffer.append( n );
     stringBuffer.append(TEXT_17);
@@ -174,7 +174,7 @@ final String n = ctxt.getJavaName();
     stringBuffer.append(TEXT_46);
     stringBuffer.append( n );
     stringBuffer.append(TEXT_47);
-    stringBuffer.append( ctxt.getColumnAccessorMethods("dto") );
+    stringBuffer.append( ctxt.getAccessorMethods("dto") );
     stringBuffer.append(TEXT_48);
      if (ctxt.hasIdField()) { 
     stringBuffer.append(TEXT_49);
@@ -182,7 +182,7 @@ final String n = ctxt.getJavaName();
     stringBuffer.append(TEXT_50);
     stringBuffer.append( n );
     stringBuffer.append(TEXT_51);
-    stringBuffer.append( ctxt.getColumnAccessorMethods("dto") );
+    stringBuffer.append( ctxt.getAccessorMethods("dto") );
     stringBuffer.append(TEXT_52);
      } 
     stringBuffer.append(TEXT_53);

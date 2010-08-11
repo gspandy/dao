@@ -2,13 +2,13 @@
 skeleton="generator.skeleton" %><% final ApiContext ctxt = (ApiContext) argument;
 final String n = ctxt.getJavaName(); 
 %>
-package <%= ctxt.getPackageName() %>.api;
+package <%= ctxt.getPackageName() %>;
 
 import java.util.Collection;
 
 /**
  */
-public final interface I<%= n %>
+public interface I<%= n %>
 {
 
 }

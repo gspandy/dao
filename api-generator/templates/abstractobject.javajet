@@ -1,0 +1,46 @@
+<%@ jet package="com.porpoise.api.generator.templates" imports="java.util.* com.porpoise.generator.* com.porpoise.api.generator.model.* com.porpoise.api.generator.gen.*" class="AbstractObjectTemplate"  
+skeleton="generator.skeleton" %><% final ApiContext ctxt = (ApiContext) argument;
+%>
+package <%= ctxt.getPackageName() %>;
+
+import java.util.*;
+
+/**
+ */
+public abstract class AbstractObject
+{
+
+    public static final boolean equals(final Date d1, final Date d2) {
+		// equals is assumed to be within 1 second
+		final int marginForErrorInMillis = 1000;
+		return within(d1, d2, marginForErrorInMillis);
+	}
+	
+	protected static final int hashCode(final Date date) {
+		if (date == null)
+		{
+		    return 0;
+		}
+		final int hash = (int)(date.getTime() / 1000);
+		return hash;
+	}
+	
+	protected static final int hashCode(final byte[] bytes) {
+		if (bytes == null)
+		{
+		    return 0;
+		}
+		return Arrays.hashCode(bytes);
+	}
+
+	private static boolean within(final Date d1, final Date d2,
+			final int marginForErrorInMillis) {
+		if (d1 == null) {
+			return d2 == null;
+		} else if (d2 != null) {
+			final long diff = Math.abs(d1.getTime() - d2.getTime());
+			return diff < marginForErrorInMillis;
+		}
+		return false;
+	}
+}

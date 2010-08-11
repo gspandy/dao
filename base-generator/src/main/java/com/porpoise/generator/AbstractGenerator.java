@@ -49,7 +49,7 @@ public abstract class AbstractGenerator {
 	protected abstract void generateStaticTestClasses(final File destFolder,
 			final AbstractJavaContext ctxt) throws IOException;
 
-	private static void generateAll(final File destFolder,
+	private void generateAll(final File destFolder,
 			final AbstractJavaContext ctxt,
 			final Map<String, IGenerator> templateByFilename)
 			throws IOException {
@@ -104,9 +104,9 @@ public abstract class AbstractGenerator {
 		return String.format("%n");
 	}
 
-	protected static void generate(final File destFolder,
-			final IGenerator template, final AbstractJavaContext ctxt,
-			final String javaFileName) throws IOException {
+	protected void generate(final File destFolder, final IGenerator template,
+			final AbstractJavaContext ctxt, final String javaFileName)
+			throws IOException {
 		final String basePackagePath = ctxt.getPackageNameAsPath();
 		final File file = createJavaFile(destFolder, basePackagePath,
 				javaFileName);

@@ -18,7 +18,7 @@ public class AssemblerTemplate implements IGenerator
 
   public final String NL = nl == null ? (System.getProperties().getProperty("line.separator")) : nl;
   protected final String TEXT_1 = "package ";
-  protected final String TEXT_2 = ".api;" + NL + "" + NL + "import java.util.Collection;" + NL + "" + NL + "/**" + NL + " */" + NL + "public final class ";
+  protected final String TEXT_2 = ".assembler;" + NL + "" + NL + "import java.util.Collection;" + NL + "" + NL + "/**" + NL + " */" + NL + "public final class ";
   protected final String TEXT_3 = "Assembler extends AbstractAssembler" + NL + "{" + NL + "" + NL + "}";
   protected final String TEXT_4 = NL;
 

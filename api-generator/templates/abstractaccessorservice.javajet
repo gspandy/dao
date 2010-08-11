@@ -1,7 +1,7 @@
 <%@ jet package="com.porpoise.api.generator.templates" imports="java.util.* com.porpoise.generator.* com.porpoise.api.generator.model.* com.porpoise.api.generator.gen.*" class="AbstractAccessorServiceTemplate"  
 skeleton="generator.skeleton" %><% final ApiContext ctxt = (ApiContext) argument; 
 %>
-package <%= ctxt.getPackageName() %>.api;
+package <%= ctxt.getPackageName() %>.service;
 
 import java.util.Collection;
 
@@ -12,10 +12,10 @@ public interface IAccessorService<K, T>
     /**
      * @return an object for the given key
      */
-    public T get(K key);
+    public T get(final K key);
     
     /**
      * @return an object for the given key
      */
-    public Collection<T> getAll(Collection<K> keys);
+    public Collection<T> getAll(final Collection<K> keys);
 }

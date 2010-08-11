@@ -10,13 +10,14 @@ import com.google.common.base.CaseFormat;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
+import com.porpoise.generator.model.AbstractField;
 import com.porpoise.generator.model.Cardinality;
 import com.porpoise.generator.model.FieldType;
 
-public class Column {
+public class Column extends AbstractField {
 	private final String name;
 	private final boolean required;
-	private final FieldType type;
+
 	private final Table owningTable;
 
 	private final Multimap<Cardinality, Column> fkReferences = ArrayListMultimap
@@ -26,10 +27,10 @@ public class Column {
 
 	Column(final Table table, final String n, final boolean isRequired,
 			final FieldType colType) {
+		super(colType);
 		this.owningTable = checkNotNull(table);
 		this.name = checkNotNull(n);
 		this.required = isRequired;
-		this.type = checkNotNull(colType);
 	}
 
 	public boolean fkReferenceTo(final Column other) {
@@ -71,35 +72,20 @@ public class Column {
 		return this.required;
 	}
 
-	/**
-	 * @return the type
-	 */
-	public FieldType getType() {
-		return this.type;
-	}
-
-	public String getJavaTypeName() {
-		return this.type.getJavaName();
-	}
-
 	public String getResultSetAccessorName() {
-		return type.getResultSetAccessorName();
+		return getType().getResultSetAccessorName();
 	}
 
+	@Override
 	public String getNameAsProperty() {
 		return CaseFormat.UPPER_UNDERSCORE
 				.to(CaseFormat.LOWER_CAMEL, getName());
 	}
 
-	public String getNameAsAccessor() {
-		return "get"
-				+ CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL,
-						getName());
-	}
-
 	/**
 	 * @return true if this column is a primary key
 	 */
+	@Override
 	public boolean isPrimaryKey() {
 		return getTable().hasIdColumn()
 				&& getTable().getIdColumn().equals(this);
@@ -148,16 +134,9 @@ public class Column {
 		return !fkReferences.isEmpty();
 	}
 
-	public boolean isBigDecimal() {
-		return getType() == FieldType.BigDecimal;
-	}
-
-	public boolean isDate() {
-		return getType() == FieldType.Date || getType() == FieldType.Timestamp;
-	}
-
-	public boolean isByteArray() {
-		return getType() == FieldType.Bytes;
+	@Override
+	public String getJavaName() {
+		return getName();
 	}
 
 }

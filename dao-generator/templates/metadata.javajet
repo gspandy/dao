@@ -37,5 +37,5 @@ public enum <%= n %>Metadata
     /**
      * All fields
      */
-    public static ImmutableList<? extends Field<?>> FIELDS = ImmutableList.of(<%= ctxt.getColumnNames() %>);
+    public static ImmutableList<? extends Field<?>> FIELDS = ImmutableList.of(<%= ctxt.getFieldNames() %>);
 }

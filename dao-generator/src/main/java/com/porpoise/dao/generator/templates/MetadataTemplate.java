@@ -80,7 +80,7 @@ final String n = ctxt.getJavaName();
     stringBuffer.append(TEXT_16);
      } // end if 
     stringBuffer.append(TEXT_17);
-    stringBuffer.append( ctxt.getColumnNames() );
+    stringBuffer.append( ctxt.getFieldNames() );
     stringBuffer.append(TEXT_18);
     stringBuffer.append(TEXT_19);
     return stringBuffer.toString();

@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
 
-import a.b.c.d.e.f.g.h.i.j.BaseGenerator;
 
 import com.porpoise.api.generator.gen.ApiGenerator;
 import com.porpoise.api.generator.gen.ApiProjectDefinition;
@@ -31,7 +30,7 @@ public class MeteorGeneratorMain {
 		final Collection<DomainObject> objects = ApiProjectDefinition
 				.valueOf(tables);
 		new ApiGenerator().generateProject(new ApiProjectDefinition(objects,
-				api, group, "api", "1.0.0", packageName));
+				api, group, "knowledge-api", "1.0.0", packageName));
 
 		System.out.println("Done");
 	}

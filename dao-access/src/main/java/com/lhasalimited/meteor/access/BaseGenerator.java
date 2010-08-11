@@ -1,4 +1,4 @@
-package a.b.c.d.e.f.g.h.i.j;
+package com.lhasalimited.meteor.access;
 
 import java.io.File;
 import java.io.IOException;
@@ -687,7 +687,7 @@ public class BaseGenerator {
 				false, FieldType.Integer);
 		GROUNDS_THRESHOLD__COUNTER = GROUNDS_THRESHOLD.addColumn("COUNTER",
 				false, FieldType.Integer);
-		GROUNDS_THRESHOLD__GROUNDS_ENTITY_ID = GROUNDS_THRESHOLD.addColumn(
+		GROUNDS_THRESHOLD__GROUNDS_ENTITY_ID = GROUNDS_THRESHOLD.addKeyColumn(
 				"GROUNDS_ENTITY_ID", false, FieldType.Integer);
 		GROUNDS_THRESHOLD__THRESHOLD_ENTITY_ID = GROUNDS_THRESHOLD.addColumn(
 				"THRESHOLD_ENTITY_ID", false, FieldType.Integer);
@@ -711,8 +711,8 @@ public class BaseGenerator {
 		// LEVELS_OF_CONFIDENCE
 		// =======================================================================================
 		LEVELS_OF_CONFIDENCE = newTable("LEVELS_OF_CONFIDENCE");
-		LEVELS_OF_CONFIDENCE__CONFIDENCE_ID = LEVELS_OF_CONFIDENCE.addColumn(
-				"CONFIDENCE_ID", false, FieldType.Integer);
+		LEVELS_OF_CONFIDENCE__CONFIDENCE_ID = LEVELS_OF_CONFIDENCE
+				.addKeyColumn("CONFIDENCE_ID", false, FieldType.Integer);
 		LEVELS_OF_CONFIDENCE__CONFIDENCE_LEVEL = LEVELS_OF_CONFIDENCE
 				.addColumn("CONFIDENCE_LEVEL", false, FieldType.String);
 		LEVELS_OF_CONFIDENCE__CREATION_DATE = LEVELS_OF_CONFIDENCE.addColumn(
@@ -958,7 +958,7 @@ public class BaseGenerator {
 		TAXONS = newTable("TAXONS");
 		TAXONS__SPECIES_ID = TAXONS.addColumn("SPECIES_ID", false,
 				FieldType.Integer);
-		TAXONS__HIGHER_TAXON_ID = TAXONS.addColumn("HIGHER_TAXON_ID", false,
+		TAXONS__HIGHER_TAXON_ID = TAXONS.addKeyColumn("HIGHER_TAXON_ID", false,
 				FieldType.Integer);
 		TAXONS__CREATION_DATE = TAXONS.addColumn("CREATION_DATE", false,
 				FieldType.Timestamp);
@@ -1053,6 +1053,8 @@ public class BaseGenerator {
 		// =======================================================================================
 		COMPONENT_INTERMEDIATE__Component_ID
 				.fkReferenceTo(COMPONENT__Component_ID);
+		COMPONENT_INTERMEDIATE__Intermediate_ID
+				.fkReferenceTo(INTERMEDIATES__ID);
 
 		// =======================================================================================
 		// EXAMPLE_PATTERNS

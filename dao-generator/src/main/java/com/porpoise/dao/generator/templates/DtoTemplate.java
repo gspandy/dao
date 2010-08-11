@@ -106,7 +106,7 @@ final String n = ctxt.getJavaName();
     stringBuffer.append( n );
     stringBuffer.append(TEXT_12);
     stringBuffer.append(TEXT_13);
-    stringBuffer.append( ctxt.getColumnDeclarations() );
+    stringBuffer.append( ctxt.getDeclarations() );
     stringBuffer.append(TEXT_14);
      for (final Column col : ctxt.getColumns()) { 
     stringBuffer.append(TEXT_15);
@@ -130,9 +130,9 @@ final String n = ctxt.getJavaName();
     stringBuffer.append(TEXT_24);
     stringBuffer.append( n );
     stringBuffer.append(TEXT_25);
-    stringBuffer.append( ctxt.getColumnParameterListAsToString() );
+    stringBuffer.append( ctxt.getParameterListAsToString() );
     stringBuffer.append(TEXT_26);
-    stringBuffer.append( ctxt.getColumnAccessorMethods("this") );
+    stringBuffer.append( ctxt.getAccessorMethods("this") );
     stringBuffer.append(TEXT_27);
      for (final Column col : ctxt.getColumns()) { 
      if (col.isDate()) {
