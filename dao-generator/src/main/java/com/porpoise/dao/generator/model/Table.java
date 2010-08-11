@@ -4,6 +4,9 @@ import java.util.Collection;
 import java.util.List;
 
 import com.google.common.base.CaseFormat;
+import com.google.common.base.Function;
+import com.google.common.base.Joiner;
+import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
@@ -178,4 +181,52 @@ public class Table {
 		return !getForeignKeyReferences().isEmpty();
 	}
 
+	/**
+	 * If this table is a join table, then we assume it has two FK fields, in
+	 * addition to perhaps some optional 'created' data fields
+	 * 
+	 * @param from
+	 * @return
+	 */
+	public Column findOtherFkField(final Column from) {
+		if (!isJoinTable()) {
+			throw new IllegalStateException("this is not a join table");
+		}
+
+		boolean foundFirstFkColumn = false;
+		Column otherFk = null;
+		for (final Column col : getColumns()) {
+			if (col == from) {
+				foundFirstFkColumn = true;
+			} else {
+				if (!col.isDate()) {
+					otherFk = col;
+				}
+			}
+		}
+		if (!foundFirstFkColumn) {
+			throw new IllegalStateException(
+					"The first FK field was not found in the table!");
+		}
+		if (otherFk == null) {
+			throw new IllegalStateException(
+					"Couldn't find the other fk field for " + from);
+		}
+
+		return otherFk;
+	}
+
+	@Override
+	public String toString() {
+		final Iterable<?> names = Collections2.transform(this.columns,
+				new Function<Column, String>() {
+
+					@Override
+					public String apply(final Column from) {
+						return from.getName();
+					}
+				});
+		final String cols = Joiner.on(",").join(names);
+		return String.format("%s [%s]", this.name, cols);
+	}
 }

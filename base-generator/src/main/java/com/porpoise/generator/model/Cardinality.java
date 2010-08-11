@@ -1,4 +1,4 @@
-package com.porpoise.api.generator.model;
+package com.porpoise.generator.model;
 
 public enum Cardinality {
 

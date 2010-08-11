@@ -4,11 +4,13 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.Collection;
-import java.util.Set;
+import java.util.Map.Entry;
 
 import com.google.common.base.CaseFormat;
+import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
+import com.google.common.collect.Multimap;
+import com.porpoise.generator.model.Cardinality;
 import com.porpoise.generator.model.FieldType;
 
 public class Column {
@@ -17,8 +19,10 @@ public class Column {
 	private final FieldType type;
 	private final Table owningTable;
 
-	private final Set<Column> fkReferences = Sets.newHashSet();
-	private final Set<Column> referencedBy = Sets.newHashSet();
+	private final Multimap<Cardinality, Column> fkReferences = ArrayListMultimap
+			.create();
+	private final Multimap<Cardinality, Column> referencedBy = ArrayListMultimap
+			.create();
 
 	Column(final Table table, final String n, final boolean isRequired,
 			final FieldType colType) {
@@ -29,15 +33,21 @@ public class Column {
 	}
 
 	public boolean fkReferenceTo(final Column other) {
+		return fkReferenceTo(Cardinality.OneToMany, other);
+	}
+
+	public boolean fkReferenceTo(final Cardinality cardinality,
+			final Column other) {
 		if (other == null) {
 			return false;
 		}
 		checkArgument(other.getTable() != owningTable,
 				"cannot create a foreign key reference to another column in the same table");
-		final boolean added = fkReferences.add(other);
+		final boolean added = fkReferences.put(cardinality, other);
 		if (added) {
 			// complete the bi-directional knowledge
-			final boolean inverseAdded = other.referencedBy.add(this);
+			final boolean inverseAdded = other.referencedBy.put(cardinality,
+					this);
 			assert inverseAdded;
 		}
 		return added;
@@ -103,21 +113,35 @@ public class Column {
 	public Collection<Reference> getForeignKeyReferences() {
 		final Collection<Reference> references = Lists.newArrayList();
 
-		for (final Column fk : fkReferences) {
-			references.add(new Reference(this, fk));
+		for (final Entry<Cardinality, Collection<Column>> entry : fkReferences
+				.asMap().entrySet()) {
+			for (final Column fk : entry.getValue()) {
+				references.add(new Reference(this, fk, entry.getKey()));
+			}
 		}
 
 		return references;
 	}
 
+	/**
+	 * @return a collection of references from other tables -- return the tables
+	 *         which reference this column
+	 */
 	public Collection<Reference> getReferencingColumns() {
 		final Collection<Reference> references = Lists.newArrayList();
 
-		for (final Column fk : referencedBy) {
-			references.add(new Reference(fk, this));
+		for (final Entry<Cardinality, Collection<Column>> entry : referencedBy
+				.asMap().entrySet()) {
+			for (final Column fk : entry.getValue()) {
+				references.add(new Reference(fk, this, entry.getKey()));
+			}
 		}
 
 		return references;
+	}
+
+	public boolean isReferenced() {
+		return !getReferencingColumns().isEmpty();
 	}
 
 	public boolean hasFkReferences() {

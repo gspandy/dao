@@ -13,3 +13,4 @@ test/ing
 *.log
 *.dat
 dao-test
+generated

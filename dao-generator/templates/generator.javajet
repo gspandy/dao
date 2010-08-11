@@ -63,6 +63,11 @@ public class BaseGenerator
 	{
 	    return this.tables;
 	}
+	
+	private static Table newTable(String name)
+	{
+	    return new Table(name);
+	}
 
     /** 
      * default constructor
@@ -76,7 +81,7 @@ public class BaseGenerator
         // =======================================================================================
         // <%= table %>
         // =======================================================================================
-		<%= table %> = new Table("<%= table %>");
+		<%= table %> = newTable("<%= table %>");
 <% for (final Column c : t.getColumns()) {
        final String column = c.getName();
        final String addMethod;
@@ -88,10 +93,8 @@ public class BaseGenerator
        } 
 %>
 		<%= field %> = <%= table %>.<%= addMethod %>("<%= column %>", <%= c.isRequired() %>, FieldType.<%= c.getType() %>);
-
-		allTables.add(<%= table %>);
-
 <%} // end for column %>
+		allTables.add(<%= table %>);
 <%} // end for table %>
 
        makeJoins();

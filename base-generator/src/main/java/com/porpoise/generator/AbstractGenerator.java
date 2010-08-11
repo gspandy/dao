@@ -10,6 +10,9 @@ import com.google.common.io.Files;
 
 public abstract class AbstractGenerator {
 
+	private boolean mainStaticClassesGenerated = false;
+	private boolean testStaticClassesGenerated = false;
+
 	/**
 	 * @param destFolder
 	 * @param ctxt
@@ -18,7 +21,10 @@ public abstract class AbstractGenerator {
 	 */
 	public void generateMainJavaSource(final File destFolder,
 			final AbstractJavaContext ctxt) throws IOException {
-		generateStaticMainClasses(destFolder, ctxt);
+		if (!mainStaticClassesGenerated) {
+			mainStaticClassesGenerated = true;
+			generateStaticMainClasses(destFolder, ctxt);
+		}
 
 		generateAll(destFolder, ctxt, getMainSourceTemplateByFilename());
 	}
@@ -32,9 +38,12 @@ public abstract class AbstractGenerator {
 
 	public void generateTestJavaSource(final File destFolder,
 			final AbstractJavaContext ctxt) throws IOException {
-		generateAll(destFolder, ctxt, getTestSourceTemplateByFilename());
+		if (!testStaticClassesGenerated) {
+			testStaticClassesGenerated = true;
+			generateStaticTestClasses(destFolder, ctxt);
+		}
 
-		generateStaticTestClasses(destFolder, ctxt);
+		generateAll(destFolder, ctxt, getTestSourceTemplateByFilename());
 	}
 
 	protected abstract void generateStaticTestClasses(final File destFolder,

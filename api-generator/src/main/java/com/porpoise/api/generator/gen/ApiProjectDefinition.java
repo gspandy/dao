@@ -24,6 +24,7 @@ public class ApiProjectDefinition extends AbstractProjectDefinition {
 
 	public static Collection<DomainObject> valueOf(
 			final Collection<Table> tables) {
-		return null;
+		return DomainHelper.valueOf(tables);
 	}
+
 }

@@ -6,11 +6,14 @@ public class Field {
 	private final DomainObject owner;
 	private final String javaName;
 	private final FieldType type;
+	private final boolean required;
 
-	Field(final DomainObject parent, final String name, final FieldType type) {
+	Field(final DomainObject parent, final String name, final FieldType type,
+			final boolean required) {
 		owner = parent;
 		javaName = name;
 		this.type = type;
+		this.required = required;
 	}
 
 	public FieldType getType() {

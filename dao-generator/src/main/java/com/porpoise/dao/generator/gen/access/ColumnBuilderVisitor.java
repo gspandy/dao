@@ -5,7 +5,6 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 
 import com.porpoise.dao.database.IResultSetVisitor;
-import com.porpoise.dao.generator.model.Column;
 import com.porpoise.dao.generator.model.Table;
 import com.porpoise.generator.model.FieldType;
 
@@ -15,26 +14,7 @@ final class ColumnBuilderVisitor implements IResultSetVisitor {
 
 	ColumnBuilderVisitor(final String tableName) {
 		this.tableName = tableName;
-		this.table = new Table(tableName.toUpperCase()) {
-
-			@Override
-			public boolean isJoinTable() {
-
-				int refCount = 0;
-				for (final Column c : getColumns()) {
-					if (isRefCol(c)) {
-						refCount++;
-					} else {
-						// there may be 'created on' and 'modified on' columns
-						// in addition to the fk columns
-						if (c.getType() != FieldType.Timestamp) {
-							return false;
-						}
-					}
-				}
-				return refCount == 2;
-			}
-		};
+		this.table = new AccessTable(tableName.toUpperCase());
 	}
 
 	@Override
@@ -46,7 +26,6 @@ final class ColumnBuilderVisitor implements IResultSetVisitor {
 			final String name = metaData.getColumnName(column);
 			final String className = metaData.getColumnClassName(column);
 			final String columnTypeName = metaData.getColumnTypeName(column);
-
 			try {
 				final Class<?> c1ass = Class.forName(className);
 				final FieldType colType;

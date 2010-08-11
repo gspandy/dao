@@ -25,10 +25,10 @@ public class GeneratorTemplate implements IGenerator
   protected final String TEXT_6 = NL + "\t\tpublic final Column ";
   protected final String TEXT_7 = "__";
   protected final String TEXT_8 = ";";
-  protected final String TEXT_9 = NL + NL + "\tpublic static void main(final String[] args) throws IOException {" + NL + "\t    final Collection<Table> tables = new BaseGenerator().getTables();" + NL + "" + NL + "\t\tfinal File dest = new File(System.getProperty(\"user.dir\")," + NL + "\t\t\t\t\"generator-main\");" + NL + "" + NL + "\t\tfinal File dao = new File(dest, \"dao\");" + NL + "\t\tfinal File api = new File(dest, \"api\");" + NL + "" + NL + "\t\tfinal String packageName = args.length == 1 ? args[0] : \"com.example\";" + NL + "\t\tfinal String group = packageName;" + NL + "\t\t" + NL + "\t\tnew DaoGenerator().generateProject(new ProjectDefinition(tables, dao, group, \"main-test-dao\", \"1.0.0\", packageName));" + NL + "" + NL + "\t\tfinal Collection<DomainObject> objects = null;" + NL + "\t\tnew ApiGenerator().generateProject(new ApiProjectDefinition(objects," + NL + "\t\t\t\tapi, group, \"api\", \"1.0.0\", packageName));" + NL + "\t}" + NL + "\t" + NL + "\t/** " + NL + "\t * @return the tables;" + NL + "\t */" + NL + "\tpublic Collection<Table> getTables()" + NL + "\t{" + NL + "\t    return this.tables;" + NL + "\t}" + NL + "" + NL + "    /** " + NL + "     * default constructor" + NL + "     */" + NL + "\tpublic BaseGenerator() throws IOException {" + NL + "\t\tfinal List<Table> allTables = Lists.newArrayList();" + NL;
+  protected final String TEXT_9 = NL + NL + "\tpublic static void main(final String[] args) throws IOException {" + NL + "\t    final Collection<Table> tables = new BaseGenerator().getTables();" + NL + "" + NL + "\t\tfinal File dest = new File(System.getProperty(\"user.dir\")," + NL + "\t\t\t\t\"generator-main\");" + NL + "" + NL + "\t\tfinal File dao = new File(dest, \"dao\");" + NL + "\t\tfinal File api = new File(dest, \"api\");" + NL + "" + NL + "\t\tfinal String packageName = args.length == 1 ? args[0] : \"com.example\";" + NL + "\t\tfinal String group = packageName;" + NL + "\t\t" + NL + "\t\tnew DaoGenerator().generateProject(new ProjectDefinition(tables, dao, group, \"main-test-dao\", \"1.0.0\", packageName));" + NL + "" + NL + "\t\tfinal Collection<DomainObject> objects = null;" + NL + "\t\tnew ApiGenerator().generateProject(new ApiProjectDefinition(objects," + NL + "\t\t\t\tapi, group, \"api\", \"1.0.0\", packageName));" + NL + "\t}" + NL + "\t" + NL + "\t/** " + NL + "\t * @return the tables;" + NL + "\t */" + NL + "\tpublic Collection<Table> getTables()" + NL + "\t{" + NL + "\t    return this.tables;" + NL + "\t}" + NL + "\t" + NL + "\tprivate static Table newTable(String name)" + NL + "\t{" + NL + "\t    return new Table(name);" + NL + "\t}" + NL + "" + NL + "    /** " + NL + "     * default constructor" + NL + "     */" + NL + "\tpublic BaseGenerator() throws IOException {" + NL + "\t\tfinal List<Table> allTables = Lists.newArrayList();" + NL;
   protected final String TEXT_10 = NL + "        // =======================================================================================" + NL + "        // ";
   protected final String TEXT_11 = NL + "        // =======================================================================================" + NL + "\t\t";
-  protected final String TEXT_12 = " = new Table(\"";
+  protected final String TEXT_12 = " = newTable(\"";
   protected final String TEXT_13 = "\");";
   protected final String TEXT_14 = NL + "\t\t";
   protected final String TEXT_15 = " = ";
@@ -36,18 +36,19 @@ public class GeneratorTemplate implements IGenerator
   protected final String TEXT_17 = "(\"";
   protected final String TEXT_18 = "\", ";
   protected final String TEXT_19 = ", FieldType.";
-  protected final String TEXT_20 = ");" + NL + "" + NL + "\t\tallTables.add(";
-  protected final String TEXT_21 = ");" + NL;
-  protected final String TEXT_22 = NL + NL + "       makeJoins();" + NL + "       tables = ImmutableList.copyOf(allTables);" + NL + "\t}" + NL + "\t" + NL + "\t/** " + NL + "\t *" + NL + "\t */" + NL + "\tprivate void makeJoins()" + NL + "\t{" + NL + "\t";
-  protected final String TEXT_23 = NL + "        // =======================================================================================" + NL + "        // ";
-  protected final String TEXT_24 = "JOIN TABLE";
-  protected final String TEXT_25 = " ";
-  protected final String TEXT_26 = NL + "        // =======================================================================================";
-  protected final String TEXT_27 = NL + "        ";
-  protected final String TEXT_28 = ".fkReferenceTo(";
-  protected final String TEXT_29 = ");" + NL + "        ";
-  protected final String TEXT_30 = NL + "\t}" + NL + "}";
-  protected final String TEXT_31 = NL;
+  protected final String TEXT_20 = ");";
+  protected final String TEXT_21 = NL + "\t\tallTables.add(";
+  protected final String TEXT_22 = ");";
+  protected final String TEXT_23 = NL + NL + "       makeJoins();" + NL + "       tables = ImmutableList.copyOf(allTables);" + NL + "\t}" + NL + "\t" + NL + "\t/** " + NL + "\t *" + NL + "\t */" + NL + "\tprivate void makeJoins()" + NL + "\t{" + NL + "\t";
+  protected final String TEXT_24 = NL + "        // =======================================================================================" + NL + "        // ";
+  protected final String TEXT_25 = "JOIN TABLE";
+  protected final String TEXT_26 = " ";
+  protected final String TEXT_27 = NL + "        // =======================================================================================";
+  protected final String TEXT_28 = NL + "        ";
+  protected final String TEXT_29 = ".fkReferenceTo(";
+  protected final String TEXT_30 = ");" + NL + "        ";
+  protected final String TEXT_31 = NL + "\t}" + NL + "}";
+  protected final String TEXT_32 = NL;
 
    /* (non-javadoc)
     * @see IGenerator#generate(Object)
@@ -110,11 +111,12 @@ public class GeneratorTemplate implements IGenerator
     stringBuffer.append(TEXT_19);
     stringBuffer.append( c.getType() );
     stringBuffer.append(TEXT_20);
-    stringBuffer.append( table );
-    stringBuffer.append(TEXT_21);
     } // end for column 
-    } // end for table 
+    stringBuffer.append(TEXT_21);
+    stringBuffer.append( table );
     stringBuffer.append(TEXT_22);
+    } // end for table 
+    stringBuffer.append(TEXT_23);
      for (final Table t : ctxt.getTables()) {
 	   
 	   if (!t.hasForeignKeyReferences())
@@ -123,28 +125,28 @@ public class GeneratorTemplate implements IGenerator
 	   }
        final String table = t.getTableName();
 
-    stringBuffer.append(TEXT_23);
-     if (t.isJoinTable()) { 
     stringBuffer.append(TEXT_24);
-     } 
+     if (t.isJoinTable()) { 
     stringBuffer.append(TEXT_25);
-    stringBuffer.append( table );
+     } 
     stringBuffer.append(TEXT_26);
+    stringBuffer.append( table );
+    stringBuffer.append(TEXT_27);
     
        for (final Reference r : t.getForeignKeyReferences()) {
            final String column = r.getFrom().getName();
            final String field = table  + "__" + column;
            final String other = r.getTo().getTable().getTableName() + "__" + r.getTo().getName();
 
-    stringBuffer.append(TEXT_27);
-    stringBuffer.append( field );
     stringBuffer.append(TEXT_28);
-    stringBuffer.append( other );
+    stringBuffer.append( field );
     stringBuffer.append(TEXT_29);
+    stringBuffer.append( other );
+    stringBuffer.append(TEXT_30);
          } // end for column 
       } // end for table 
-    stringBuffer.append(TEXT_30);
     stringBuffer.append(TEXT_31);
+    stringBuffer.append(TEXT_32);
     return stringBuffer.toString();
   }
 }
