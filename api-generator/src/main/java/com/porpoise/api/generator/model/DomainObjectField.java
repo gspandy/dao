@@ -11,6 +11,10 @@ public class DomainObjectField implements IField, ICardinalitySupplier {
 	private final DomainObject type;
 	private final Cardinality cardinality;
 
+	public String getIdAsAccessor() {
+		return getType().getIdField().getNameAsAccessor();
+	}
+
 	public DomainObjectField(final String name, final DomainObject obj,
 			final Cardinality cardinality) {
 		this.name = name;
@@ -27,6 +31,10 @@ public class DomainObjectField implements IField, ICardinalitySupplier {
 	@Override
 	public String getJavaTypeName() {
 		return type.getJavaName();
+	}
+
+	public DomainObject getType() {
+		return type;
 	}
 
 	@Override

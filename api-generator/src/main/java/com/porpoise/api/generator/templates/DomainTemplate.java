@@ -19,12 +19,12 @@ public class DomainTemplate implements IGenerator
 
   public final String NL = nl == null ? (System.getProperties().getProperty("line.separator")) : nl;
   protected final String TEXT_1 = "package ";
-  protected final String TEXT_2 = ".domain;" + NL + "" + NL + "import java.math.BigDecimal;" + NL + "import java.io.Serializable;" + NL + "import java.util.*;" + NL + "import javax.xml.bind.annotation.*;" + NL + "import com.google.common.collect.*;" + NL + "import com.google.common.primitives.*;" + NL + "import ";
+  protected final String TEXT_2 = ".domain;" + NL + "" + NL + "import java.math.BigDecimal;" + NL + "import java.io.Serializable;" + NL + "import java.util.*;" + NL + "import javax.xml.bind.annotation.*;" + NL + "import com.google.common.base.*;" + NL + "import com.google.common.collect.*;" + NL + "import com.google.common.primitives.*;" + NL + "import ";
   protected final String TEXT_3 = ".I";
   protected final String TEXT_4 = ";" + NL + "" + NL + "/**" + NL + " * ";
   protected final String TEXT_5 = NL + " */" + NL + "@XmlType(name=\"";
   protected final String TEXT_6 = "\")" + NL + "@XmlRootElement(name=\"";
-  protected final String TEXT_7 = "\")" + NL + "//@Entity(name=\"${fileName.toLowerCase()}\")" + NL + "//@Table(name=\"${tablePrefix}${form.TableName}\")" + NL + "public final class ";
+  protected final String TEXT_7 = "\")" + NL + "public final class ";
   protected final String TEXT_8 = " extends AbstractDomainObject implements I";
   protected final String TEXT_9 = NL + "{" + NL + "    /**" + NL + "     */" + NL + "    private static final long         serialVersionUID = 1L;" + NL;
   protected final String TEXT_10 = NL + "    /**" + NL + "     * ";
@@ -58,40 +58,54 @@ public class DomainTemplate implements IGenerator
   protected final String TEXT_38 = NL + "    /**" + NL + "     * @return ";
   protected final String TEXT_39 = NL + "     */" + NL + "    public ";
   protected final String TEXT_40 = " ";
-  protected final String TEXT_41 = "()" + NL + "    {" + NL + "        return this.";
-  protected final String TEXT_42 = ";" + NL + "    }";
-  protected final String TEXT_43 = NL;
-  protected final String TEXT_44 = NL + "    /**" + NL + "     * @return ";
-  protected final String TEXT_45 = NL + "     */" + NL + "    public Collection<";
-  protected final String TEXT_46 = "> ";
-  protected final String TEXT_47 = "()" + NL + "    {" + NL + "        return this.";
-  protected final String TEXT_48 = ";" + NL + "    }";
-  protected final String TEXT_49 = NL + NL + NL + "    /* (non-Javadoc)" + NL + "     * @see java.lang.Object#toString()" + NL + "     */" + NL + "    @Override" + NL + "    public String toString()" + NL + "    {" + NL + "        return String.format(\"";
-  protected final String TEXT_50 = "Dto [";
-  protected final String TEXT_51 = "]\", ";
-  protected final String TEXT_52 = ");" + NL + "    }" + NL + "" + NL + "    /* (non-Javadoc)" + NL + "     * @see java.lang.Object#hashCode()" + NL + "     */" + NL + "    @Override" + NL + "    public int hashCode()" + NL + "    {" + NL + "        final int prime = 31;" + NL + "        int result = 1;";
-  protected final String TEXT_53 = NL + "        result = prime * result + hashCode(";
-  protected final String TEXT_54 = "());";
-  protected final String TEXT_55 = NL + "        result = prime * result + ((";
-  protected final String TEXT_56 = "() == null) ? 0 : ";
-  protected final String TEXT_57 = "().hashCode());";
-  protected final String TEXT_58 = NL + "        return result;" + NL + "    }" + NL + "" + NL + "    /* (non-Javadoc)" + NL + "     * @see java.lang.Object#equals(java.lang.Object)" + NL + "     */" + NL + "    @Override" + NL + "    public boolean equals(Object obj)" + NL + "    {" + NL + "        if (this == obj)" + NL + "            return true;" + NL + "        if (obj == null)" + NL + "            return false;" + NL + "        if (getClass() != obj.getClass())" + NL + "            return false;" + NL + "        final ";
-  protected final String TEXT_59 = " other = (";
-  protected final String TEXT_60 = ") obj;" + NL;
-  protected final String TEXT_61 = NL + NL + "        if (";
-  protected final String TEXT_62 = "() == null)" + NL + "        {" + NL + "            if (other.";
-  protected final String TEXT_63 = "() != null)" + NL + "            {" + NL + "                return false;" + NL + "            }" + NL + "        }";
-  protected final String TEXT_64 = NL + "        else if (!equals(";
-  protected final String TEXT_65 = "(), other.";
-  protected final String TEXT_66 = "()))" + NL + "        {" + NL + "            return false;" + NL + "        }";
-  protected final String TEXT_67 = NL + "        else if (";
-  protected final String TEXT_68 = "().compareTo(other.";
-  protected final String TEXT_69 = "()) != 0)" + NL + "        {" + NL + "            return false;" + NL + "        }";
-  protected final String TEXT_70 = NL + "        else if (!";
-  protected final String TEXT_71 = "().equals(other.";
-  protected final String TEXT_72 = "()))" + NL + "        {" + NL + "            return false;" + NL + "        }";
-  protected final String TEXT_73 = NL + "        return true;" + NL + "    }" + NL + "}";
-  protected final String TEXT_74 = NL;
+  protected final String TEXT_41 = "()" + NL + "    {";
+  protected final String TEXT_42 = NL + "        return this.";
+  protected final String TEXT_43 = " == null ? null : new Date(this.";
+  protected final String TEXT_44 = ".getTime());";
+  protected final String TEXT_45 = NL + "        return this.";
+  protected final String TEXT_46 = ";";
+  protected final String TEXT_47 = NL + "    }";
+  protected final String TEXT_48 = NL;
+  protected final String TEXT_49 = NL + "    /**" + NL + "     * @return ";
+  protected final String TEXT_50 = NL + "     */" + NL + "    public Collection<";
+  protected final String TEXT_51 = "> ";
+  protected final String TEXT_52 = "()" + NL + "    {" + NL + "        return this.";
+  protected final String TEXT_53 = ";" + NL + "    }" + NL;
+  protected final String TEXT_54 = NL + NL + "\t@Override" + NL + "\tpublic Collection<";
+  protected final String TEXT_55 = "> ";
+  protected final String TEXT_56 = "Ids() {" + NL + "\t\treturn Collections2.transform(";
+  protected final String TEXT_57 = "()," + NL + "\t\t\t\tnew Function<";
+  protected final String TEXT_58 = ", ";
+  protected final String TEXT_59 = ">() {" + NL + "\t\t\t\t\t@Override" + NL + "\t\t\t\t\tpublic ";
+  protected final String TEXT_60 = " apply(final ";
+  protected final String TEXT_61 = " from) {" + NL + "\t\t\t\t\t\treturn from.";
+  protected final String TEXT_62 = "();" + NL + "\t\t\t\t\t}" + NL + "\t\t\t\t});" + NL + "\t}";
+  protected final String TEXT_63 = NL + NL + NL + "    /* (non-Javadoc)" + NL + "     * @see java.lang.Object#toString()" + NL + "     */" + NL + "    @Override" + NL + "    public String toString()" + NL + "    {" + NL + "        return String.format(\"";
+  protected final String TEXT_64 = "Dto [";
+  protected final String TEXT_65 = "]\", ";
+  protected final String TEXT_66 = ");" + NL + "    }" + NL + "" + NL + "    /* (non-Javadoc)" + NL + "     * @see java.lang.Object#hashCode()" + NL + "     */" + NL + "    @Override" + NL + "    public int hashCode()" + NL + "    {" + NL + "        final int prime = 31;" + NL + "        int result = 1;";
+  protected final String TEXT_67 = NL + "        result = prime * result + hashCode(";
+  protected final String TEXT_68 = "());";
+  protected final String TEXT_69 = NL + "        result = prime * result + ((";
+  protected final String TEXT_70 = "() == null) ? 0 : ";
+  protected final String TEXT_71 = "().hashCode());";
+  protected final String TEXT_72 = NL + "        return result;" + NL + "    }" + NL + "" + NL + "    /* (non-Javadoc)" + NL + "     * @see java.lang.Object#equals(java.lang.Object)" + NL + "     */" + NL + "    @Override" + NL + "    public boolean equals(Object obj)" + NL + "    {" + NL + "        if (this == obj)" + NL + "            return true;" + NL + "        if (obj == null)" + NL + "            return false;" + NL + "        if (getClass() != obj.getClass())" + NL + "            return false;" + NL + "        final ";
+  protected final String TEXT_73 = " other = (";
+  protected final String TEXT_74 = ") obj;" + NL;
+  protected final String TEXT_75 = NL + NL + "        if (";
+  protected final String TEXT_76 = "() == null)" + NL + "        {" + NL + "            if (other.";
+  protected final String TEXT_77 = "() != null)" + NL + "            {" + NL + "                return false;" + NL + "            }" + NL + "        }";
+  protected final String TEXT_78 = NL + "        else if (!equals(";
+  protected final String TEXT_79 = "(), other.";
+  protected final String TEXT_80 = "()))" + NL + "        {" + NL + "            return false;" + NL + "        }";
+  protected final String TEXT_81 = NL + "        else if (";
+  protected final String TEXT_82 = "().compareTo(other.";
+  protected final String TEXT_83 = "()) != 0)" + NL + "        {" + NL + "            return false;" + NL + "        }";
+  protected final String TEXT_84 = NL + "        else if (!";
+  protected final String TEXT_85 = "().equals(other.";
+  protected final String TEXT_86 = "()))" + NL + "        {" + NL + "            return false;" + NL + "        }";
+  protected final String TEXT_87 = NL + "        return true;" + NL + "    }" + NL + "    " + NL + "}";
+  protected final String TEXT_88 = NL;
 
    /* (non-javadoc)
     * @see IGenerator#generate(Object)
@@ -186,74 +200,112 @@ if (f.isDate()) {
     stringBuffer.append(TEXT_40);
     stringBuffer.append( f.getNameAsAccessor() );
     stringBuffer.append(TEXT_41);
-    stringBuffer.append( f.getNameAsProperty() );
+     if (f.isDate()) { 
     stringBuffer.append(TEXT_42);
-    }  // end for 
+    stringBuffer.append( f.getNameAsProperty() );
     stringBuffer.append(TEXT_43);
-     for (final IField f : ctxt.getListFields()) { 
+    stringBuffer.append( f.getNameAsProperty() );
     stringBuffer.append(TEXT_44);
-    stringBuffer.append( f.getNameAsProperty() );
-    stringBuffer.append(TEXT_45);
-    stringBuffer.append( f.getJavaTypeName() );
-    stringBuffer.append(TEXT_46);
-    stringBuffer.append( f.getNameAsAccessor() );
-    stringBuffer.append(TEXT_47);
-    stringBuffer.append( f.getNameAsProperty() );
-    stringBuffer.append(TEXT_48);
-    } // end for 
-    stringBuffer.append(TEXT_49);
-    stringBuffer.append( n );
-    stringBuffer.append(TEXT_50);
-    stringBuffer.append( ctxt.getParameterListAsToString() );
-    stringBuffer.append(TEXT_51);
-    stringBuffer.append( ctxt.getAccessorMethods("this") );
-    stringBuffer.append(TEXT_52);
-     for (final IField field : ctxt.getSingleFields()) { 
-     if (field.isDate()) {
-    stringBuffer.append(TEXT_53);
-    stringBuffer.append( field.getNameAsAccessor() );
-    stringBuffer.append(TEXT_54);
      } else { 
-    stringBuffer.append(TEXT_55);
-    stringBuffer.append( field.getNameAsAccessor() );
-    stringBuffer.append(TEXT_56);
-    stringBuffer.append( field.getNameAsAccessor() );
-    stringBuffer.append(TEXT_57);
+    stringBuffer.append(TEXT_45);
+    stringBuffer.append( f.getNameAsProperty() );
+    stringBuffer.append(TEXT_46);
      } 
-    }
+    stringBuffer.append(TEXT_47);
+    }  // end for 
+    stringBuffer.append(TEXT_48);
+     for (final IField f : ctxt.getListFields()) {
+DomainObjectField dof = (DomainObjectField) f;
+if (!dof.getType().hasIdField())
+{
+    continue;
+}
+ 
+    stringBuffer.append(TEXT_49);
+    stringBuffer.append( f.getNameAsProperty() );
+    stringBuffer.append(TEXT_50);
+    stringBuffer.append( f.getJavaTypeName() );
+    stringBuffer.append(TEXT_51);
+    stringBuffer.append( f.getNameAsAccessor() );
+    stringBuffer.append(TEXT_52);
+    stringBuffer.append( f.getNameAsProperty() );
+    stringBuffer.append(TEXT_53);
+     
+final String idType = ctxt.getJavaKeyTypeForField(f);
+final String name = f.getJavaName();
+
+
+    stringBuffer.append(TEXT_54);
+    stringBuffer.append( idType );
+    stringBuffer.append(TEXT_55);
+    stringBuffer.append( f.getNameAsAccessor() );
+    stringBuffer.append(TEXT_56);
+    stringBuffer.append( f.getNameAsAccessor() );
+    stringBuffer.append(TEXT_57);
+    stringBuffer.append( name );
     stringBuffer.append(TEXT_58);
-    stringBuffer.append( n );
+    stringBuffer.append( idType );
     stringBuffer.append(TEXT_59);
-    stringBuffer.append( n );
+    stringBuffer.append( idType );
     stringBuffer.append(TEXT_60);
-     for (final IField field : ctxt.getSingleFields()) { 
+    stringBuffer.append( name );
     stringBuffer.append(TEXT_61);
-    stringBuffer.append( field.getNameAsAccessor() );
+    stringBuffer.append( dof.getIdAsAccessor() );
     stringBuffer.append(TEXT_62);
-    stringBuffer.append( field.getNameAsAccessor() );
+    } // end for 
     stringBuffer.append(TEXT_63);
-     if (field.isDate()) {
+    stringBuffer.append( n );
     stringBuffer.append(TEXT_64);
-    stringBuffer.append( field.getNameAsAccessor() );
+    stringBuffer.append( ctxt.getParameterListAsToString() );
     stringBuffer.append(TEXT_65);
-    stringBuffer.append( field.getNameAsAccessor() );
+    stringBuffer.append( ctxt.getToStringAccessorMethods("this") );
     stringBuffer.append(TEXT_66);
-     } else if (field.isBigDecimal()) { 
+     for (final IField field : ctxt.getSingleFields()) { 
+     if (field.isDate()) {
     stringBuffer.append(TEXT_67);
     stringBuffer.append( field.getNameAsAccessor() );
     stringBuffer.append(TEXT_68);
-    stringBuffer.append( field.getNameAsAccessor() );
-    stringBuffer.append(TEXT_69);
      } else { 
+    stringBuffer.append(TEXT_69);
+    stringBuffer.append( field.getNameAsAccessor() );
     stringBuffer.append(TEXT_70);
     stringBuffer.append( field.getNameAsAccessor() );
     stringBuffer.append(TEXT_71);
-    stringBuffer.append( field.getNameAsAccessor() );
+     } 
+    }
     stringBuffer.append(TEXT_72);
+    stringBuffer.append( n );
+    stringBuffer.append(TEXT_73);
+    stringBuffer.append( n );
+    stringBuffer.append(TEXT_74);
+     for (final IField field : ctxt.getSingleFields()) { 
+    stringBuffer.append(TEXT_75);
+    stringBuffer.append( field.getNameAsAccessor() );
+    stringBuffer.append(TEXT_76);
+    stringBuffer.append( field.getNameAsAccessor() );
+    stringBuffer.append(TEXT_77);
+     if (field.isDate()) {
+    stringBuffer.append(TEXT_78);
+    stringBuffer.append( field.getNameAsAccessor() );
+    stringBuffer.append(TEXT_79);
+    stringBuffer.append( field.getNameAsAccessor() );
+    stringBuffer.append(TEXT_80);
+     } else if (field.isBigDecimal()) { 
+    stringBuffer.append(TEXT_81);
+    stringBuffer.append( field.getNameAsAccessor() );
+    stringBuffer.append(TEXT_82);
+    stringBuffer.append( field.getNameAsAccessor() );
+    stringBuffer.append(TEXT_83);
+     } else { 
+    stringBuffer.append(TEXT_84);
+    stringBuffer.append( field.getNameAsAccessor() );
+    stringBuffer.append(TEXT_85);
+    stringBuffer.append( field.getNameAsAccessor() );
+    stringBuffer.append(TEXT_86);
      }
     }
-    stringBuffer.append(TEXT_73);
-    stringBuffer.append(TEXT_74);
+    stringBuffer.append(TEXT_87);
+    stringBuffer.append(TEXT_88);
     return stringBuffer.toString();
   }
 }

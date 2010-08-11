@@ -27,10 +27,16 @@ public abstract class AbstractJavaContext {
 			buffer.append(str);
 			return buffer;
 		}
+
+		protected int length() {
+			return buffer.length();
+		}
 	}
 
 	public static abstract class CommasSeparatedBufferVisitor extends
 			BufferVisitor {
+		private static final String DELIM = ", ";
+
 		public CommasSeparatedBufferVisitor() {
 			this("");
 		}
@@ -40,10 +46,22 @@ public abstract class AbstractJavaContext {
 		}
 
 		@Override
+		public String toString() {
+			final String str = super.toString();
+			if (str.endsWith(DELIM)) {
+				return str.substring(0, str.length() - DELIM.length());
+			}
+			return str;
+		}
+
+		@Override
 		public final void onField(final IField fld, final boolean hasNext) {
+
+			final int b4 = length();
 			onField(fld);
-			if (hasNext) {
-				append(", ");
+			final int after = length();
+			if (hasNext && after > b4) {
+				append(DELIM);
 			}
 		}
 

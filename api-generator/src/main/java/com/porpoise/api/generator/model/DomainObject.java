@@ -90,6 +90,10 @@ public class DomainObject {
 		return primitiveFields;
 	}
 
+	public List<DomainObjectField> getObjectFields() {
+		return objectFields;
+	}
+
 	public void addObjectField(final String name, final DomainObject obj) {
 		objectFields
 				.add(new DomainObjectField(name, obj, Cardinality.OneToOne));

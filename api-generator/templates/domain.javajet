@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 import java.io.Serializable;
 import java.util.*;
 import javax.xml.bind.annotation.*;
+import com.google.common.base.*;
 import com.google.common.collect.*;
 import com.google.common.primitives.*;
 import <%= ctxt.getPackageName() %>.I<%= n %>;
@@ -17,8 +18,6 @@ import <%= ctxt.getPackageName() %>.I<%= n %>;
  */
 @XmlType(name="<%= n %>")
 @XmlRootElement(name="<%= n %>")
-//@Entity(name="${fileName.toLowerCase()}")
-//@Table(name="${tablePrefix}${form.TableName}")
 public final class <%= n %> extends AbstractDomainObject implements I<%= n %>
 {
     /**
@@ -64,11 +63,21 @@ if (f.isDate()) {
      */
     public <%= f.getJavaTypeName() %> <%= f.getNameAsAccessor() %>()
     {
+<% if (f.isDate()) { %>
+        return this.<%= f.getNameAsProperty() %> == null ? null : new Date(this.<%= f.getNameAsProperty() %>.getTime());
+<% } else { %>
         return this.<%= f.getNameAsProperty() %>;
+<% } %>
     }
 <%}  // end for %>
 
-<% for (final IField f : ctxt.getListFields()) { %>
+<% for (final IField f : ctxt.getListFields()) {
+DomainObjectField dof = (DomainObjectField) f;
+if (!dof.getType().hasIdField())
+{
+    continue;
+}
+ %>
     /**
      * @return <%= f.getNameAsProperty() %>
      */
@@ -76,6 +85,23 @@ if (f.isDate()) {
     {
         return this.<%= f.getNameAsProperty() %>;
     }
+
+<% 
+final String idType = ctxt.getJavaKeyTypeForField(f);
+final String name = f.getJavaName();
+
+%>
+
+	@Override
+	public Collection<<%= idType %>> <%= f.getNameAsAccessor() %>Ids() {
+		return Collections2.transform(<%= f.getNameAsAccessor() %>(),
+				new Function<<%= name %>, <%= idType %>>() {
+					@Override
+					public <%= idType %> apply(final <%= name %> from) {
+						return from.<%= dof.getIdAsAccessor() %>();
+					}
+				});
+	}
 <%} // end for %>
 
 
@@ -85,7 +111,7 @@ if (f.isDate()) {
     @Override
     public String toString()
     {
-        return String.format("<%= n %>Dto [<%= ctxt.getParameterListAsToString() %>]", <%= ctxt.getAccessorMethods("this") %>);
+        return String.format("<%= n %>Dto [<%= ctxt.getParameterListAsToString() %>]", <%= ctxt.getToStringAccessorMethods("this") %>);
     }
 
     /* (non-Javadoc)
@@ -148,4 +174,5 @@ if (f.isDate()) {
 <%}%>
         return true;
     }
+    
 }

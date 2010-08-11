@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.porpoise.api.generator.model.DomainObject;
+import com.porpoise.api.generator.model.DomainObjectField;
 import com.porpoise.generator.AbstractJavaContext;
 import com.porpoise.generator.model.Cardinality;
 import com.porpoise.generator.model.ICardinalitySupplier;
@@ -76,4 +77,52 @@ public class ApiContext extends AbstractJavaContext {
 			}
 		}).toString();
 	}
+
+	public String getJavaKeyTypeForField(final IField f) {
+		if (f instanceof DomainObjectField) {
+			final DomainObjectField domainObjectField = (DomainObjectField) f;
+			final DomainObject type = domainObjectField.getType();
+			if (!type.hasIdField()) {
+				return type.getJavaName();
+			}
+			return type.getIdField().getJavaTypeName();
+
+		}
+		return f.getJavaTypeName();
+	}
+
+	@Override
+	public String getParameterListAsToString() {
+		return traverse(new CommasSeparatedBufferVisitor() {
+			@Override
+			protected void onField(final IField c) {
+				final boolean isList = isList(c);
+				if (!isList) {
+					append(c.getNameAsProperty()).append("=%s");
+				}
+			}
+		}).toString();
+	}
+
+	private boolean isList(final IField c) {
+		boolean isList = false;
+		if (c instanceof ICardinalitySupplier) {
+			final ICardinalitySupplier cs = (ICardinalitySupplier) c;
+			isList = cs.getCardinality() != Cardinality.OneToOne;
+		}
+		return isList;
+	}
+
+	public String getToStringAccessorMethods(final String varName) {
+		return traverse(new CommasSeparatedBufferVisitor() {
+			@Override
+			protected void onField(final IField c) {
+				if (!isList(c)) {
+					append(varName).append(".").append(c.getNameAsAccessor())
+							.append("()");
+				}
+			}
+		}).toString();
+	}
+
 }
