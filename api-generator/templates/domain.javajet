@@ -99,8 +99,6 @@ if (f.isDate()) {
 <% for (final IField field : ctxt.getSingleFields()) { %>
 <% if (field.isDate()) {%>
         result = prime * result + hashCode(<%= field.getNameAsAccessor() %>());
-<% } else if (field.isByteArray()) { %>
-        result = prime * result + hashCode(<%= field.getNameAsAccessor() %>());
 <% } else { %>
         result = prime * result + ((<%= field.getNameAsAccessor() %>() == null) ? 0 : <%= field.getNameAsAccessor() %>().hashCode());
 <% } %>
@@ -120,7 +118,7 @@ if (f.isDate()) {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        <%= n %>Dto other = (<%= n %>Dto) obj;
+        final <%= n %> other = (<%= n %>) obj;
 
 <% for (final IField field : ctxt.getSingleFields()) { %>
 
@@ -138,11 +136,6 @@ if (f.isDate()) {
         }
 <% } else if (field.isBigDecimal()) { %>
         else if (<%= field.getNameAsAccessor() %>().compareTo(other.<%= field.getNameAsAccessor() %>()) != 0)
-        {
-            return false;
-        }
-<% } else if (field.isByteArray()) { %>
-        else if (!Arrays.equals(<%= field.getNameAsAccessor() %>(), other.<%= field.getNameAsAccessor() %>()))
         {
             return false;
         }

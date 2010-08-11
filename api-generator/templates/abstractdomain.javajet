@@ -2,13 +2,13 @@
 skeleton="generator.skeleton" %><% final ApiContext ctxt = (ApiContext) argument;
 %>
 package <%= ctxt.getPackageName() %>.domain;
+import <%= ctxt.getPackageName() %>.AbstractObject;
 
 import java.io.Serializable;
-import java.util.*;
 
 /**
  */
-abstract class AbstractObject extends AbstractObject implements Serializable
+abstract class AbstractDomainObject extends AbstractObject implements Serializable
 {
     /**
      */

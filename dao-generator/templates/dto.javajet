@@ -85,7 +85,7 @@ public final class <%= n %>Dto extends AbstractDto
             return false;
         if (getClass() != obj.getClass())
             return false;
-        <%= n %>Dto other = (<%= n %>Dto) obj;
+        final <%= n %>Dto other = (<%= n %>Dto) obj;
 
 <% for (final Column col : ctxt.getColumns()) { %>
 
