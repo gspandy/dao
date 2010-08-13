@@ -51,22 +51,31 @@ public class <%= n %>DaoTest extends AbstractDaoTest
         Assert.assertFalse(values.isEmpty());
     }
 
-<% for (final Reference r : ctxt.getReferencesToThisTable()) { %>
+<% for (final Reference r : ctxt.getReferencesToThisTable()) { 
+final Column col = ctxt.resolveColumn(r.getFrom());
+final Column pk = ctxt.resolvePrimaryKey(col);
+
+
+
+final String id = pk.getTable().getJavaName() + "Id";
+final String methodName = "findBy" + pk.getNameAsJava() + "Id";
+
+%>
 
     /**
-     * data-dependant test for the findBy<%= ctxt.getReferenceName(r) %> method
+     * data-dependant test for the <%= methodName %> method
      */
     @Test
-    public void test_findBy<%= ctxt.getReferenceName(r) %>()
+    public void test_<%= methodName %>()
     {
 <%
-        final String fromTable = r.getFrom().getTable().getJavaName();
+        final String fromTable = col.getTable().getJavaName();
 %>
 		final <%= n %>Dao dao = new <%= n %>Dao();
 		final Collection<<%= fromTable %>Dto> all = new <%= fromTable %>Dao()
 				.listAll(getTransaction());
 				
-		final Integer id = Iterables.getLast(all).<%= r.getFromTablePrimaryKey().getNameAsAccessor() %>();
+		final Integer id = Iterables.getLast(all).<%= pk.getNameAsAccessor() %>();
 		final Collection<<%= n %>Dto> results = dao.findBy<%= fromTable %>Id(getTransaction(), id);
 
 		Assert.assertFalse(results.isEmpty());

@@ -70,6 +70,16 @@ for (final ApiContext t : ctxt.getTableContextsWithIds())
 		final <%= n %>Dao <%= p %>Dao = new <%= n %>Dao();
 		final <%= n %>Dto dto = <%= p %>Dao.findById(transaction, id);
 
+		final Collection<BiodataDto> biodataDtos = new BiodataDao()
+			.findByExampleId(transaction, exampleId);
+	    final Collection<IBiodata> biodata = Collections2.transform(
+			biodataDtos, new Function<BiodataDto, IBiodata>() {
+				@Override
+				public IBiodata apply(final BiodataDto from) {
+					return getBiodata(from.getBioId(), transaction);
+				}
+		});
+			
 		<%= t.getDeclarationDefinitions("dto") %>;
 
 		final I<%= n %> value = new <%= n %>(<%= t.getDeclarationVariables() %>);

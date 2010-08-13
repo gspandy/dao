@@ -54,27 +54,30 @@ public class DaoTemplate implements IGenerator
   protected final String TEXT_35 = "> keys = transaction.executeQuery(" + NL + "\t       new MultipleScalarResultVisitor<Integer>()," + NL + "\t\t   ";
   protected final String TEXT_36 = "Sql.selectId()).getResults();" + NL + "\t\treturn keys;" + NL + "    }" + NL + "\t";
   protected final String TEXT_37 = NL;
-  protected final String TEXT_38 = NL + NL + "    /**" + NL + "     * @param transaction the transaction used to retrieve the object" + NL + "     * @param id the Id for the ";
-  protected final String TEXT_39 = " object" + NL + "     * @return the ";
-  protected final String TEXT_40 = " object with the given ID" + NL + "     */" + NL + "    public Collection<";
-  protected final String TEXT_41 = "Dto> findBy";
-  protected final String TEXT_42 = "(" + NL + "    final IDbTransaction transaction, final ";
-  protected final String TEXT_43 = " id)" + NL + "    {" + NL + "        final String sql = ";
-  protected final String TEXT_44 = "Sql.findBy";
-  protected final String TEXT_45 = "();" + NL + "        final Visitor visitor = transaction.executeQuery(new Visitor(), sql, id);" + NL + "        return visitor.getDtoResults();" + NL + "    }" + NL;
-  protected final String TEXT_46 = NL + NL + "    /**" + NL + "     * @param transaction the transaction used to retrieve the object" + NL + "     * @return all ";
-  protected final String TEXT_47 = " objects" + NL + "     */" + NL + "    public Collection<";
-  protected final String TEXT_48 = "Dto> listAll(final IDbTransaction transaction)" + NL + "    {" + NL + "        final String querySql = ";
-  protected final String TEXT_49 = "Sql.select();" + NL + "        final Visitor visitor = transaction.executeQuery(new Visitor(), querySql);" + NL + "        return visitor.getDtoResults();" + NL + "    }" + NL + "" + NL + "    /** " + NL + "     * create a new entry for the given dto" + NL + "     * @param transaction" + NL + "     * @param dto the dto to insert" + NL + "     */" + NL + "    public void insert(final IDbTransaction transaction, final ";
-  protected final String TEXT_50 = "Dto dto)" + NL + "    {" + NL + "        final String sql = ";
-  protected final String TEXT_51 = "Sql.insert();" + NL + "        transaction.executeUpdate(sql, ";
-  protected final String TEXT_52 = "); " + NL + "    }    " + NL;
-  protected final String TEXT_53 = NL + "    /** " + NL + "     * @param transaction" + NL + "     * @param id the ID of the element to update" + NL + "     * @param dto" + NL + "     */" + NL + "    public <T> void update(final IDbTransaction transaction, T id, final ";
-  protected final String TEXT_54 = "Dto dto)" + NL + "    {" + NL + "        final String sql = ";
-  protected final String TEXT_55 = "Sql.update() + \" WHERE id=?\";" + NL + "        transaction.executeUpdate(sql, ";
-  protected final String TEXT_56 = ", id); " + NL + "    }    ";
-  protected final String TEXT_57 = NL + "}";
-  protected final String TEXT_58 = NL;
+  protected final String TEXT_38 = NL + NL + "    /**" + NL + "     * ";
+  protected final String TEXT_39 = " ==> ";
+  protected final String TEXT_40 = NL + "     * PK is ";
+  protected final String TEXT_41 = NL + "     *" + NL + "     * @param transaction the transaction used to retrieve the object" + NL + "     * @param id the Id for the ";
+  protected final String TEXT_42 = " object" + NL + "     * @return the ";
+  protected final String TEXT_43 = " object with the given ID" + NL + "     */" + NL + "    public Collection<";
+  protected final String TEXT_44 = "Dto> ";
+  protected final String TEXT_45 = "(" + NL + "    final IDbTransaction transaction, final ";
+  protected final String TEXT_46 = " id)" + NL + "    {" + NL + "        final String sql = ";
+  protected final String TEXT_47 = "Sql.";
+  protected final String TEXT_48 = "();" + NL + "        final Visitor visitor = transaction.executeQuery(new Visitor(), sql, id);" + NL + "        return visitor.getDtoResults();" + NL + "    }" + NL;
+  protected final String TEXT_49 = NL + NL + "    /**" + NL + "     * @param transaction the transaction used to retrieve the object" + NL + "     * @return all ";
+  protected final String TEXT_50 = " objects" + NL + "     */" + NL + "    public Collection<";
+  protected final String TEXT_51 = "Dto> listAll(final IDbTransaction transaction)" + NL + "    {" + NL + "        final String querySql = ";
+  protected final String TEXT_52 = "Sql.select();" + NL + "        final Visitor visitor = transaction.executeQuery(new Visitor(), querySql);" + NL + "        return visitor.getDtoResults();" + NL + "    }" + NL + "" + NL + "    /** " + NL + "     * create a new entry for the given dto" + NL + "     * @param transaction" + NL + "     * @param dto the dto to insert" + NL + "     */" + NL + "    public void insert(final IDbTransaction transaction, final ";
+  protected final String TEXT_53 = "Dto dto)" + NL + "    {" + NL + "        final String sql = ";
+  protected final String TEXT_54 = "Sql.insert();" + NL + "        transaction.executeUpdate(sql, ";
+  protected final String TEXT_55 = "); " + NL + "    }    " + NL;
+  protected final String TEXT_56 = NL + "    /** " + NL + "     * @param transaction" + NL + "     * @param id the ID of the element to update" + NL + "     * @param dto" + NL + "     */" + NL + "    public <T> void update(final IDbTransaction transaction, T id, final ";
+  protected final String TEXT_57 = "Dto dto)" + NL + "    {" + NL + "        final String sql = ";
+  protected final String TEXT_58 = "Sql.update() + \" WHERE id=?\";" + NL + "        transaction.executeUpdate(sql, ";
+  protected final String TEXT_59 = ", id); " + NL + "    }    ";
+  protected final String TEXT_60 = NL + "}";
+  protected final String TEXT_61 = NL;
 
    /* (non-javadoc)
     * @see IGenerator#generate(Object)
@@ -159,46 +162,58 @@ final String n = ctxt.getJavaName();
      } 
     stringBuffer.append(TEXT_37);
      for (final Reference r : ctxt.getReferencesToThisTable()) { 
+
+final Column col = ctxt.resolveColumn(r.getFrom());
+final Column pk = ctxt.resolvePrimaryKey(col);
+final String id = pk.getTable().getJavaName() + "Id";
+final String methodName = "findBy" + pk.getNameAsJava();
+
     stringBuffer.append(TEXT_38);
-    stringBuffer.append( n );
+    stringBuffer.append( r.getFrom() );
     stringBuffer.append(TEXT_39);
-    stringBuffer.append( n );
+    stringBuffer.append( col );
     stringBuffer.append(TEXT_40);
-    stringBuffer.append( n );
+    stringBuffer.append( pk );
     stringBuffer.append(TEXT_41);
-    stringBuffer.append( ctxt.getReferenceName(r) );
+    stringBuffer.append( n );
     stringBuffer.append(TEXT_42);
-    stringBuffer.append( r.getFromTablePrimaryKey().getJavaTypeName() );
+    stringBuffer.append( n );
     stringBuffer.append(TEXT_43);
     stringBuffer.append( n );
     stringBuffer.append(TEXT_44);
-    stringBuffer.append( ctxt.getReferenceName(r) );
+    stringBuffer.append( methodName );
     stringBuffer.append(TEXT_45);
-     } 
+    stringBuffer.append( pk.getJavaTypeName() );
     stringBuffer.append(TEXT_46);
     stringBuffer.append( n );
     stringBuffer.append(TEXT_47);
-    stringBuffer.append( n );
+    stringBuffer.append( methodName );
     stringBuffer.append(TEXT_48);
-    stringBuffer.append( n );
+     } 
     stringBuffer.append(TEXT_49);
     stringBuffer.append( n );
     stringBuffer.append(TEXT_50);
     stringBuffer.append( n );
     stringBuffer.append(TEXT_51);
-    stringBuffer.append( ctxt.getAccessorMethods("dto") );
+    stringBuffer.append( n );
     stringBuffer.append(TEXT_52);
-     if (ctxt.hasIdField()) { 
+    stringBuffer.append( n );
     stringBuffer.append(TEXT_53);
     stringBuffer.append( n );
     stringBuffer.append(TEXT_54);
-    stringBuffer.append( n );
-    stringBuffer.append(TEXT_55);
     stringBuffer.append( ctxt.getAccessorMethods("dto") );
+    stringBuffer.append(TEXT_55);
+     if (ctxt.hasIdField()) { 
     stringBuffer.append(TEXT_56);
-     } 
+    stringBuffer.append( n );
     stringBuffer.append(TEXT_57);
+    stringBuffer.append( n );
     stringBuffer.append(TEXT_58);
+    stringBuffer.append( ctxt.getAccessorMethods("dto") );
+    stringBuffer.append(TEXT_59);
+     } 
+    stringBuffer.append(TEXT_60);
+    stringBuffer.append(TEXT_61);
     return stringBuffer.toString();
   }
 }

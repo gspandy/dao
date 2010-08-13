@@ -46,7 +46,7 @@ public class DomainObjectsTemplate implements IGenerator
   protected final String TEXT_26 = "Dao = new ";
   protected final String TEXT_27 = "Dao();" + NL + "\t\tfinal ";
   protected final String TEXT_28 = "Dto dto = ";
-  protected final String TEXT_29 = "Dao.findById(transaction, id);" + NL + "" + NL + "\t\t";
+  protected final String TEXT_29 = "Dao.findById(transaction, id);" + NL + "" + NL + "\t\tfinal Collection<BiodataDto> biodataDtos = new BiodataDao()" + NL + "\t\t\t.findByExampleId(transaction, exampleId);" + NL + "\t    final Collection<IBiodata> biodata = Collections2.transform(" + NL + "\t\t\tbiodataDtos, new Function<BiodataDto, IBiodata>() {" + NL + "\t\t\t\t@Override" + NL + "\t\t\t\tpublic IBiodata apply(final BiodataDto from) {" + NL + "\t\t\t\t\treturn getBiodata(from.getBioId(), transaction);" + NL + "\t\t\t\t}" + NL + "\t\t});" + NL + "\t\t\t" + NL + "\t\t";
   protected final String TEXT_30 = ";" + NL + "" + NL + "\t\tfinal I";
   protected final String TEXT_31 = " value = new ";
   protected final String TEXT_32 = "(";

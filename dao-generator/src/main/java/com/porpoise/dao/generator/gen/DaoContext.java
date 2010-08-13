@@ -125,8 +125,20 @@ public class DaoContext extends AbstractJavaContext {
 				name.toUpperCase());
 	}
 
-	public String getReferenceName(final Reference r) {
-		return r.getFrom().getTable().getJavaName() + "Id";
+	public Column resolveColumn(final Column from) {
+		final Table fromTable = from.getTable();
+
+		if (fromTable.isJoinTable()) {
+			return DomainHelper.getOtherSideOfJoinTable(from);
+		}
+		return from;
+	}
+
+	public Column resolvePrimaryKey(final Column from) {
+		if (from.getTable().hasIdColumn()) {
+			return from.getTable().getIdColumn();
+		}
+		return from;
 	}
 
 }

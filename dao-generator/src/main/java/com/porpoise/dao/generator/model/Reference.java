@@ -24,13 +24,6 @@ public class Reference implements Comparable<Reference> {
 		cardinality = Preconditions.checkNotNull(c);
 	}
 
-	public Column getFromTablePrimaryKey() {
-		if (from.getTable().hasIdColumn()) {
-			return from.getTable().getIdColumn();
-		}
-		return from;
-	}
-
 	public Column getFrom() {
 		return from;
 	}
@@ -155,4 +148,5 @@ public class Reference implements Comparable<Reference> {
 					}
 				});
 	}
+
 }

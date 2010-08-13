@@ -121,17 +121,26 @@ public class <%= n %>Dao extends AbstractDao
 	
 <% } %>
 
-<% for (final Reference r : ctxt.getReferencesToThisTable()) { %>
+<% for (final Reference r : ctxt.getReferencesToThisTable()) { 
+
+final Column col = ctxt.resolveColumn(r.getFrom());
+final Column pk = ctxt.resolvePrimaryKey(col);
+final String id = pk.getTable().getJavaName() + "Id";
+final String methodName = "findBy" + pk.getNameAsJava();
+%>
 
     /**
+     * <%= r.getFrom() %> ==> <%= col %>
+     * PK is <%= pk %>
+     *
      * @param transaction the transaction used to retrieve the object
      * @param id the Id for the <%= n %> object
      * @return the <%= n %> object with the given ID
      */
-    public Collection<<%= n %>Dto> findBy<%= ctxt.getReferenceName(r) %>(
-    final IDbTransaction transaction, final <%= r.getFromTablePrimaryKey().getJavaTypeName() %> id)
+    public Collection<<%= n %>Dto> <%= methodName %>(
+    final IDbTransaction transaction, final <%= pk.getJavaTypeName() %> id)
     {
-        final String sql = <%= n %>Sql.findBy<%= ctxt.getReferenceName(r) %>();
+        final String sql = <%= n %>Sql.<%= methodName %>();
         final Visitor visitor = transaction.executeQuery(new Visitor(), sql, id);
         return visitor.getDtoResults();
     }

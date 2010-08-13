@@ -27,8 +27,8 @@ public class DaoTestTemplate implements IGenerator
   protected final String TEXT_8 = "Dto> values = new ";
   protected final String TEXT_9 = "Dao().listAll(getTransaction());" + NL + "        for (final ";
   protected final String TEXT_10 = "Dto value : values)" + NL + "        {" + NL + "            println(value);" + NL + "        }" + NL + " " + NL + "        Assert.assertFalse(values.isEmpty());" + NL + "    }" + NL;
-  protected final String TEXT_11 = NL + NL + "    /**" + NL + "     * data-dependant test for the findBy";
-  protected final String TEXT_12 = " method" + NL + "     */" + NL + "    @Test" + NL + "    public void test_findBy";
+  protected final String TEXT_11 = NL + NL + "    /**" + NL + "     * data-dependant test for the ";
+  protected final String TEXT_12 = " method" + NL + "     */" + NL + "    @Test" + NL + "    public void test_";
   protected final String TEXT_13 = "()" + NL + "    {";
   protected final String TEXT_14 = NL + "\t\tfinal ";
   protected final String TEXT_15 = "Dao dao = new ";
@@ -86,13 +86,22 @@ final String n = ctxt.getJavaName();
     stringBuffer.append( n );
     stringBuffer.append(TEXT_10);
      for (final Reference r : ctxt.getReferencesToThisTable()) { 
+final Column col = ctxt.resolveColumn(r.getFrom());
+final Column pk = ctxt.resolvePrimaryKey(col);
+
+
+
+final String id = pk.getTable().getJavaName() + "Id";
+final String methodName = "findBy" + pk.getNameAsJava() + "Id";
+
+
     stringBuffer.append(TEXT_11);
-    stringBuffer.append( ctxt.getReferenceName(r) );
+    stringBuffer.append( methodName );
     stringBuffer.append(TEXT_12);
-    stringBuffer.append( ctxt.getReferenceName(r) );
+    stringBuffer.append( methodName );
     stringBuffer.append(TEXT_13);
     
-        final String fromTable = r.getFrom().getTable().getJavaName();
+        final String fromTable = col.getTable().getJavaName();
 
     stringBuffer.append(TEXT_14);
     stringBuffer.append( n );
@@ -103,7 +112,7 @@ final String n = ctxt.getJavaName();
     stringBuffer.append(TEXT_17);
     stringBuffer.append( fromTable );
     stringBuffer.append(TEXT_18);
-    stringBuffer.append( r.getFromTablePrimaryKey().getNameAsAccessor() );
+    stringBuffer.append( pk.getNameAsAccessor() );
     stringBuffer.append(TEXT_19);
     stringBuffer.append( n );
     stringBuffer.append(TEXT_20);

@@ -211,4 +211,9 @@ public class Column extends AbstractField implements Comparable<Column> {
 		return name.compareTo(o.name);
 	}
 
+	public String getNameAsJava() {
+		return CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_CAMEL,
+				getNameAsProperty());
+	}
+
 }

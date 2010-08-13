@@ -70,17 +70,26 @@ public class <%= n %>Sql
 	}
 <% } %>
 
-<% for (final Reference r : ctxt.getReferencesToThisTable()) { %>
+<% for (final Reference r : ctxt.getReferencesToThisTable()) { 
+final Column from = ctxt.resolveColumn(r.getFrom());
+final Column pk = ctxt.resolvePrimaryKey(from);
+final String id = pk.getNameAsJava();
+
+%>
 
     /**
+     * <%= r %>
+     * <%= r.getFrom() %> => <%= from %>
+     * pk is <%= pk %>
+     * id is table (<%= pk.getTable() %>) + Id
      */
-    public static String findBy<%= ctxt.getReferenceName(r) %>()
+    public static String findBy<%= id %>()
     {
         final String select = select("a");
         final StringBuilder querySql = new StringBuilder(select);
-        querySql.append(", <%=  r.getFrom().getTable().getTableName() %> b ");
-        querySql.append("WHERE b.<%= r.getFrom().getName() %>=a.<%= r.getTo().getName() %> ");
-        querySql.append("AND b.<%= r.getFromTablePrimaryKey().getName() %>=?");
+        querySql.append(", <%=  from.getTable().getTableName() %> b ");
+        querySql.append("WHERE b.<%= from.getName() %>=a.<%= r.getTo().getName() %> ");
+        querySql.append("AND b.<%= ctxt.resolvePrimaryKey(from).getName() %>=?");
         final String sql = querySql.toString();
         return sql;
     }

@@ -80,8 +80,7 @@ enum DomainHelper {
 				Table targetTable = referencedColumn.getTable();
 
 				if (targetTable.isJoinTable()) {
-					final Column to = getOtherSideOfJoinTable(targetTable,
-							referencedColumn);
+					final Column to = getOtherSideOfJoinTable(referencedColumn);
 
 					targetTable = to.getTable();
 					cardinality = Cardinality.ManyToMany;
@@ -95,8 +94,8 @@ enum DomainHelper {
 		}
 	}
 
-	private static Column getOtherSideOfJoinTable(final Table joinTable,
-			final Column firstKey) {
+	public static Column getOtherSideOfJoinTable(final Column firstKey) {
+		final Table joinTable = firstKey.getTable();
 		final Column otherFk = joinTable.findOtherFkField(firstKey);
 
 		final Collection<Reference> foreignKeyReferences = otherFk
@@ -127,8 +126,7 @@ enum DomainHelper {
 				Table fromTable = referencedFromColumn.getTable();
 
 				if (fromTable.isJoinTable()) {
-					final Column to = getOtherSideOfJoinTable(fromTable,
-							referencedFromColumn);
+					final Column to = getOtherSideOfJoinTable(referencedFromColumn);
 					fromTable = to.getTable();
 					cardinality = Cardinality.ManyToMany;
 				} else {
