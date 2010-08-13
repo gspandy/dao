@@ -176,6 +176,10 @@ enum DomainHelper {
 			srcObject.addManyToManyField(name, propertyObject);
 			break;
 		}
+		case ManyToOne: {
+			srcObject.addManyToOneField(name, propertyObject);
+			break;
+		}
 		default:
 			throw new IllegalArgumentException();
 		}
@@ -183,9 +187,6 @@ enum DomainHelper {
 
 	private static boolean isPrimitive(final Column col) {
 		final boolean primitive = !col.hasFkReferences();
-		if (!primitive) {
-			System.out.println("not primitive: " + col);
-		}
 		return primitive;
 	}
 }

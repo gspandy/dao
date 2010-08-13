@@ -1,7 +1,6 @@
 package com.porpoise.dao.generator.gen;
 
 import java.util.Collection;
-import java.util.Iterator;
 
 import com.google.common.base.CaseFormat;
 import com.porpoise.dao.generator.model.Column;
@@ -40,13 +39,17 @@ public class DaoContext extends AbstractJavaContext {
 		return this.table.getJavaName();
 	}
 
+	public String getPropertyName() {
+		return CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL, getJavaName());
+	}
+
 	public String getTableName() {
 		return this.table.getTableName();
 	}
 
 	@Override
-	protected Iterator<Column> getFields() {
-		return this.table.getColumns().iterator();
+	public Iterable<Column> getFields() {
+		return this.table.getColumns();
 	}
 
 	public String getTestValues() {

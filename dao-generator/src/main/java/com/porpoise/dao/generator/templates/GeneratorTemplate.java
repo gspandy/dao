@@ -18,7 +18,7 @@ public class GeneratorTemplate implements IGenerator
 
   public final String NL = nl == null ? (System.getProperties().getProperty("line.separator")) : nl;
   protected final String TEXT_1 = "package ";
-  protected final String TEXT_2 = ";" + NL + "" + NL + "import java.io.File;" + NL + "import java.io.IOException;" + NL + "import java.util.Collection;" + NL + "import java.util.List;" + NL + "" + NL + "import com.google.common.collect.ImmutableList;" + NL + "import com.google.common.collect.Lists;" + NL + "import com.porpoise.api.generator.gen.ApiGenerator;" + NL + "import com.porpoise.api.generator.gen.ApiProjectDefinition;" + NL + "import com.porpoise.api.generator.model.DomainObject;" + NL + "import com.porpoise.dao.generator.gen.DaoGenerator;" + NL + "import com.porpoise.dao.generator.gen.ProjectDefinition;" + NL + "import com.porpoise.dao.generator.model.Column;" + NL + "import com.porpoise.dao.generator.model.Table;" + NL + "import com.porpoise.generator.model.FieldType;" + NL + "" + NL + "/**" + NL + " * Generator class used to create source code/resources from an in-memory schema" + NL + " */" + NL + "public class BaseGenerator" + NL + "{" + NL + "       private final ImmutableList<Table> tables;";
+  protected final String TEXT_2 = ";" + NL + "" + NL + "import java.io.File;" + NL + "import java.io.IOException;" + NL + "import java.util.Collection;" + NL + "import java.util.List;" + NL + "" + NL + "import com.google.common.collect.ImmutableList;" + NL + "import com.google.common.collect.Lists;" + NL + "import com.porpoise.api.generator.gen.ApiGenerator;" + NL + "import com.porpoise.api.generator.gen.ApiProjectDefinition;" + NL + "import com.porpoise.api.generator.model.DomainObject;" + NL + "import com.porpoise.dao.generator.gen.DaoGenerator;" + NL + "import com.porpoise.dao.generator.gen.ProjectDefinition;" + NL + "import com.porpoise.dao.generator.model.Column;" + NL + "import com.porpoise.dao.generator.model.Table;" + NL + "import com.porpoise.generator.model.Cardinality;" + NL + "import com.porpoise.generator.model.FieldType;" + NL + "" + NL + "/**" + NL + " * Generator class used to create source code/resources from an in-memory schema" + NL + " */" + NL + "public class BaseGenerator" + NL + "{" + NL + "       private final ImmutableList<Table> tables;";
   protected final String TEXT_3 = NL + "        // =======================================================================================" + NL + "        // ";
   protected final String TEXT_4 = NL + "        // =======================================================================================" + NL + "\t\tpublic final Table ";
   protected final String TEXT_5 = ";";
@@ -46,9 +46,10 @@ public class GeneratorTemplate implements IGenerator
   protected final String TEXT_27 = NL + "        // =======================================================================================";
   protected final String TEXT_28 = NL + "        ";
   protected final String TEXT_29 = ".fkReferenceTo(";
-  protected final String TEXT_30 = ");" + NL + "        ";
-  protected final String TEXT_31 = NL + "\t}" + NL + "}";
-  protected final String TEXT_32 = NL;
+  protected final String TEXT_30 = ", Cardinality.";
+  protected final String TEXT_31 = ");" + NL + "        ";
+  protected final String TEXT_32 = NL + "\t}" + NL + "}";
+  protected final String TEXT_33 = NL;
 
    /* (non-javadoc)
     * @see IGenerator#generate(Object)
@@ -137,16 +138,20 @@ public class GeneratorTemplate implements IGenerator
            final String column = r.getFrom().getName();
            final String field = table  + "__" + column;
            final String other = r.getTo().getTable().getTableName() + "__" + r.getTo().getName();
+           
+           final String c = t.isJoinTable() ? "ManyToMany" : "ManyToOne";
 
     stringBuffer.append(TEXT_28);
     stringBuffer.append( field );
     stringBuffer.append(TEXT_29);
     stringBuffer.append( other );
     stringBuffer.append(TEXT_30);
+    stringBuffer.append( c );
+    stringBuffer.append(TEXT_31);
          } // end for column 
       } // end for table 
-    stringBuffer.append(TEXT_31);
     stringBuffer.append(TEXT_32);
+    stringBuffer.append(TEXT_33);
     return stringBuffer.toString();
   }
 }

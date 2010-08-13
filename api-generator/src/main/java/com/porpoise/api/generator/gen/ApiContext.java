@@ -1,6 +1,5 @@
 package com.porpoise.api.generator.gen;
 
-import java.util.Iterator;
 import java.util.List;
 
 import com.porpoise.api.generator.model.DomainObject;
@@ -37,7 +36,7 @@ public class ApiContext extends AbstractJavaContext {
 	}
 
 	@Override
-	protected Iterator<? extends IField> getFields() {
+	protected Iterable<? extends IField> getFields() {
 		return obj.getAllFields();
 	}
 
@@ -55,26 +54,10 @@ public class ApiContext extends AbstractJavaContext {
 		return traverse(new CommasSeparatedBufferVisitor() {
 			@Override
 			protected void onField(final IField field) {
-				boolean isList = false;
-				if (field instanceof ICardinalitySupplier) {
-					final ICardinalitySupplier cs = (ICardinalitySupplier) field;
-					isList = cs.getCardinality() != Cardinality.OneToOne;
-				}
-
-				append("final ");
-				if (isList) {
-					append("Collection<");
-				}
-				if (field.isByteArray()) {
-					append("byte[]");
-				} else {
-					append(field.getJavaTypeName());
-				}
-				if (isList) {
-					append(">");
-				}
-				append(" ").append(field.getNameAsProperty());
+				final String declaration = getDeclarationForField(field);
+				append(declaration);
 			}
+
 		}).toString();
 	}
 

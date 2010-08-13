@@ -3,6 +3,7 @@ package com.porpoise.generator;
 import java.util.Iterator;
 
 import com.google.common.base.Preconditions;
+import com.porpoise.generator.model.ICardinalitySupplier;
 import com.porpoise.generator.model.IField;
 
 public abstract class AbstractJavaContext {
@@ -31,6 +32,44 @@ public abstract class AbstractJavaContext {
 		protected int length() {
 			return buffer.length();
 		}
+	}
+
+	public static String getDeclarationForField(final IField field) {
+		final StringBuilder decl = new StringBuilder();
+		boolean isList = false;
+		if (field instanceof ICardinalitySupplier) {
+			final ICardinalitySupplier cs = (ICardinalitySupplier) field;
+			isList = cs.getCardinality().isList();
+		}
+
+		decl.append("final ");
+		if (isList) {
+			decl.append("Collection<");
+		}
+		if (field.isByteArray()) {
+			decl.append("byte[]");
+		} else {
+			decl.append(field.getJavaTypeName());
+		}
+		if (isList) {
+			decl.append(">");
+		}
+		decl.append(" ").append(field.getNameAsProperty());
+
+		final String declaration = decl.toString();
+		return declaration;
+	}
+
+	public String getDeclarationDefinitions(final String varPrefix,
+			final Iterable<? extends IField> fields) {
+		final StringBuilder b = new StringBuilder();
+		final String delim = String.format("%n");
+
+		for (final IField f : fields) {
+			b.append(getDeclarationForField(f)).append(delim);
+		}
+
+		return b.toString();
 	}
 
 	public static abstract class CommasSeparatedBufferVisitor extends
@@ -71,7 +110,7 @@ public abstract class AbstractJavaContext {
 	private final String packageName;
 
 	protected <T extends Visitor> T traverse(final T visitor) {
-		for (final Iterator<? extends IField> iter = getFields(); iter
+		for (final Iterator<? extends IField> iter = getFields().iterator(); iter
 				.hasNext();) {
 			final IField field = iter.next();
 			visitor.onField(field, iter.hasNext());
@@ -79,7 +118,7 @@ public abstract class AbstractJavaContext {
 		return visitor;
 	}
 
-	protected abstract Iterator<? extends IField> getFields();
+	protected abstract Iterable<? extends IField> getFields();
 
 	public String getDeclarations() {
 

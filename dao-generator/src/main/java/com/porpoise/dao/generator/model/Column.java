@@ -5,16 +5,21 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.Collection;
 import java.util.Map.Entry;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import com.google.common.base.CaseFormat;
+import com.google.common.base.Function;
 import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
+import com.google.common.collect.Sets;
 import com.porpoise.generator.model.AbstractField;
 import com.porpoise.generator.model.Cardinality;
 import com.porpoise.generator.model.FieldType;
 
-public class Column extends AbstractField {
+public class Column extends AbstractField implements Comparable<Column> {
 	private final String name;
 	private final boolean required;
 
@@ -47,8 +52,8 @@ public class Column extends AbstractField {
 		final boolean added = fkReferences.put(cardinality, other);
 		if (added) {
 			// complete the bi-directional knowledge
-			final boolean inverseAdded = other.referencedBy.put(cardinality,
-					this);
+			final boolean inverseAdded = other.referencedBy.put(
+					cardinality.inverse(), this);
 			assert inverseAdded;
 		}
 		return added;
@@ -93,6 +98,10 @@ public class Column extends AbstractField {
 
 	@Override
 	public String toString() {
+		return getTableColumnName();
+	}
+
+	private String getTableColumnName() {
 		return String.format("%s.%s", getTable().getTableName(), getName());
 	}
 
@@ -113,17 +122,52 @@ public class Column extends AbstractField {
 	 * @return a collection of references from other tables -- return the tables
 	 *         which reference this column
 	 */
-	public Collection<Reference> getReferencingColumns() {
-		final Collection<Reference> references = Lists.newArrayList();
+	public SortedSet<Reference> getReferencingColumns() {
+		final SortedSet<Reference> references = new TreeSet<Reference>();
 
 		for (final Entry<Cardinality, Collection<Column>> entry : referencedBy
 				.asMap().entrySet()) {
 			for (final Column fk : entry.getValue()) {
-				references.add(new Reference(fk, this, entry.getKey()));
+				final Cardinality cardinality = entry.getKey();
+				references.add(new Reference(fk, this, cardinality));
 			}
 		}
 
 		return references;
+	}
+
+	public SortedSet<Reference> getAllReferencingColumns() {
+		final SortedSet<Reference> originalReferences = getReferencingColumns();
+		final SortedSet<Reference> references = Sets
+				.newTreeSet(originalReferences);
+		// These calls may not add all members, as some may have been added
+		// as the inverse relation from the above call
+
+		{
+			final Collection<Reference> manyToOneReferences = getForeignKeyReferences(Cardinality.ManyToOne);
+			final Collection<Reference> manyToOneFlipped = Reference
+					.flip(manyToOneReferences);
+			references.addAll(manyToOneFlipped);
+		}
+
+		{
+			final Collection<Reference> manyToManyReferences = getForeignKeyReferences(Cardinality.ManyToMany);
+			final Collection<Reference> manyToManyFlipped = Reference
+					.flip(manyToManyReferences);
+			references.addAll(manyToManyFlipped);
+		}
+		return references;
+	}
+
+	private Collection<Reference> getForeignKeyReferences(
+			final Cardinality cardinality) {
+		final Function<Column, Reference> function = new Function<Column, Reference>() {
+			@Override
+			public Reference apply(final Column col) {
+				return new Reference(Column.this, col, cardinality);
+			}
+		};
+		return Collections2.transform(fkReferences.get(cardinality), function);
 	}
 
 	public boolean isReferenced() {
@@ -137,6 +181,34 @@ public class Column extends AbstractField {
 	@Override
 	public String getJavaName() {
 		return getName();
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + getTableColumnName().hashCode();
+		return result;
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		final Column other = (Column) obj;
+		return getTableColumnName().equals(other.getTableColumnName());
+	}
+
+	@Override
+	public int compareTo(final Column o) {
+		return name.compareTo(o.name);
 	}
 
 }

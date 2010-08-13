@@ -1,7 +1,6 @@
 package com.porpoise.dao.generator.gen;
 
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 
 import com.google.common.collect.ImmutableList;
@@ -29,7 +28,7 @@ public class GeneratorContext extends AbstractJavaContext {
 	}
 
 	@Override
-	protected Iterator<? extends IField> getFields() {
+	protected Iterable<? extends IField> getFields() {
 		throw new UnsupportedOperationException();
 	}
 

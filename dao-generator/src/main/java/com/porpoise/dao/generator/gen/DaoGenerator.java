@@ -15,8 +15,10 @@ import com.porpoise.dao.generator.templates.DaoApiImplTemplate;
 import com.porpoise.dao.generator.templates.DaoPomTemplate;
 import com.porpoise.dao.generator.templates.DaoTemplate;
 import com.porpoise.dao.generator.templates.DaoTestTemplate;
+import com.porpoise.dao.generator.templates.DomainObjectsTemplate;
 import com.porpoise.dao.generator.templates.DtoTemplate;
 import com.porpoise.dao.generator.templates.DtoTestTemplate;
+import com.porpoise.dao.generator.templates.FindKeyTemplate;
 import com.porpoise.dao.generator.templates.GeneratorTemplate;
 import com.porpoise.dao.generator.templates.MetadataTemplate;
 import com.porpoise.dao.generator.templates.SqlTemplate;
@@ -89,7 +91,7 @@ public class DaoGenerator extends AbstractGenerator {
 	@Override
 	protected void generateStaticMainClasses(final File destFolder,
 			final AbstractJavaContext ctxt) throws IOException {
-
+		generate(destFolder, new FindKeyTemplate(), ctxt, "assembler/FindKey");
 		generate(destFolder, new AbstractDtoTemplate(), ctxt,
 				"model/AbstractDto");
 		generate(destFolder, new AbstractDaoServiceTemplate(), ctxt,
@@ -108,6 +110,12 @@ public class DaoGenerator extends AbstractGenerator {
 		generateProject(def.getTables(), def.getTargetDirectory(),
 				def.getGroupId(), def.getArtifactId(), srcDir(def),
 				testDir(def), def.getPackageName());
+
+		final IGenerator generator = new DomainObjectsTemplate();
+		final DomainObjectContext context = new DomainObjectContext(
+				def.getPackageName(), def.getTables());
+		generate(def.getTargetDirectory(), generator, context,
+				"assembler/DomainObject");
 	}
 
 	/**
@@ -163,13 +171,15 @@ public class DaoGenerator extends AbstractGenerator {
 			final File srcDest, final File testDest, final String packageName)
 			throws IOException {
 		if (pomDest != null) {
+			System.out.println("** Generating pom at " + pomDest);
 			generatePom(group, artifact, "1.0.0", pomDest);
 		}
+		System.out.println("** Generating DAO source at " + pomDest);
 
 		for (final Table table : tables) {
 			final AbstractJavaContext ctxt = newContext(packageName, table);
-			generateMainJavaSourceForTable(srcDest, ctxt);
-			generateTestJavaSourceForTable(testDest, ctxt);
+			generateMainJavaSource(srcDest, ctxt);
+			generateTestJavaSource(testDest, ctxt);
 		}
 	}
 }

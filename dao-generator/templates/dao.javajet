@@ -137,7 +137,6 @@ public class <%= n %>Dao extends AbstractDao
     }
 
 <% } %>
-    
 
     /**
      * @param transaction the transaction used to retrieve the object

@@ -62,7 +62,7 @@ public class DaoTemplate implements IGenerator
   protected final String TEXT_43 = " id)" + NL + "    {" + NL + "        final String sql = ";
   protected final String TEXT_44 = "Sql.findBy";
   protected final String TEXT_45 = "();" + NL + "        final Visitor visitor = transaction.executeQuery(new Visitor(), sql, id);" + NL + "        return visitor.getDtoResults();" + NL + "    }" + NL;
-  protected final String TEXT_46 = NL + "    " + NL + "" + NL + "    /**" + NL + "     * @param transaction the transaction used to retrieve the object" + NL + "     * @return all ";
+  protected final String TEXT_46 = NL + NL + "    /**" + NL + "     * @param transaction the transaction used to retrieve the object" + NL + "     * @return all ";
   protected final String TEXT_47 = " objects" + NL + "     */" + NL + "    public Collection<";
   protected final String TEXT_48 = "Dto> listAll(final IDbTransaction transaction)" + NL + "    {" + NL + "        final String querySql = ";
   protected final String TEXT_49 = "Sql.select();" + NL + "        final Visitor visitor = transaction.executeQuery(new Visitor(), querySql);" + NL + "        return visitor.getDtoResults();" + NL + "    }" + NL + "" + NL + "    /** " + NL + "     * create a new entry for the given dto" + NL + "     * @param transaction" + NL + "     * @param dto the dto to insert" + NL + "     */" + NL + "    public void insert(final IDbTransaction transaction, final ";

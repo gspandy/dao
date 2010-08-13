@@ -1,0 +1,92 @@
+<%@ jet package="com.porpoise.dao.generator.templates" imports="com.porpoise.generator.* java.util.* com.porpoise.dao.generator.gen.* com.porpoise.dao.generator.model.* com.porpoise.generator.model.*" class="DomainObjectsTemplate" 
+skeleton="generator.skeleton" %><% final 
+DomainObjectContext ctxt = (DomainObjectContext) argument; 
+%>
+package <%= ctxt.getPackageName() %>.assembler;
+
+import java.util.concurrent.ConcurrentMap;
+
+import com.google.common.base.Function;
+import com.google.common.collect.MapMaker;
+import <%= ctxt.getPackageName() %>.*;
+import <%= ctxt.getPackageName() %>.domain.*;
+import <%= ctxt.getPackageName() %>.model.*;
+import com.porpoise.dao.database.IDbTransaction;
+
+/**
+ * An assembler class used to assemble/retrieve domain objects
+ */
+public class DomainObjects {
+
+<%
+for (final DaoContext t : ctxt.getTables())
+{
+%>
+	private final ConcurrentMap<FindKey<<%= t.getIdField().getJavaTypeName() %>>, I<%= t.getJavaName() %>> <%= t.getPropertyName() %>ById;
+<% } %>
+
+    /**
+     * default constructor
+     */
+	public DomainObjects() {
+	    final int concurrencyLevel = 1;
+<%
+for (final DaoContext t : ctxt.getTables())
+{
+    final String k = t.getIdField().getJavaTypeName();
+    final String n = t.getJavaName();
+    final String p = t.getPropertyName();
+%>
+        // =============================================================================
+        // <%= t.getJavaName() %>
+        // =============================================================================
+        {
+            final Function<FindKey<<%= k %>>, I<%= t.getJavaName() %>> computingFunction = new Function<FindKey<Integer>, I<%= n %>>() {
+			@Override
+			public I<%= n %> apply(final FindKey<Integer> from) {
+				final IDbTransaction transaction = from.getTx();
+				final <%= k %> id = from.getKey();
+				return load<%= n %>(transaction, id);
+			}
+
+		    };
+            <%= t.getPropertyName() %>ById = new MapMaker().concurrencyLevel(concurrencyLevel).makeComputingMap(computingFunction);
+        }
+
+<% } // end for %>
+	}
+
+<%
+for (final DaoContext t : ctxt.getTables())
+{
+    final String k = t.getIdField().getJavaTypeName();
+    final String n = t.getJavaName();
+    final String p = t.getPropertyName();
+%>
+
+	protected I<%= n %> load<%= n %>(final IDbTransaction transaction,
+			final Integer id) {
+		final <%= n %>Dao <%= p %>Dao = new <%= n %>Dao();
+		final <%= n %>Dto dto = <%= p %>Dao.findById(transaction, id);
+
+
+		<%= t.getDeclarationDefinitions("", t.getFields()) %>;
+
+
+		//final Collection<ExternalExamples> examples = new
+		// ExternalExamplesDao().fDao.fin;
+
+		final I<%= n %> value = new <%= n %>(<%= t.getAccessorMethods("dto") %>);
+
+		return value;
+	}
+
+    /**
+     * @return the I<%= n %> for the given Id 
+     */
+	public I<%= n %> get<%= n %>(final <%= k %> id, final IDbTransaction tx) {
+		return <%= t.getPropertyName() %>ById.get(new FindKey(id, tx));
+	}
+<% } // end for %>
+
+}

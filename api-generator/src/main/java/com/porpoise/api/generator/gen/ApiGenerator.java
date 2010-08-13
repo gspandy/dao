@@ -87,11 +87,14 @@ public class ApiGenerator extends AbstractGenerator {
 					def.getVersion(), def.getTargetDirectory());
 		}
 
+		System.out.println("** Generating API project at "
+				+ def.getTargetDirectory());
+
 		for (final DomainObject obj : def.getObjects()) {
 			final AbstractJavaContext ctxt = new ApiContext(
 					def.getPackageName(), obj);
-			generateMainJavaSourceForTable(srcDir(def), ctxt);
-			generateTestJavaSourceForTable(testDir(def), ctxt);
+			generateMainJavaSource(srcDir(def), ctxt);
+			generateTestJavaSource(testDir(def), ctxt);
 		}
 	}
 

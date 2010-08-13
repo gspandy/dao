@@ -593,7 +593,7 @@ public class BaseGenerator {
 		// ENTITIES
 		// =======================================================================================
 		ENTITIES = newTable("ENTITIES");
-		ENTITIES__ENTITY_ID = ENTITIES.addColumn("ENTITY_ID", false,
+		ENTITIES__ENTITY_ID = ENTITIES.addKeyColumn("ENTITY_ID", false,
 				FieldType.Integer);
 		ENTITIES__ENTITY_DESCRIPTION = ENTITIES.addColumn("ENTITY_DESCRIPTION",
 				false, FieldType.String);
@@ -990,128 +990,154 @@ public class BaseGenerator {
 		// =======================================================================================
 		// JOIN TABLE ALERT_EXAMPLES
 		// =======================================================================================
-		ALERT_EXAMPLES__ALERT_ID.fkReferenceTo(ALERTS__ALERT_ID);
+		ALERT_EXAMPLES__ALERT_ID.fkReferenceTo(ALERTS__ALERT_ID,
+				Cardinality.ManyToMany);
 
-		ALERT_EXAMPLES__EXAMPLE_ID.fkReferenceTo(EXAMPLES__EXAMPLE_ID);
+		ALERT_EXAMPLES__EXAMPLE_ID.fkReferenceTo(EXAMPLES__EXAMPLE_ID,
+				Cardinality.ManyToMany);
 
 		// =======================================================================================
 		// JOIN TABLE ALERT_ORGAN
 		// =======================================================================================
-		ALERT_ORGAN__ALERT_ID.fkReferenceTo(ALERTS__ALERT_ID);
+		ALERT_ORGAN__ALERT_ID.fkReferenceTo(ALERTS__ALERT_ID,
+				Cardinality.ManyToMany);
 
-		ALERT_ORGAN__ORGAN_ID.fkReferenceTo(ORGANS__ORGAN_ID);
+		ALERT_ORGAN__ORGAN_ID.fkReferenceTo(ORGANS__ORGAN_ID,
+				Cardinality.ManyToMany);
 
 		// =======================================================================================
 		// JOIN TABLE ALERT_REFS
 		// =======================================================================================
-		ALERT_REFS__ALERT_ID.fkReferenceTo(ALERTS__ALERT_ID);
+		ALERT_REFS__ALERT_ID.fkReferenceTo(ALERTS__ALERT_ID,
+				Cardinality.ManyToMany);
 
-		ALERT_REFS__REF_ID.fkReferenceTo(REFERENCES__REF_ID);
+		ALERT_REFS__REF_ID.fkReferenceTo(REFERENCES__REF_ID,
+				Cardinality.ManyToMany);
 
 		// =======================================================================================
 		// JOIN TABLE ALERT_SPECIES
 		// =======================================================================================
-		ALERT_SPECIES__ALERT_ID.fkReferenceTo(ALERTS__ALERT_ID);
+		ALERT_SPECIES__ALERT_ID.fkReferenceTo(ALERTS__ALERT_ID,
+				Cardinality.ManyToMany);
 
-		ALERT_SPECIES__SPECIES_ID.fkReferenceTo(SPECIES__SPECIES_ID);
+		ALERT_SPECIES__SPECIES_ID.fkReferenceTo(SPECIES__SPECIES_ID,
+				Cardinality.ManyToMany);
 
 		// =======================================================================================
 		// ALERTS
 		// =======================================================================================
-		ALERTS__EXPOSURE_ROUTE_ID
-				.fkReferenceTo(EXPOSURE_ROUTES__EXPOSURE_ROUTE_ID);
+		ALERTS__EXPOSURE_ROUTE_ID.fkReferenceTo(
+				EXPOSURE_ROUTES__EXPOSURE_ROUTE_ID, Cardinality.ManyToOne);
 
-		ALERTS__PHASE_ID.fkReferenceTo(PHASE__PHASE_ID);
+		ALERTS__PHASE_ID.fkReferenceTo(PHASE__PHASE_ID, Cardinality.ManyToOne);
 
 		// =======================================================================================
 		// ASSAY_DATA
 		// =======================================================================================
-		ASSAY_DATA__BIO_ID.fkReferenceTo(BIODATA__BIO_ID);
+		ASSAY_DATA__BIO_ID
+				.fkReferenceTo(BIODATA__BIO_ID, Cardinality.ManyToOne);
 
 		// =======================================================================================
 		// BIODATA
 		// =======================================================================================
-		BIODATA__EXAMPLE_ID.fkReferenceTo(EXAMPLES__EXAMPLE_ID);
+		BIODATA__EXAMPLE_ID.fkReferenceTo(EXAMPLES__EXAMPLE_ID,
+				Cardinality.ManyToOne);
 
-		BIODATA__SPECIES_ID.fkReferenceTo(SPECIES__SPECIES_ID);
+		BIODATA__SPECIES_ID.fkReferenceTo(SPECIES__SPECIES_ID,
+				Cardinality.ManyToOne);
 
-		BIODATA__ASSAY_ID.fkReferenceTo(ASSAY__ASSAY_ID);
+		BIODATA__ASSAY_ID.fkReferenceTo(ASSAY__ASSAY_ID, Cardinality.ManyToOne);
 
 		// =======================================================================================
 		// JOIN TABLE BIODATA_REFS
 		// =======================================================================================
-		BIODATA_REFS__REF_ID.fkReferenceTo(REFERENCES__REF_ID);
+		BIODATA_REFS__REF_ID.fkReferenceTo(REFERENCES__REF_ID,
+				Cardinality.ManyToMany);
 
-		BIODATA_REFS__BIO_ID.fkReferenceTo(BIODATA__BIO_ID);
+		BIODATA_REFS__BIO_ID.fkReferenceTo(BIODATA__BIO_ID,
+				Cardinality.ManyToMany);
 
 		// =======================================================================================
 		// COMPONENT
 		// =======================================================================================
-		COMPONENT__Pattern_ID.fkReferenceTo(PATTERNS__PATTERN_ID);
+		COMPONENT__Pattern_ID.fkReferenceTo(PATTERNS__PATTERN_ID,
+				Cardinality.ManyToOne);
 
 		// =======================================================================================
 		// COMPONENT_INTERMEDIATE
 		// =======================================================================================
-		COMPONENT_INTERMEDIATE__Component_ID
-				.fkReferenceTo(COMPONENT__Component_ID);
+		COMPONENT_INTERMEDIATE__Component_ID.fkReferenceTo(
+				COMPONENT__Component_ID, Cardinality.ManyToOne);
 		COMPONENT_INTERMEDIATE__Intermediate_ID
-				.fkReferenceTo(INTERMEDIATES__ID);
+				.fkReferenceTo(INTERMEDIATES__ID, Cardinality.ManyToOne);
 
 		// =======================================================================================
 		// EXAMPLE_PATTERNS
 		// =======================================================================================
-		EXAMPLE_PATTERNS__EXAMPLE_ID.fkReferenceTo(EXAMPLES__EXAMPLE_ID);
+		EXAMPLE_PATTERNS__EXAMPLE_ID.fkReferenceTo(EXAMPLES__EXAMPLE_ID,
+				Cardinality.ManyToOne);
 
-		EXAMPLE_PATTERNS__PATTERN_ID.fkReferenceTo(PATTERNS__PATTERN_ID);
+		EXAMPLE_PATTERNS__PATTERN_ID.fkReferenceTo(PATTERNS__PATTERN_ID,
+				Cardinality.ManyToOne);
 
 		// =======================================================================================
 		// EXAMPLES
 		// =======================================================================================
-		EXAMPLES__PATTERN_ID.fkReferenceTo(PATTERNS__PATTERN_ID);
+		EXAMPLES__PATTERN_ID.fkReferenceTo(PATTERNS__PATTERN_ID,
+				Cardinality.ManyToOne);
 
 		// =======================================================================================
 		// EXTERNAL_EXAMPLES
 		// =======================================================================================
-		EXTERNAL_EXAMPLES__ALERT_ID.fkReferenceTo(ALERTS__ALERT_ID);
+		EXTERNAL_EXAMPLES__ALERT_ID.fkReferenceTo(ALERTS__ALERT_ID,
+				Cardinality.ManyToOne);
 
 		// =======================================================================================
 		// GROUNDS_THRESHOLD
 		// =======================================================================================
-		GROUNDS_THRESHOLD__RULE_ID.fkReferenceTo(RULES__RULE_ID);
+		GROUNDS_THRESHOLD__RULE_ID.fkReferenceTo(RULES__RULE_ID,
+				Cardinality.ManyToOne);
 
 		// =======================================================================================
 		// JOIN TABLE ORGAN_ENZYME
 		// =======================================================================================
-		ORGAN_ENZYME__ORGAN_ID.fkReferenceTo(ORGANS__ORGAN_ID);
+		ORGAN_ENZYME__ORGAN_ID.fkReferenceTo(ORGANS__ORGAN_ID,
+				Cardinality.ManyToMany);
 
-		ORGAN_ENZYME__ENZYME_ID.fkReferenceTo(ENZYME__ENZYME_ID);
+		ORGAN_ENZYME__ENZYME_ID.fkReferenceTo(ENZYME__ENZYME_ID,
+				Cardinality.ManyToMany);
 
 		// =======================================================================================
 		// JOIN TABLE ORGAN_EXPOSURE
 		// =======================================================================================
-		ORGAN_EXPOSURE__ORGAN_ID.fkReferenceTo(ORGANS__ORGAN_ID);
+		ORGAN_EXPOSURE__ORGAN_ID.fkReferenceTo(ORGANS__ORGAN_ID,
+				Cardinality.ManyToMany);
 
-		ORGAN_EXPOSURE__EXPOSURE_ROUTE_ID
-				.fkReferenceTo(EXPOSURE_ROUTES__EXPOSURE_ROUTE_ID);
+		ORGAN_EXPOSURE__EXPOSURE_ROUTE_ID.fkReferenceTo(
+				EXPOSURE_ROUTES__EXPOSURE_ROUTE_ID, Cardinality.ManyToMany);
 
 		// =======================================================================================
 		// PATTERNS
 		// =======================================================================================
-		PATTERNS__ALERT_ID.fkReferenceTo(ALERTS__ALERT_ID);
+		PATTERNS__ALERT_ID.fkReferenceTo(ALERTS__ALERT_ID,
+				Cardinality.ManyToOne);
 
 		// =======================================================================================
 		// JOIN TABLE RELATIVE_REF
 		// =======================================================================================
-		RELATIVE_REF__RELATIVE_ID.fkReferenceTo(RELATIVE__RELATIVE_ID);
+		RELATIVE_REF__RELATIVE_ID.fkReferenceTo(RELATIVE__RELATIVE_ID,
+				Cardinality.ManyToMany);
 
-		RELATIVE_REF__REF_ID.fkReferenceTo(REFERENCES__REF_ID);
+		RELATIVE_REF__REF_ID.fkReferenceTo(REFERENCES__REF_ID,
+				Cardinality.ManyToMany);
 
 		// =======================================================================================
 		// JOIN TABLE RULE_REF
 		// =======================================================================================
-		RULE_REF__RULE_ID.fkReferenceTo(RULES__RULE_ID);
+		RULE_REF__RULE_ID.fkReferenceTo(RULES__RULE_ID, Cardinality.ManyToMany);
 
-		RULE_REF__REF_ID.fkReferenceTo(REFERENCES__REF_ID);
+		RULE_REF__REF_ID.fkReferenceTo(REFERENCES__REF_ID,
+				Cardinality.ManyToMany);
 
 		// =======================================================================================
 		// RULES
@@ -1122,26 +1148,32 @@ public class BaseGenerator {
 		// =======================================================================================
 		// JOIN TABLE SPECIES_ENZYME
 		// =======================================================================================
-		SPECIES_ENZYME__SPECIES_ID.fkReferenceTo(SPECIES__SPECIES_ID);
+		SPECIES_ENZYME__SPECIES_ID.fkReferenceTo(SPECIES__SPECIES_ID,
+				Cardinality.ManyToMany);
 
-		SPECIES_ENZYME__ENZYME_ID.fkReferenceTo(ENZYME__ENZYME_ID);
+		SPECIES_ENZYME__ENZYME_ID.fkReferenceTo(ENZYME__ENZYME_ID,
+				Cardinality.ManyToMany);
 
 		// =======================================================================================
 		// JOIN TABLE SPECIES_ORGAN
 		// =======================================================================================
-		SPECIES_ORGAN__SPECIES_ID.fkReferenceTo(SPECIES__SPECIES_ID);
+		SPECIES_ORGAN__SPECIES_ID.fkReferenceTo(SPECIES__SPECIES_ID,
+				Cardinality.ManyToMany);
 
-		SPECIES_ORGAN__ORGAN_ID.fkReferenceTo(ORGANS__ORGAN_ID);
+		SPECIES_ORGAN__ORGAN_ID.fkReferenceTo(ORGANS__ORGAN_ID,
+				Cardinality.ManyToMany);
 
 		// =======================================================================================
 		// SUPPLEMENTAL
 		// =======================================================================================
-		SUPPLEMENTAL__REF_ID.fkReferenceTo(REFERENCES__REF_ID);
+		SUPPLEMENTAL__REF_ID.fkReferenceTo(REFERENCES__REF_ID,
+				Cardinality.ManyToOne);
 
 		// =======================================================================================
 		// TAXONS
 		// =======================================================================================
-		TAXONS__SPECIES_ID.fkReferenceTo(SPECIES__SPECIES_ID);
+		TAXONS__SPECIES_ID.fkReferenceTo(SPECIES__SPECIES_ID,
+				Cardinality.ManyToOne);
 
 	}
 }

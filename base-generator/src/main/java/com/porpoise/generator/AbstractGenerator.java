@@ -62,16 +62,6 @@ public abstract class AbstractGenerator {
 		}
 	}
 
-	protected void generateMainJavaSourceForTable(final File mainDest,
-			final AbstractJavaContext c) throws IOException {
-		generateMainJavaSource(mainDest, c);
-	}
-
-	protected void generateTestJavaSourceForTable(final File testDest,
-			final AbstractJavaContext c) throws IOException {
-		generateTestJavaSource(testDest, c);
-	}
-
 	public void generatePom(final String groupId, final String artifactId,
 			final String version, final File destDir) throws IOException {
 		final PomContext ctxt = getPomContext(groupId, artifactId, version);

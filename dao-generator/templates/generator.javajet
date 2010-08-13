@@ -17,6 +17,7 @@ import com.porpoise.dao.generator.gen.DaoGenerator;
 import com.porpoise.dao.generator.gen.ProjectDefinition;
 import com.porpoise.dao.generator.model.Column;
 import com.porpoise.dao.generator.model.Table;
+import com.porpoise.generator.model.Cardinality;
 import com.porpoise.generator.model.FieldType;
 
 /**
@@ -122,8 +123,10 @@ public class BaseGenerator
            final String column = r.getFrom().getName();
            final String field = table  + "__" + column;
            final String other = r.getTo().getTable().getTableName() + "__" + r.getTo().getName();
+           
+           final String c = t.isJoinTable() ? "ManyToMany" : "ManyToOne";
 %>
-        <%= field %>.fkReferenceTo(<%= other %>);
+        <%= field %>.fkReferenceTo(<%= other %>, Cardinality.<%= c %>);
         
 <%     } // end for column %>
 <%  } // end for table %>

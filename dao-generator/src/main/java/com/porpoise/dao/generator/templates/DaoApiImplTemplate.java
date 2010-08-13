@@ -21,8 +21,8 @@ public class DaoApiImplTemplate implements IGenerator
   protected final String TEXT_2 = ".impl;" + NL + "" + NL + "import ";
   protected final String TEXT_3 = ".*;" + NL + "import ";
   protected final String TEXT_4 = ".service.*;" + NL + "import ";
-  protected final String TEXT_5 = ".domain.*;" + NL + "import java.util.*;" + NL + "import com.google.common.collect.Lists;" + NL + "import com.porpoise.dao.database.DbConnectionFactory;" + NL + "import com.porpoise.dao.database.IDbTransaction;" + NL + "" + NL + "/**" + NL + " * Functional Data Access class used to operate on ";
-  protected final String TEXT_6 = "Dto objects" + NL + " */" + NL + "public class ";
+  protected final String TEXT_5 = ".domain.*;" + NL + "import ";
+  protected final String TEXT_6 = ".model.*;" + NL + "import java.util.*;" + NL + "import com.google.common.collect.Lists;" + NL + "import com.porpoise.dao.database.DbConnectionFactory;" + NL + "import com.porpoise.dao.database.IDbTransaction;" + NL + "" + NL + "/**" + NL + " * " + NL + " */" + NL + "public class ";
   protected final String TEXT_7 = "ServiceImpl extends AbstractDaoService implements I";
   protected final String TEXT_8 = "AccessorService" + NL + "{" + NL + "    private final ";
   protected final String TEXT_9 = "Dao dao;" + NL + "    /**" + NL + "     *" + NL + "     */" + NL + "    public ";
@@ -32,10 +32,12 @@ public class DaoApiImplTemplate implements IGenerator
   protected final String TEXT_13 = " get(final ";
   protected final String TEXT_14 = " id)" + NL + "    {" + NL + "    \t\tfinal IDbTransaction tx = getFactory().startNewTransaction();" + NL + "\t\tI";
   protected final String TEXT_15 = " value = null;" + NL + "\t\ttry {" + NL + "\t\t\tfinal ";
-  protected final String TEXT_16 = "Dto dto = this.dao.findById(tx, id);" + NL + "\t\t\tvalue = dto;" + NL + "\t\t} finally {" + NL + "\t\t\ttx.close();" + NL + "\t\t}" + NL + "\t\treturn value;" + NL + "\t}" + NL + "    " + NL + "    /**" + NL + "     * @return an object for the given key" + NL + "     */" + NL + "    public Collection<I";
-  protected final String TEXT_17 = "> getAll(final Collection<";
-  protected final String TEXT_18 = "> keys)" + NL + "    {" + NL + "        return Lists.newArrayList();" + NL + "    }" + NL + "}";
-  protected final String TEXT_19 = NL;
+  protected final String TEXT_16 = "Dto dto = this.dao.findById(tx, id);" + NL + "\t\t\tvalue = new ";
+  protected final String TEXT_17 = "(" + NL + "\t\t\t";
+  protected final String TEXT_18 = NL + "\t\t\t);" + NL + "\t\t} finally {" + NL + "\t\t\ttx.close();" + NL + "\t\t}" + NL + "\t\treturn value;" + NL + "\t}" + NL + "    " + NL + "    /**" + NL + "     * @return an object for the given key" + NL + "     */" + NL + "    public Collection<I";
+  protected final String TEXT_19 = "> getAll(final Collection<";
+  protected final String TEXT_20 = "> keys)" + NL + "    {" + NL + "        return Lists.newArrayList();" + NL + "    }" + NL + "}";
+  protected final String TEXT_21 = NL;
 
    /* (non-javadoc)
     * @see IGenerator#generate(Object)
@@ -55,7 +57,7 @@ final String n = ctxt.getJavaName();
     stringBuffer.append(TEXT_4);
     stringBuffer.append( ctxt.getPackageName() );
     stringBuffer.append(TEXT_5);
-    stringBuffer.append( n );
+    stringBuffer.append( ctxt.getPackageName() );
     stringBuffer.append(TEXT_6);
     stringBuffer.append( n );
     stringBuffer.append(TEXT_7);
@@ -79,9 +81,13 @@ final String n = ctxt.getJavaName();
     stringBuffer.append(TEXT_16);
     stringBuffer.append( n );
     stringBuffer.append(TEXT_17);
-    stringBuffer.append( ctxt.getIdField().getJavaTypeName() );
+    stringBuffer.append( ctxt.getAccessorMethods("dto") );
     stringBuffer.append(TEXT_18);
+    stringBuffer.append( n );
     stringBuffer.append(TEXT_19);
+    stringBuffer.append( ctxt.getIdField().getJavaTypeName() );
+    stringBuffer.append(TEXT_20);
+    stringBuffer.append(TEXT_21);
     return stringBuffer.toString();
   }
 }

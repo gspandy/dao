@@ -6,6 +6,7 @@ package <%= ctxt.getPackageName() %>.impl;
 
 import java.util.*;
 import com.porpoise.dao.database.DbConnectionFactory;
+import <%= ctxt.getPackageName() %>.assembler.DomainObjects;
 import com.google.common.base.Preconditions;
 
 /**
@@ -15,6 +16,12 @@ abstract class AbstractDaoService
 {
     private final DbConnectionFactory connectionFactory;
 
+	private static final DomainObjects objects = new DomainObjects();
+
+	protected DomainObjects getDomainObjects() {
+		// use the global cache
+		return objects;
+	}
     /**
      *
      */

@@ -4,7 +4,6 @@ import static com.google.common.base.Joiner.on;
 import static com.google.common.collect.Collections2.transform;
 
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 
 import com.google.common.base.Function;
@@ -21,6 +20,8 @@ public class DomainObject {
 	private final List<DomainObjectField> oneToManyFields = Lists
 			.newArrayList();
 	private final List<DomainObjectField> manyToManyFields = Lists
+			.newArrayList();
+	private final List<DomainObjectField> manyToOneFields = Lists
 			.newArrayList();
 	private Field idField;
 
@@ -61,6 +62,11 @@ public class DomainObject {
 				Cardinality.OneToMany));
 	}
 
+	public void addManyToOneField(final String name, final DomainObject obj) {
+		manyToOneFields.add(new DomainObjectField(name, obj,
+				Cardinality.ManyToOne));
+	}
+
 	public void addManyToManyField(final String name, final DomainObject obj) {
 		manyToManyFields.add(new DomainObjectField(name, obj,
 				Cardinality.ManyToMany));
@@ -86,6 +92,10 @@ public class DomainObject {
 		return manyToManyFields;
 	}
 
+	public List<DomainObjectField> getManyToOneFields() {
+		return manyToOneFields;
+	}
+
 	public List<Field> getPrimitiveFields() {
 		return primitiveFields;
 	}
@@ -103,11 +113,11 @@ public class DomainObject {
 		return getIdField().getType().getJavaName();
 	}
 
-	public Iterator<? extends IField> getAllFields() {
+	public Iterable<? extends IField> getAllFields() {
 		final Collection<IField> all = Lists.newArrayList();
 		all.addAll(getSingleFields());
 		all.addAll(getListFields());
-		return all.iterator();
+		return all;
 	}
 
 	public List<IField> getListFields() {
@@ -120,6 +130,7 @@ public class DomainObject {
 	public List<IField> getSingleFields() {
 		final List<IField> fields = Lists.newArrayList();
 		fields.addAll(objectFields);
+		fields.addAll(manyToOneFields);
 		fields.addAll(primitiveFields);
 		return fields;
 	}

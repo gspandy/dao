@@ -136,7 +136,7 @@ public class Table {
 	public Collection<Reference> getReferencesToThisTable() {
 		final Collection<Reference> references = Lists.newArrayList();
 		for (final Column c : columns) {
-			references.addAll(c.getReferencingColumns());
+			references.addAll(c.getAllReferencingColumns());
 		}
 
 		return references;

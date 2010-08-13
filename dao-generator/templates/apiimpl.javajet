@@ -7,13 +7,14 @@ package <%= ctxt.getPackageName() %>.impl;
 import <%= ctxt.getPackageName() %>.*;
 import <%= ctxt.getPackageName() %>.service.*;
 import <%= ctxt.getPackageName() %>.domain.*;
+import <%= ctxt.getPackageName() %>.model.*;
 import java.util.*;
 import com.google.common.collect.Lists;
 import com.porpoise.dao.database.DbConnectionFactory;
 import com.porpoise.dao.database.IDbTransaction;
 
 /**
- * Functional Data Access class used to operate on <%= n %>Dto objects
+ * 
  */
 public class <%= n %>ServiceImpl extends AbstractDaoService implements I<%= n %>AccessorService
 {
@@ -51,7 +52,9 @@ public class <%= n %>ServiceImpl extends AbstractDaoService implements I<%= n %>
 		I<%= n %> value = null;
 		try {
 			final <%= n %>Dto dto = this.dao.findById(tx, id);
-			value = dto;
+			value = new <%= n %>(
+			<%= ctxt.getAccessorMethods("dto") %>
+			);
 		} finally {
 			tx.close();
 		}
