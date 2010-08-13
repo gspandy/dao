@@ -129,7 +129,9 @@ public class Column extends AbstractField implements Comparable<Column> {
 				.asMap().entrySet()) {
 			for (final Column fk : entry.getValue()) {
 				final Cardinality cardinality = entry.getKey();
-				references.add(new Reference(fk, this, cardinality));
+				final Reference ref = new Reference(fk, this, cardinality);
+				final boolean added = references.add(ref);
+				assert added;
 			}
 		}
 
@@ -208,7 +210,7 @@ public class Column extends AbstractField implements Comparable<Column> {
 
 	@Override
 	public int compareTo(final Column o) {
-		return name.compareTo(o.name);
+		return getTableColumnName().compareTo(o.getTableColumnName());
 	}
 
 	public String getNameAsJava() {

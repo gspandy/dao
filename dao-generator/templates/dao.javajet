@@ -24,6 +24,7 @@ import com.porpoise.dao.database.visitors.*;
 
 /**
  * Functional Data Access class used to operate on <%= n %>Dto objects
+ <%= ctxt.getReferencesToThisTable() %>
  */
 public class <%= n %>Dao extends AbstractDao
 {

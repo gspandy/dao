@@ -1,4 +1,4 @@
-<%@ jet package="com.porpoise.dao.generator.templates" imports="com.porpoise.generator.* java.util.* com.porpoise.dao.generator.gen.* com.porpoise.dao.generator.model.*" class="SqlTemplate"  
+<%@ jet package="com.porpoise.dao.generator.templates" imports="com.porpoise.generator.* java.util.* com.porpoise.dao.generator.gen.* com.porpoise.dao.generator.model.* com.porpoise.generator.model.*" class="SqlTemplate"  
 skeleton="generator.skeleton" %><% final DaoContext ctxt = (DaoContext) argument; 
 final String n = ctxt.getJavaName();
 %>
@@ -78,7 +78,7 @@ final String id = pk.getNameAsJava();
 %>
 
     /**
-     * <%= r %>
+     * Relationship: <%= r %>
      * <%= r.getFrom() %> => <%= from %>
      * pk is <%= pk %>
      * id is table (<%= pk.getTable() %>) + Id
@@ -87,14 +87,19 @@ final String id = pk.getNameAsJava();
     {
         final String select = select("a");
         final StringBuilder querySql = new StringBuilder(select);
-        querySql.append(", <%=  from.getTable().getTableName() %> b ");
+        querySql.append(", <%=  r.getFrom().getTable().getTableName() %> b");
+        
+<% if (r.getCardinality() == Cardinality.ManyToMany) { %>
+        querySql.append("WHERE b.<%= r.getFrom().getName() %>=a.<%= r.getTo().getName() %> ");
+<% } else { %> 
         querySql.append("WHERE b.<%= from.getName() %>=a.<%= r.getTo().getName() %> ");
-        querySql.append("AND b.<%= ctxt.resolvePrimaryKey(from).getName() %>=?");
+<% } // end if %>
+        querySql.append("AND b.<%= pk.getName() %>=?");
         final String sql = querySql.toString();
         return sql;
     }
 
-<% } %>
+<% } // end for %>
 
 
     /**
