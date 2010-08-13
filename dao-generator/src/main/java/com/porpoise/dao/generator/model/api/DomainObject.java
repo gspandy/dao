@@ -15,7 +15,7 @@ import com.porpoise.generator.model.IField;
 
 public class DomainObject {
 	private final String javaName;
-	private final List<DomainObjectField> objectFields = Lists.newArrayList();
+	private final List<DomainObjectField> oneToOneFields = Lists.newArrayList();
 	private final List<Field> primitiveFields = Lists.newArrayList();
 	private final List<DomainObjectField> oneToManyFields = Lists
 			.newArrayList();
@@ -30,7 +30,7 @@ public class DomainObject {
 
 		final Function<Object, String> getName = Functions.toStringFunction();
 		final String oto = on(String.format(",%n")).join(
-				transform(objectFields, getName));
+				transform(oneToOneFields, getName));
 		final String otm = on(String.format(",%n")).join(
 				transform(oneToManyFields, getName));
 		final String mtm = on(String.format(",%n")).join(
@@ -101,12 +101,12 @@ public class DomainObject {
 	}
 
 	public List<DomainObjectField> getObjectFields() {
-		return objectFields;
+		return oneToOneFields;
 	}
 
 	public void addObjectField(final String name, final DomainObject obj) {
-		objectFields
-				.add(new DomainObjectField(name, obj, Cardinality.OneToOne));
+		oneToOneFields.add(new DomainObjectField(name, obj,
+				Cardinality.OneToOne));
 	}
 
 	public String getIdTypeName() {
@@ -129,10 +129,26 @@ public class DomainObject {
 
 	public List<IField> getSingleFields() {
 		final List<IField> fields = Lists.newArrayList();
-		fields.addAll(objectFields);
+		fields.addAll(oneToOneFields);
 		fields.addAll(manyToOneFields);
 		fields.addAll(primitiveFields);
 		return fields;
+	}
+
+	public Cardinality getCardinality(final DomainObjectField dof) {
+		if (manyToOneFields.contains(dof)) {
+			return Cardinality.ManyToOne;
+		}
+		if (manyToManyFields.contains(dof)) {
+			return Cardinality.ManyToMany;
+		}
+		if (oneToManyFields.contains(dof)) {
+			return Cardinality.OneToMany;
+		}
+		if (oneToOneFields.contains(dof)) {
+			return Cardinality.OneToOne;
+		}
+		return null;
 	}
 
 }

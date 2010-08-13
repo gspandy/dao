@@ -12,6 +12,11 @@ public abstract class AbstractField implements IField {
 	}
 
 	@Override
+	public String getJavaInterfaceName() {
+		return getJavaTypeName();
+	}
+
+	@Override
 	public String getJavaTypeName() {
 		return this.type.getJavaName();
 	}
@@ -46,5 +51,11 @@ public abstract class AbstractField implements IField {
 	@Override
 	public boolean isByteArray() {
 		return getType() == FieldType.Bytes;
+	}
+
+	@Override
+	public String toString() {
+		return getNameAsProperty() + (isPrimaryKey() ? " *PK* " : " ") + " ["
+				+ type + "]";
 	}
 }

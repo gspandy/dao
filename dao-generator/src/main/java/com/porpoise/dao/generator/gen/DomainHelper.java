@@ -1,4 +1,4 @@
-package com.porpoise.api.generator.gen;
+package com.porpoise.dao.generator.gen;
 
 import java.util.Collection;
 import java.util.Map;

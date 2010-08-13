@@ -18,4 +18,6 @@ public interface IField {
 
 	boolean isByteArray();
 
+	public String getJavaInterfaceName();
+
 }

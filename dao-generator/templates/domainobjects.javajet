@@ -20,10 +20,10 @@ import com.porpoise.dao.database.IDbTransaction;
 public class DomainObjects {
 
 <%
-for (final DaoContext t : ctxt.getTableContextsWithIds())
+for (final ApiContext t : ctxt.getTableContextsWithIds())
 {
 %>
-	private final ConcurrentMap<FindKey<<%= t.getIdField().getJavaTypeName() %>>, I<%= t.getJavaName() %>> <%= t.getPropertyName() %>ById;
+	private final ConcurrentMap<FindKey<<%= t.getIdType() %>>, I<%= t.getJavaName() %>> <%= t.getPropertyName() %>ById;
 <% } %>
 
     /**
@@ -32,9 +32,9 @@ for (final DaoContext t : ctxt.getTableContextsWithIds())
 	public DomainObjects() {
 	    final int concurrencyLevel = 1;
 <%
-for (final DaoContext t : ctxt.getTableContextsWithIds())
+for (final ApiContext t : ctxt.getTableContextsWithIds())
 {
-    final String k = t.getIdField().getJavaTypeName();
+    final String k = t.getIdType();
     final String n = t.getJavaName();
     final String p = t.getPropertyName();
 %>
@@ -58,9 +58,9 @@ for (final DaoContext t : ctxt.getTableContextsWithIds())
 	}
 
 <%
-for (final DaoContext t : ctxt.getTableContextsWithIds())
+for (final ApiContext t : ctxt.getTableContextsWithIds())
 {
-    final String k = t.getIdField().getJavaTypeName();
+    final String k = t.getIdType();
     final String n = t.getJavaName();
     final String p = t.getPropertyName();
 %>
@@ -70,14 +70,9 @@ for (final DaoContext t : ctxt.getTableContextsWithIds())
 		final <%= n %>Dao <%= p %>Dao = new <%= n %>Dao();
 		final <%= n %>Dto dto = <%= p %>Dao.findById(transaction, id);
 
+		<%= t.getDeclarationDefinitions("dto") %>;
 
-		<%= t.getDeclarationDefinitions("", t.getFields()) %>;
-
-
-		//final Collection<ExternalExamples> examples = new
-		// ExternalExamplesDao().fDao.fin;
-
-		final I<%= n %> value = new <%= n %>(<%= t.getAccessorMethods("dto") %>);
+		final I<%= n %> value = new <%= n %>(<%= t.getDeclarationVariables() %>);
 
 		return value;
 	}
@@ -86,7 +81,7 @@ for (final DaoContext t : ctxt.getTableContextsWithIds())
      * @return the I<%= n %> for the given Id 
      */
 	public I<%= n %> get<%= n %>(final <%= k %> id, final IDbTransaction tx) {
-		return <%= t.getPropertyName() %>ById.get(new FindKey(id, tx));
+		return <%= t.getPropertyName() %>ById.get(new FindKey<<%= k %>>(id, tx));
 	}
 <% } // end for %>
 

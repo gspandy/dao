@@ -8,7 +8,7 @@ import java.util.List;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.porpoise.api.generator.gen.ApiGenerator;
-import com.porpoise.api.generator.gen.ApiProjectDefinition;
+import com.porpoise.dao.generator.gen.ApiProjectDefinition;
 import com.porpoise.dao.generator.gen.DaoGenerator;
 import com.porpoise.dao.generator.gen.ProjectDefinition;
 import com.porpoise.dao.generator.gen.access.AccessTable;

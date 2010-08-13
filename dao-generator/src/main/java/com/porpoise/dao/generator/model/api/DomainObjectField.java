@@ -77,4 +77,9 @@ public class DomainObjectField implements IField, ICardinalitySupplier {
 		return false;
 	}
 
+	@Override
+	public String getJavaInterfaceName() {
+		return "I" + getJavaTypeName();
+	}
+
 }

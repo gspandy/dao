@@ -46,8 +46,8 @@ public class DomainObjectsTemplate implements IGenerator
   protected final String TEXT_26 = "Dao = new ";
   protected final String TEXT_27 = "Dao();" + NL + "\t\tfinal ";
   protected final String TEXT_28 = "Dto dto = ";
-  protected final String TEXT_29 = "Dao.findById(transaction, id);" + NL + "" + NL + "" + NL + "\t\t";
-  protected final String TEXT_30 = ";" + NL + "" + NL + "" + NL + "\t\t//final Collection<ExternalExamples> examples = new" + NL + "\t\t// ExternalExamplesDao().fDao.fin;" + NL + "" + NL + "\t\tfinal I";
+  protected final String TEXT_29 = "Dao.findById(transaction, id);" + NL + "" + NL + "\t\t";
+  protected final String TEXT_30 = ";" + NL + "" + NL + "\t\tfinal I";
   protected final String TEXT_31 = " value = new ";
   protected final String TEXT_32 = "(";
   protected final String TEXT_33 = ");" + NL + "" + NL + "\t\treturn value;" + NL + "\t}" + NL + "" + NL + "    /**" + NL + "     * @return the I";
@@ -55,9 +55,10 @@ public class DomainObjectsTemplate implements IGenerator
   protected final String TEXT_35 = " get";
   protected final String TEXT_36 = "(final ";
   protected final String TEXT_37 = " id, final IDbTransaction tx) {" + NL + "\t\treturn ";
-  protected final String TEXT_38 = "ById.get(new FindKey(id, tx));" + NL + "\t}";
-  protected final String TEXT_39 = NL + NL + "}";
-  protected final String TEXT_40 = NL;
+  protected final String TEXT_38 = "ById.get(new FindKey<";
+  protected final String TEXT_39 = ">(id, tx));" + NL + "\t}";
+  protected final String TEXT_40 = NL + NL + "}";
+  protected final String TEXT_41 = NL;
 
    /* (non-javadoc)
     * @see IGenerator#generate(Object)
@@ -78,11 +79,11 @@ DomainObjectContext ctxt = (DomainObjectContext) argument;
     stringBuffer.append( ctxt.getPackageName() );
     stringBuffer.append(TEXT_5);
     
-for (final DaoContext t : ctxt.getTableContextsWithIds())
+for (final ApiContext t : ctxt.getTableContextsWithIds())
 {
 
     stringBuffer.append(TEXT_6);
-    stringBuffer.append( t.getIdField().getJavaTypeName() );
+    stringBuffer.append( t.getIdType() );
     stringBuffer.append(TEXT_7);
     stringBuffer.append( t.getJavaName() );
     stringBuffer.append(TEXT_8);
@@ -91,9 +92,9 @@ for (final DaoContext t : ctxt.getTableContextsWithIds())
      } 
     stringBuffer.append(TEXT_10);
     
-for (final DaoContext t : ctxt.getTableContextsWithIds())
+for (final ApiContext t : ctxt.getTableContextsWithIds())
 {
-    final String k = t.getIdField().getJavaTypeName();
+    final String k = t.getIdType();
     final String n = t.getJavaName();
     final String p = t.getPropertyName();
 
@@ -118,9 +119,9 @@ for (final DaoContext t : ctxt.getTableContextsWithIds())
      } // end for 
     stringBuffer.append(TEXT_21);
     
-for (final DaoContext t : ctxt.getTableContextsWithIds())
+for (final ApiContext t : ctxt.getTableContextsWithIds())
 {
-    final String k = t.getIdField().getJavaTypeName();
+    final String k = t.getIdType();
     final String n = t.getJavaName();
     final String p = t.getPropertyName();
 
@@ -139,13 +140,13 @@ for (final DaoContext t : ctxt.getTableContextsWithIds())
     stringBuffer.append(TEXT_28);
     stringBuffer.append( p );
     stringBuffer.append(TEXT_29);
-    stringBuffer.append( t.getDeclarationDefinitions("", t.getFields()) );
+    stringBuffer.append( t.getDeclarationDefinitions("dto") );
     stringBuffer.append(TEXT_30);
     stringBuffer.append( n );
     stringBuffer.append(TEXT_31);
     stringBuffer.append( n );
     stringBuffer.append(TEXT_32);
-    stringBuffer.append( t.getAccessorMethods("dto") );
+    stringBuffer.append( t.getDeclarationVariables() );
     stringBuffer.append(TEXT_33);
     stringBuffer.append( n );
     stringBuffer.append(TEXT_34);
@@ -157,9 +158,11 @@ for (final DaoContext t : ctxt.getTableContextsWithIds())
     stringBuffer.append(TEXT_37);
     stringBuffer.append( t.getPropertyName() );
     stringBuffer.append(TEXT_38);
-     } // end for 
+    stringBuffer.append( k );
     stringBuffer.append(TEXT_39);
+     } // end for 
     stringBuffer.append(TEXT_40);
+    stringBuffer.append(TEXT_41);
     return stringBuffer.toString();
   }
 }

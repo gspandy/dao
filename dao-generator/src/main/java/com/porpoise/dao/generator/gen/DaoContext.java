@@ -53,7 +53,7 @@ public class DaoContext extends AbstractJavaContext {
 	}
 
 	public String getTestValues() {
-		return traverse(new CommasSeparatedBufferVisitor() {
+		return traverse(new DelimSeparatedBufferVisitor() {
 			@Override
 			protected void onField(final IField f) {
 				final Column c = (Column) f;
@@ -67,7 +67,7 @@ public class DaoContext extends AbstractJavaContext {
 	}
 
 	public String getOtherTestValues() {
-		return traverse(new CommasSeparatedBufferVisitor() {
+		return traverse(new DelimSeparatedBufferVisitor() {
 			@Override
 			protected void onField(final IField f) {
 				final Column c = (Column) f;

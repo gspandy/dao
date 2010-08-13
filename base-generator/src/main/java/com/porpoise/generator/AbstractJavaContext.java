@@ -49,7 +49,7 @@ public abstract class AbstractJavaContext {
 		if (field.isByteArray()) {
 			decl.append("byte[]");
 		} else {
-			decl.append(field.getJavaTypeName());
+			decl.append(field.getJavaInterfaceName());
 		}
 		if (isList) {
 			decl.append(">");
@@ -60,35 +60,25 @@ public abstract class AbstractJavaContext {
 		return declaration;
 	}
 
-	public String getDeclarationDefinitions(final String varPrefix,
-			final Iterable<? extends IField> fields) {
-		final StringBuilder b = new StringBuilder();
-		final String delim = String.format("%n");
-
-		for (final IField f : fields) {
-			b.append(getDeclarationForField(f)).append(delim);
-		}
-
-		return b.toString();
-	}
-
-	public static abstract class CommasSeparatedBufferVisitor extends
+	public static abstract class DelimSeparatedBufferVisitor extends
 			BufferVisitor {
-		private static final String DELIM = ", ";
 
-		public CommasSeparatedBufferVisitor() {
-			this("");
+		private final String delim;
+
+		public DelimSeparatedBufferVisitor() {
+			this(", ");
 		}
 
-		public CommasSeparatedBufferVisitor(final String value) {
-			super(value);
+		public DelimSeparatedBufferVisitor(final String delim) {
+			super("");
+			this.delim = delim;
 		}
 
 		@Override
 		public String toString() {
 			final String str = super.toString();
-			if (str.endsWith(DELIM)) {
-				return str.substring(0, str.length() - DELIM.length());
+			if (str.endsWith(delim)) {
+				return str.substring(0, str.length() - delim.length());
 			}
 			return str;
 		}
@@ -100,7 +90,7 @@ public abstract class AbstractJavaContext {
 			onField(fld);
 			final int after = length();
 			if (hasNext && after > b4) {
-				append(DELIM);
+				append(delim);
 			}
 		}
 
@@ -122,7 +112,7 @@ public abstract class AbstractJavaContext {
 
 	public String getDeclarations() {
 
-		return traverse(new CommasSeparatedBufferVisitor() {
+		return traverse(new DelimSeparatedBufferVisitor() {
 			@Override
 			protected void onField(final IField c) {
 				append("final ").append(c.getJavaTypeName()).append(" ")
@@ -132,7 +122,7 @@ public abstract class AbstractJavaContext {
 	}
 
 	public String getParameterListAsToString() {
-		return traverse(new CommasSeparatedBufferVisitor() {
+		return traverse(new DelimSeparatedBufferVisitor() {
 			@Override
 			protected void onField(final IField c) {
 				append(c.getNameAsProperty()).append("=%s");
@@ -142,7 +132,7 @@ public abstract class AbstractJavaContext {
 
 	public String getAccessorMethods(final String varName) {
 
-		return traverse(new CommasSeparatedBufferVisitor() {
+		return traverse(new DelimSeparatedBufferVisitor() {
 			@Override
 			protected void onField(final IField c) {
 				append(varName).append(".").append(c.getNameAsAccessor())
@@ -152,7 +142,7 @@ public abstract class AbstractJavaContext {
 	}
 
 	public String getParameterList() {
-		return traverse(new CommasSeparatedBufferVisitor() {
+		return traverse(new DelimSeparatedBufferVisitor() {
 			@Override
 			protected void onField(final IField c) {
 				append(c.getNameAsProperty());
@@ -161,7 +151,7 @@ public abstract class AbstractJavaContext {
 	}
 
 	public String getFieldNames() {
-		return traverse(new CommasSeparatedBufferVisitor() {
+		return traverse(new DelimSeparatedBufferVisitor() {
 			@Override
 			protected void onField(final IField c) {
 				append(c.getJavaName());

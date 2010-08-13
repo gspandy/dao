@@ -15,6 +15,7 @@ import com.porpoise.api.generator.templates.ApiPomTemplate;
 import com.porpoise.api.generator.templates.AssemblerTemplate;
 import com.porpoise.api.generator.templates.DomainTemplate;
 import com.porpoise.dao.generator.gen.ApiContext;
+import com.porpoise.dao.generator.gen.ApiProjectDefinition;
 import com.porpoise.dao.generator.model.api.DomainObject;
 import com.porpoise.generator.AbstractGenerator;
 import com.porpoise.generator.AbstractJavaContext;

@@ -11,7 +11,7 @@ import javax.xml.bind.annotation.*;
 import com.google.common.base.*;
 import com.google.common.collect.*;
 import com.google.common.primitives.*;
-import <%= ctxt.getPackageName() %>.I<%= n %>;
+import <%= ctxt.getPackageName() %>.*;
 
 /**
  * <%= n %>
@@ -28,14 +28,14 @@ public final class <%= n %> extends AbstractDomainObject implements I<%= n %>
     /**
      * <%= f.getNameAsProperty() %>
      */
-    private final <%= f.getJavaTypeName() %> <%= f.getNameAsProperty() %>;
+    private final <%= f.getJavaInterfaceName() %> <%= f.getNameAsProperty() %>;
 <%}  // end for %>
 
 <% for (final IField f : ctxt.getListFields()) { %>
     /**
      * <%= f.getNameAsProperty() %>
      */
-    private final Collection<<%= f.getJavaTypeName() %>> <%= f.getNameAsProperty() %>;
+    private final Collection<<%= f.getJavaInterfaceName() %>> <%= f.getNameAsProperty() %>;
 <%} // end for %>
 
     /**
@@ -61,7 +61,7 @@ if (f.isDate()) {
     /**
      * @return <%= f.getNameAsProperty() %>
      */
-    public <%= f.getJavaTypeName() %> <%= f.getNameAsAccessor() %>()
+    public <%= f.getJavaInterfaceName() %> <%= f.getNameAsAccessor() %>()
     {
 <% if (f.isDate()) { %>
         return this.<%= f.getNameAsProperty() %> == null ? null : new Date(this.<%= f.getNameAsProperty() %>.getTime());
@@ -81,7 +81,7 @@ if (!dof.getType().hasIdField())
     /**
      * @return <%= f.getNameAsProperty() %>
      */
-    public Collection<<%= f.getJavaTypeName() %>> <%= f.getNameAsAccessor() %>()
+    public Collection<<%= f.getJavaInterfaceName() %>> <%= f.getNameAsAccessor() %>()
     {
         return this.<%= f.getNameAsProperty() %>;
     }
@@ -95,9 +95,9 @@ final String name = f.getJavaName();
 	@Override
 	public Collection<<%= idType %>> <%= f.getNameAsAccessor() %>Ids() {
 		return Collections2.transform(<%= f.getNameAsAccessor() %>(),
-				new Function<<%= name %>, <%= idType %>>() {
+				new Function<I<%= name %>, <%= idType %>>() {
 					@Override
-					public <%= idType %> apply(final <%= name %> from) {
+					public <%= idType %> apply(final I<%= name %> from) {
 						return from.<%= dof.getIdAsAccessor() %>();
 					}
 				});

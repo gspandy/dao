@@ -30,14 +30,12 @@ public class DaoApiImplTemplate implements IGenerator
   protected final String TEXT_11 = "Dao();" + NL + "    }" + NL + "" + NL + "    /**" + NL + "     * @return an iterable of all IDs for the given type" + NL + "     */" + NL + "    public Iterable<";
   protected final String TEXT_12 = "> listAllKeys()" + NL + "    {" + NL + "\t\tfinal IDbTransaction tx = getFactory().startNewTransaction();" + NL + "\t\tIterable<Integer> result;" + NL + "\t\ttry {" + NL + "\t\t\tresult = this.dao.listAllKeys(tx);" + NL + "\t\t} finally {" + NL + "\t\t\ttx.close();" + NL + "\t\t}" + NL + "\t\treturn result;" + NL + "    }" + NL + "    " + NL + "    /**" + NL + "     * @return an object for the given key" + NL + "     */" + NL + "    public I";
   protected final String TEXT_13 = " get(final ";
-  protected final String TEXT_14 = " id)" + NL + "    {" + NL + "    \t\tfinal IDbTransaction tx = getFactory().startNewTransaction();" + NL + "\t\tI";
-  protected final String TEXT_15 = " value = null;" + NL + "\t\ttry {" + NL + "\t\t\tfinal ";
-  protected final String TEXT_16 = "Dto dto = this.dao.findById(tx, id);" + NL + "\t\t\tvalue = new ";
-  protected final String TEXT_17 = "(" + NL + "\t\t\t";
-  protected final String TEXT_18 = NL + "\t\t\t);" + NL + "\t\t} finally {" + NL + "\t\t\ttx.close();" + NL + "\t\t}" + NL + "\t\treturn value;" + NL + "\t}" + NL + "    " + NL + "    /**" + NL + "     * @return an object for the given key" + NL + "     */" + NL + "    public Collection<I";
-  protected final String TEXT_19 = "> getAll(final Collection<";
-  protected final String TEXT_20 = "> keys)" + NL + "    {" + NL + "        return Lists.newArrayList();" + NL + "    }" + NL + "}";
-  protected final String TEXT_21 = NL;
+  protected final String TEXT_14 = " id)" + NL + "    {" + NL + "        final IDbTransaction tx = getFactory().startNewTransaction();" + NL + "\t\tfinal I";
+  protected final String TEXT_15 = " value;" + NL + "\t\ttry {" + NL + "\t\t\tvalue = getDomainObjects().get";
+  protected final String TEXT_16 = "(id, tx);" + NL + "\t\t} finally {" + NL + "\t\t\ttx.close();" + NL + "\t\t}" + NL + "\t\treturn value;" + NL + "\t}" + NL + "    " + NL + "    /**" + NL + "     * @return an object for the given key" + NL + "     */" + NL + "    public Collection<I";
+  protected final String TEXT_17 = "> getAll(final Collection<";
+  protected final String TEXT_18 = "> keys)" + NL + "    {" + NL + "        return Lists.newArrayList();" + NL + "    }" + NL + "}";
+  protected final String TEXT_19 = NL;
 
    /* (non-javadoc)
     * @see IGenerator#generate(Object)
@@ -81,13 +79,9 @@ final String n = ctxt.getJavaName();
     stringBuffer.append(TEXT_16);
     stringBuffer.append( n );
     stringBuffer.append(TEXT_17);
-    stringBuffer.append( ctxt.getAccessorMethods("dto") );
-    stringBuffer.append(TEXT_18);
-    stringBuffer.append( n );
-    stringBuffer.append(TEXT_19);
     stringBuffer.append( ctxt.getIdField().getJavaTypeName() );
-    stringBuffer.append(TEXT_20);
-    stringBuffer.append(TEXT_21);
+    stringBuffer.append(TEXT_18);
+    stringBuffer.append(TEXT_19);
     return stringBuffer.toString();
   }
 }

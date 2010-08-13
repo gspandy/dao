@@ -4,7 +4,7 @@ final String n = ctxt.getJavaName();
 %>
 package <%= ctxt.getPackageName() %>.assembler;
 
-
+import static com.google.common.base.Preconditions.*;
 import com.porpoise.dao.database.IDbTransaction;
 
 /**
@@ -13,7 +13,12 @@ import com.porpoise.dao.database.IDbTransaction;
 class FindKey<T> {
 	private T key;
 	private IDbTransaction tx;
-
+	
+	FindKey(final T k, final IDbTransaction t) {
+		key = checkNotNull(k);
+		tx = checkNotNull(t);
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

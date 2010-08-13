@@ -2,6 +2,7 @@ package com.porpoise.dao.generator.gen;
 
 import java.util.List;
 
+import com.google.common.base.CaseFormat;
 import com.porpoise.dao.generator.model.api.DomainObject;
 import com.porpoise.dao.generator.model.api.DomainObjectField;
 import com.porpoise.generator.AbstractJavaContext;
@@ -27,6 +28,10 @@ public class ApiContext extends AbstractJavaContext {
 		return obj.getJavaName();
 	}
 
+	public String getPropertyName() {
+		return CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL, getJavaName());
+	}
+
 	public String getIdType() {
 		return obj.getIdTypeName();
 	}
@@ -48,10 +53,64 @@ public class ApiContext extends AbstractJavaContext {
 		return obj.getSingleFields();
 	}
 
+	public String getDeclarationVariables() {
+		return traverse(new DelimSeparatedBufferVisitor(String.format(",%n")) {
+			@Override
+			protected void onField(final IField field) {
+				append(field.getNameAsProperty());
+			}
+
+		}).toString();
+
+	}
+
+	public String getDeclarationDefinitions(final String dtoName) {
+		final StringBuilder b = new StringBuilder();
+		final String delim = String.format("%n");
+
+		for (final IField f : getFields()) {
+
+			b.append(String.format("%n"));
+			b.append("//");
+			b.append(f);
+			b.append(String.format("%n"));
+			b.append(getDeclarationForField(f));
+			b.append("=");
+
+			if (f instanceof DomainObjectField) {
+				final DomainObjectField dof = (DomainObjectField) f;
+
+				final Cardinality c = obj.getCardinality(dof);
+				if (c.isList()) {
+					b.append("null;// collection");
+				} else {
+					b.append("/* domain object of ").append(c).append("*/");
+					final String pkAccessor = dof.getType().getIdField()
+							.getNameAsAccessor();
+
+					b.append("/* pk accessor=").append(pkAccessor).append("*/");
+					b.append("/* dof accessor=")
+							.append(dof.getNameAsAccessor()).append("*/");
+					b.append(dof.getNameAsAccessor());
+					b.append("(dto.");
+					b.append(pkAccessor);
+					b.append("(), transaction)");
+				}
+			} else {
+				b.append(dtoName).append(".").append(f.getNameAsAccessor())
+						.append("()");
+			}
+
+			b.append(";").append(delim);
+		}
+
+		return b.toString();
+	}
+
 	@Override
 	public String getDeclarations() {
 
-		return traverse(new CommasSeparatedBufferVisitor() {
+		return traverse(new DelimSeparatedBufferVisitor() {
 			@Override
 			protected void onField(final IField field) {
 				final String declaration = getDeclarationForField(field);
@@ -76,7 +135,7 @@ public class ApiContext extends AbstractJavaContext {
 
 	@Override
 	public String getParameterListAsToString() {
-		return traverse(new CommasSeparatedBufferVisitor() {
+		return traverse(new DelimSeparatedBufferVisitor() {
 			@Override
 			protected void onField(final IField c) {
 				final boolean isList = isList(c);
@@ -97,7 +156,7 @@ public class ApiContext extends AbstractJavaContext {
 	}
 
 	public String getToStringAccessorMethods(final String varName) {
-		return traverse(new CommasSeparatedBufferVisitor() {
+		return traverse(new DelimSeparatedBufferVisitor() {
 			@Override
 			protected void onField(final IField c) {
 				if (!isList(c)) {

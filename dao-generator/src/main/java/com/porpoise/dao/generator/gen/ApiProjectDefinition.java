@@ -1,4 +1,4 @@
-package com.porpoise.api.generator.gen;
+package com.porpoise.dao.generator.gen;
 
 import java.io.File;
 import java.util.Collection;
@@ -12,9 +12,10 @@ public class ApiProjectDefinition extends AbstractProjectDefinition {
 	private final Collection<DomainObject> objects;
 
 	public ApiProjectDefinition(final Collection<DomainObject> objects,
-			final File api, final String groupId, final String artifactId,
-			final String version, final String packageName) {
-		super(api, groupId, artifactId, version, packageName);
+			final File destinationDirectory, final String groupId,
+			final String artifactId, final String version,
+			final String packageName) {
+		super(destinationDirectory, groupId, artifactId, version, packageName);
 		this.objects = objects;
 	}
 

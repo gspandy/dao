@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.util.Collection;
 
 import com.porpoise.api.generator.gen.ApiGenerator;
-import com.porpoise.api.generator.gen.ApiProjectDefinition;
+import com.porpoise.dao.generator.gen.ApiProjectDefinition;
 import com.porpoise.dao.generator.gen.DaoGenerator;
 import com.porpoise.dao.generator.gen.ProjectDefinition;
 import com.porpoise.dao.generator.model.Table;

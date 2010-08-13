@@ -48,13 +48,10 @@ public class <%= n %>ServiceImpl extends AbstractDaoService implements I<%= n %>
      */
     public I<%= n %> get(final <%= ctxt.getIdField().getJavaTypeName() %> id)
     {
-    		final IDbTransaction tx = getFactory().startNewTransaction();
-		I<%= n %> value = null;
+        final IDbTransaction tx = getFactory().startNewTransaction();
+		final I<%= n %> value;
 		try {
-			final <%= n %>Dto dto = this.dao.findById(tx, id);
-			value = new <%= n %>(
-			<%= ctxt.getAccessorMethods("dto") %>
-			);
+			value = getDomainObjects().get<%= n %>(id, tx);
 		} finally {
 			tx.close();
 		}
