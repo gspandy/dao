@@ -64,49 +64,6 @@ public class ApiContext extends AbstractJavaContext {
 
 	}
 
-	public String getDeclarationDefinitions(final String dtoName) {
-		final StringBuilder b = new StringBuilder();
-		final String delim = String.format("%n");
-
-		for (final IField f : getFields()) {
-
-			b.append(String.format("%n"));
-			b.append("//");
-			b.append(f);
-			b.append(String.format("%n"));
-			b.append(getDeclarationForField(f));
-			b.append("=");
-
-			if (f instanceof DomainObjectField) {
-				final DomainObjectField dof = (DomainObjectField) f;
-
-				final Cardinality c = obj.getCardinality(dof);
-				if (c.isList()) {
-					b.append("null;// collection");
-				} else {
-					b.append("/* domain object of ").append(c).append("*/");
-					final String pkAccessor = dof.getType().getIdField()
-							.getNameAsAccessor();
-
-					b.append("/* pk accessor=").append(pkAccessor).append("*/");
-					b.append("/* dof accessor=")
-							.append(dof.getNameAsAccessor()).append("*/");
-					b.append(dof.getNameAsAccessor());
-					b.append("(dto.");
-					b.append(pkAccessor);
-					b.append("(), transaction)");
-				}
-			} else {
-				b.append(dtoName).append(".").append(f.getNameAsAccessor())
-						.append("()");
-			}
-
-			b.append(";").append(delim);
-		}
-
-		return b.toString();
-	}
-
 	@Override
 	public String getDeclarations() {
 

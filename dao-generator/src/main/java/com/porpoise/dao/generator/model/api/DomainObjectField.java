@@ -15,6 +15,14 @@ public class DomainObjectField implements IField, ICardinalitySupplier {
 		return getType().getIdField().getNameAsAccessor();
 	}
 
+	public Field getId() {
+		return getType().getIdField();
+	}
+
+	public boolean hasId() {
+		return getType().hasIdField();
+	}
+
 	public DomainObjectField(final String name, final DomainObject obj,
 			final Cardinality cardinality) {
 		this.name = name;

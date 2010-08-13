@@ -1,9 +1,11 @@
-<%@ jet package="com.porpoise.dao.generator.templates" imports="com.porpoise.generator.* java.util.* com.porpoise.dao.generator.gen.* com.porpoise.dao.generator.model.* com.porpoise.generator.model.*" class="DomainObjectsTemplate" 
+<%@ jet package="com.porpoise.dao.generator.templates" imports="com.porpoise.generator.* java.util.* com.porpoise.dao.generator.gen.* com.porpoise.dao.generator.model.* com.porpoise.generator.model.* com.porpoise.dao.generator.model.api.*" class="DomainObjectsTemplate" 
 skeleton="generator.skeleton" %><% final 
 DomainObjectContext ctxt = (DomainObjectContext) argument; 
 %>
 package <%= ctxt.getPackageName() %>.assembler;
 
+
+import com.google.common.collect.Collections2;
 import java.util.concurrent.ConcurrentMap;
 import java.util.*;
 
@@ -70,17 +72,62 @@ for (final ApiContext t : ctxt.getTableContextsWithIds())
 		final <%= n %>Dao <%= p %>Dao = new <%= n %>Dao();
 		final <%= n %>Dto dto = <%= p %>Dao.findById(transaction, id);
 
-		final Collection<BiodataDto> biodataDtos = new BiodataDao()
-			.findByExampleId(transaction, exampleId);
-	    final Collection<IBiodata> biodata = Collections2.transform(
-			biodataDtos, new Function<BiodataDto, IBiodata>() {
+
+
+// ===================== single fields ============================ 
+<% for (final IField field : t.getDomainObject().getSingleFields()) 
+{
+   final String decl = t.getDeclarationForField(field);
+   final boolean requiresLoad = field instanceof DomainObjectField;
+%>
+//== <%= field %> [<%= field.getClass().getSimpleName() %>]== is complex? 
+<%= decl %> = <%
+    if (requiresLoad) {
+        final DomainObjectField dof = (DomainObjectField)field;
+        final String idAccessor = dof.getType().getIdField().getNameAsAccessor();
+    %> 
+       <%= dof.getNameAsAccessor() %>(dto.<%= idAccessor %>(), transaction);
+    <% } else { // primitive %>
+       dto.<%= field.getNameAsAccessor() %>();
+    <% } // end if primitive %>
+<% }// end for single fields %>
+
+// ===================== list fields ============================ 
+<% for (final IField field : t.getDomainObject().getListFields()) 
+{
+   final DomainObjectField dof = (DomainObjectField)field;
+   if (!dof.hasId())
+   {
+%>
+//No ID!
+<%
+       continue;
+   }
+   final String decl = t.getDeclarationForField(field);
+   final String coll = field.getNameAsProperty()  + "DtoCollection";
+   final String type = field.getJavaTypeName();
+   final String dto  = field.getJavaTypeName() + "Dto";
+   final String pkId = field.getNameAsAccessor();
+   final Field id = t.getDomainObject().getIdField();
+%>
+//== <%= field %> (name=<%= field.getJavaName() %>, type=<%= field.getJavaTypeName()%>) : dof id=<%= dof.getId() %>, type is...
+/* <%= t.getDomainObject()%> */
+// id: <%= t.getIdType() %>
+// id type name: <%= t.getDomainObject().getIdTypeName() %>
+// id field: <%= id %>
+// id as accessor: <%= dof.getIdAsAccessor()%>
+		final Collection<<%= dto %>> <%= coll %> = new <%= type %>Dao()
+			.findBy<%= id.getJavaName() %>(transaction, <%= id.getNameAsProperty() %>);
+<%= decl %> = Collections2.transform(
+			<%= coll %>, new Function<<%= dto %>, I<%= type %>>() {
 				@Override
-				public IBiodata apply(final BiodataDto from) {
-					return getBiodata(from.getBioId(), transaction);
+				public I<%= type %> apply(final <%= dto %> from) {
+					return get<%= type %>(from.<%= dof.getIdAsAccessor()%>(), transaction);
 				}
 		});
-			
-		<%= t.getDeclarationDefinitions("dto") %>;
+		
+<% }// end for single fields %>
+
 
 		final I<%= n %> value = new <%= n %>(<%= t.getDeclarationVariables() %>);
 

@@ -35,9 +35,11 @@ public class DomainObject {
 				transform(oneToManyFields, getName));
 		final String mtm = on(String.format(",%n")).join(
 				transform(manyToManyFields, getName));
+		final String mto = on(String.format(",%n")).join(
+				transform(manyToOneFields, getName));
 		return String
-				.format("%s%nPrimitives:%n%s%nOneToOne:%n%s%nOneToMany:%n%s%nManyToMany:%n%s%n",
-						javaName, oto, otm, mtm);
+				.format("%s%nPrimitives:%nOneToOne:%n%s%nOneToMany:%n%s%nManyToMany:%n%s%nManyToOne:%n%s%n",
+						javaName, oto, otm, mtm, mto);
 	}
 
 	public DomainObject(final String name) {

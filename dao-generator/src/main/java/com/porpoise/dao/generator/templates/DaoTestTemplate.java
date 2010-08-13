@@ -36,8 +36,8 @@ public class DaoTestTemplate implements IGenerator
   protected final String TEXT_17 = "Dto> all = new ";
   protected final String TEXT_18 = "Dao()" + NL + "\t\t\t\t.listAll(getTransaction());" + NL + "\t\t\t\t" + NL + "\t\tfinal Integer id = Iterables.getLast(all).";
   protected final String TEXT_19 = "();" + NL + "\t\tfinal Collection<";
-  protected final String TEXT_20 = "Dto> results = dao.findBy";
-  protected final String TEXT_21 = "Id(getTransaction(), id);" + NL + "" + NL + "\t\tAssert.assertFalse(results.isEmpty());" + NL + "    }";
+  protected final String TEXT_20 = "Dto> results = dao.";
+  protected final String TEXT_21 = "(getTransaction(), id);" + NL + "" + NL + "\t\tAssert.assertFalse(results.isEmpty());" + NL + "    }";
   protected final String TEXT_22 = NL;
   protected final String TEXT_23 = NL + "    /**" + NL + "     * test the DAO can create and find an entry " + NL + "     */" + NL + "    @Test" + NL + "    public void test_createAndFindById()" + NL + "    {" + NL + "        // create the DAO to test" + NL + "        final ";
   protected final String TEXT_24 = "Dao dao = new ";
@@ -85,14 +85,14 @@ final String n = ctxt.getJavaName();
     stringBuffer.append(TEXT_9);
     stringBuffer.append( n );
     stringBuffer.append(TEXT_10);
-     for (final Reference r : ctxt.getReferencesToThisTable()) { 
+     for (final Reference r : ctxt.getReferencesToThisTable()) {
+
+
+
 final Column col = ctxt.resolveColumn(r.getFrom());
 final Column pk = ctxt.resolvePrimaryKey(col);
-
-
-
 final String id = pk.getTable().getJavaName() + "Id";
-final String methodName = "findBy" + pk.getNameAsJava() + "Id";
+final String methodName = "findBy" + pk.getNameAsJava();
 
 
     stringBuffer.append(TEXT_11);
@@ -116,7 +116,7 @@ final String methodName = "findBy" + pk.getNameAsJava() + "Id";
     stringBuffer.append(TEXT_19);
     stringBuffer.append( n );
     stringBuffer.append(TEXT_20);
-    stringBuffer.append( fromTable );
+    stringBuffer.append( methodName );
     stringBuffer.append(TEXT_21);
      } 
     stringBuffer.append(TEXT_22);

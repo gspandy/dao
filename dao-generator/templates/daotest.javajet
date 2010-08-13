@@ -51,14 +51,14 @@ public class <%= n %>DaoTest extends AbstractDaoTest
         Assert.assertFalse(values.isEmpty());
     }
 
-<% for (final Reference r : ctxt.getReferencesToThisTable()) { 
+<% for (final Reference r : ctxt.getReferencesToThisTable()) {
+
+
+
 final Column col = ctxt.resolveColumn(r.getFrom());
 final Column pk = ctxt.resolvePrimaryKey(col);
-
-
-
 final String id = pk.getTable().getJavaName() + "Id";
-final String methodName = "findBy" + pk.getNameAsJava() + "Id";
+final String methodName = "findBy" + pk.getNameAsJava();
 
 %>
 
@@ -76,7 +76,7 @@ final String methodName = "findBy" + pk.getNameAsJava() + "Id";
 				.listAll(getTransaction());
 				
 		final Integer id = Iterables.getLast(all).<%= pk.getNameAsAccessor() %>();
-		final Collection<<%= n %>Dto> results = dao.findBy<%= fromTable %>Id(getTransaction(), id);
+		final Collection<<%= n %>Dto> results = dao.<%= methodName %>(getTransaction(), id);
 
 		Assert.assertFalse(results.isEmpty());
     }
