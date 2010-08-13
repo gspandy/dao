@@ -107,15 +107,15 @@ public class DaoGenerator extends AbstractGenerator {
 	 * @throws IOException
 	 */
 	public void generateProject(final ProjectDefinition def) throws IOException {
+		final File srcDir = srcDir(def);
 		generateProject(def.getTables(), def.getTargetDirectory(),
-				def.getGroupId(), def.getArtifactId(), srcDir(def),
-				testDir(def), def.getPackageName());
+				def.getGroupId(), def.getArtifactId(), srcDir, testDir(def),
+				def.getPackageName());
 
 		final IGenerator generator = new DomainObjectsTemplate();
 		final DomainObjectContext context = new DomainObjectContext(
 				def.getPackageName(), def.getTables());
-		generate(def.getTargetDirectory(), generator, context,
-				"assembler/DomainObject");
+		generate(srcDir, generator, context, "assembler/DomainObjects");
 	}
 
 	/**

@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.util.Map;
 
 import com.google.common.collect.ImmutableMap;
-import com.porpoise.api.generator.model.DomainObject;
 import com.porpoise.api.generator.templates.AbstractAccessorServiceTemplate;
 import com.porpoise.api.generator.templates.AbstractAssemblerTemplate;
 import com.porpoise.api.generator.templates.AbstractDomainObjectTemplate;
@@ -15,8 +14,8 @@ import com.porpoise.api.generator.templates.AccessorTemplate;
 import com.porpoise.api.generator.templates.ApiPomTemplate;
 import com.porpoise.api.generator.templates.AssemblerTemplate;
 import com.porpoise.api.generator.templates.DomainTemplate;
-import com.porpoise.api.generator.templates.RepositoryTemplate;
-import com.porpoise.api.generator.templates.ServicesTemplate;
+import com.porpoise.dao.generator.gen.ApiContext;
+import com.porpoise.dao.generator.model.api.DomainObject;
 import com.porpoise.generator.AbstractGenerator;
 import com.porpoise.generator.AbstractJavaContext;
 import com.porpoise.generator.IGenerator;
@@ -109,10 +108,6 @@ public class ApiGenerator extends AbstractGenerator {
 				ctxt, DOMAIN_DIR + "AbstractDomainObject");
 		generate(destFolder, AbstractObjectTemplate.create(newLine()), ctxt,
 				"AbstractObject");
-		generate(destFolder, RepositoryTemplate.create(newLine()), ctxt,
-				"Repository");
-		generate(destFolder, ServicesTemplate.create(newLine()), ctxt,
-				"Services");
 
 	}
 

@@ -1,4 +1,4 @@
-package com.porpoise.api.generator.model;
+package com.porpoise.dao.generator.model.api;
 
 import com.porpoise.generator.model.AbstractField;
 import com.porpoise.generator.model.Cardinality;

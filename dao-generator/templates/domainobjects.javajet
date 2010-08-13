@@ -5,6 +5,7 @@ DomainObjectContext ctxt = (DomainObjectContext) argument;
 package <%= ctxt.getPackageName() %>.assembler;
 
 import java.util.concurrent.ConcurrentMap;
+import java.util.*;
 
 import com.google.common.base.Function;
 import com.google.common.collect.MapMaker;
@@ -19,7 +20,7 @@ import com.porpoise.dao.database.IDbTransaction;
 public class DomainObjects {
 
 <%
-for (final DaoContext t : ctxt.getTables())
+for (final DaoContext t : ctxt.getTableContextsWithIds())
 {
 %>
 	private final ConcurrentMap<FindKey<<%= t.getIdField().getJavaTypeName() %>>, I<%= t.getJavaName() %>> <%= t.getPropertyName() %>ById;
@@ -31,7 +32,7 @@ for (final DaoContext t : ctxt.getTables())
 	public DomainObjects() {
 	    final int concurrencyLevel = 1;
 <%
-for (final DaoContext t : ctxt.getTables())
+for (final DaoContext t : ctxt.getTableContextsWithIds())
 {
     final String k = t.getIdField().getJavaTypeName();
     final String n = t.getJavaName();
@@ -57,7 +58,7 @@ for (final DaoContext t : ctxt.getTables())
 	}
 
 <%
-for (final DaoContext t : ctxt.getTables())
+for (final DaoContext t : ctxt.getTableContextsWithIds())
 {
     final String k = t.getIdField().getJavaTypeName();
     final String n = t.getJavaName();

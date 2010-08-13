@@ -7,10 +7,10 @@ import com.google.common.base.CaseFormat;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import com.porpoise.api.generator.model.DomainObject;
 import com.porpoise.dao.generator.model.Column;
 import com.porpoise.dao.generator.model.Reference;
 import com.porpoise.dao.generator.model.Table;
+import com.porpoise.dao.generator.model.api.DomainObject;
 import com.porpoise.generator.model.Cardinality;
 
 enum DomainHelper {

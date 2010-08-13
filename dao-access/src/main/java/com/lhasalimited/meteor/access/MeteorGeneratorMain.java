@@ -6,10 +6,10 @@ import java.util.Collection;
 
 import com.porpoise.api.generator.gen.ApiGenerator;
 import com.porpoise.api.generator.gen.ApiProjectDefinition;
-import com.porpoise.api.generator.model.DomainObject;
 import com.porpoise.dao.generator.gen.DaoGenerator;
 import com.porpoise.dao.generator.gen.ProjectDefinition;
 import com.porpoise.dao.generator.model.Table;
+import com.porpoise.dao.generator.model.api.DomainObject;
 import com.porpoise.generator.PomContext;
 
 public class MeteorGeneratorMain {

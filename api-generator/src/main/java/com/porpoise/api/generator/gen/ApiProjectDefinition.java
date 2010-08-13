@@ -3,8 +3,8 @@ package com.porpoise.api.generator.gen;
 import java.io.File;
 import java.util.Collection;
 
-import com.porpoise.api.generator.model.DomainObject;
 import com.porpoise.dao.generator.model.Table;
+import com.porpoise.dao.generator.model.api.DomainObject;
 import com.porpoise.generator.AbstractProjectDefinition;
 
 public class ApiProjectDefinition extends AbstractProjectDefinition {

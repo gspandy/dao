@@ -1,5 +1,7 @@
 package com.porpoise.api.generator.templates;
 
+import com.porpoise.dao.generator.model.api.*;
+import com.porpoise.dao.generator.gen.*;
 import com.porpoise.generator.model.*;
 import java.util.*;
 import com.porpoise.generator.*;

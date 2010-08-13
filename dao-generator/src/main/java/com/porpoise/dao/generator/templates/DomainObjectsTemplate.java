@@ -19,7 +19,7 @@ public class DomainObjectsTemplate implements IGenerator
 
   public final String NL = nl == null ? (System.getProperties().getProperty("line.separator")) : nl;
   protected final String TEXT_1 = "package ";
-  protected final String TEXT_2 = ".assembler;" + NL + "" + NL + "import java.util.concurrent.ConcurrentMap;" + NL + "" + NL + "import com.google.common.base.Function;" + NL + "import com.google.common.collect.MapMaker;" + NL + "import ";
+  protected final String TEXT_2 = ".assembler;" + NL + "" + NL + "import java.util.concurrent.ConcurrentMap;" + NL + "import java.util.*;" + NL + "" + NL + "import com.google.common.base.Function;" + NL + "import com.google.common.collect.MapMaker;" + NL + "import ";
   protected final String TEXT_3 = ".*;" + NL + "import ";
   protected final String TEXT_4 = ".domain.*;" + NL + "import ";
   protected final String TEXT_5 = ".model.*;" + NL + "import com.porpoise.dao.database.IDbTransaction;" + NL + "" + NL + "/**" + NL + " * An assembler class used to assemble/retrieve domain objects" + NL + " */" + NL + "public class DomainObjects {" + NL;
@@ -78,7 +78,7 @@ DomainObjectContext ctxt = (DomainObjectContext) argument;
     stringBuffer.append( ctxt.getPackageName() );
     stringBuffer.append(TEXT_5);
     
-for (final DaoContext t : ctxt.getTables())
+for (final DaoContext t : ctxt.getTableContextsWithIds())
 {
 
     stringBuffer.append(TEXT_6);
@@ -91,7 +91,7 @@ for (final DaoContext t : ctxt.getTables())
      } 
     stringBuffer.append(TEXT_10);
     
-for (final DaoContext t : ctxt.getTables())
+for (final DaoContext t : ctxt.getTableContextsWithIds())
 {
     final String k = t.getIdField().getJavaTypeName();
     final String n = t.getJavaName();
@@ -118,7 +118,7 @@ for (final DaoContext t : ctxt.getTables())
      } // end for 
     stringBuffer.append(TEXT_21);
     
-for (final DaoContext t : ctxt.getTables())
+for (final DaoContext t : ctxt.getTableContextsWithIds())
 {
     final String k = t.getIdField().getJavaTypeName();
     final String n = t.getJavaName();

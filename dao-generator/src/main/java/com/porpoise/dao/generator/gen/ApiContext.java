@@ -1,9 +1,9 @@
-package com.porpoise.api.generator.gen;
+package com.porpoise.dao.generator.gen;
 
 import java.util.List;
 
-import com.porpoise.api.generator.model.DomainObject;
-import com.porpoise.api.generator.model.DomainObjectField;
+import com.porpoise.dao.generator.model.api.DomainObject;
+import com.porpoise.dao.generator.model.api.DomainObjectField;
 import com.porpoise.generator.AbstractJavaContext;
 import com.porpoise.generator.model.Cardinality;
 import com.porpoise.generator.model.ICardinalitySupplier;

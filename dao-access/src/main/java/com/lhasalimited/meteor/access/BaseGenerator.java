@@ -9,12 +9,12 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.porpoise.api.generator.gen.ApiGenerator;
 import com.porpoise.api.generator.gen.ApiProjectDefinition;
-import com.porpoise.api.generator.model.DomainObject;
 import com.porpoise.dao.generator.gen.DaoGenerator;
 import com.porpoise.dao.generator.gen.ProjectDefinition;
 import com.porpoise.dao.generator.gen.access.AccessTable;
 import com.porpoise.dao.generator.model.Column;
 import com.porpoise.dao.generator.model.Table;
+import com.porpoise.dao.generator.model.api.DomainObject;
 import com.porpoise.generator.model.Cardinality;
 import com.porpoise.generator.model.FieldType;
 

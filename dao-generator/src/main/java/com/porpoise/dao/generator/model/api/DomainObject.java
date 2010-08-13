@@ -1,4 +1,4 @@
-package com.porpoise.api.generator.model;
+package com.porpoise.dao.generator.model.api;
 
 import static com.google.common.base.Joiner.on;
 import static com.google.common.collect.Collections2.transform;
