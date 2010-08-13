@@ -1,4 +1,4 @@
-<%@ jet package="com.porpoise.api.generator.templates" imports="com.porpoise.generator.* java.util.* com.porpoise.api.generator.gen.* com.porpoise.api.generator.model.*" class="ApiPomTemplate" 
+<%@ jet package="com.porpoise.api.generator.templates" imports="com.porpoise.generator.* java.util.* com.porpoise.api.generator.gen.*" class="ApiPomTemplate" 
 skeleton="generator.skeleton" %><% final PomContext ctxt = (PomContext) argument; 
 %>
 <?xml version="1.0" encoding="UTF-8"?>

@@ -3,7 +3,6 @@ package com.porpoise.api.generator.templates;
 import com.porpoise.generator.*;
 import java.util.*;
 import com.porpoise.api.generator.gen.*;
-import com.porpoise.api.generator.model.*;
 
 public class ApiPomTemplate implements IGenerator
 {

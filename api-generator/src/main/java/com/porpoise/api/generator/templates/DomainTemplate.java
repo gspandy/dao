@@ -5,7 +5,6 @@ import com.porpoise.dao.generator.gen.*;
 import com.porpoise.generator.model.*;
 import java.util.*;
 import com.porpoise.generator.*;
-import com.porpoise.api.generator.model.*;
 import com.porpoise.api.generator.gen.*;
 
 public class DomainTemplate implements IGenerator

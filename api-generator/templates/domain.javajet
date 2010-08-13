@@ -1,4 +1,4 @@
-<%@ jet package="com.porpoise.api.generator.templates" imports=" com.porpoise.dao.generator.model.api.* com.porpoise.dao.generator.gen.* com.porpoise.generator.model.* java.util.* com.porpoise.generator.* com.porpoise.api.generator.model.* com.porpoise.api.generator.gen.*" class="DomainTemplate"  
+<%@ jet package="com.porpoise.api.generator.templates" imports=" com.porpoise.dao.generator.model.api.* com.porpoise.dao.generator.gen.* com.porpoise.generator.model.* java.util.* com.porpoise.generator.* com.porpoise.api.generator.gen.*" class="DomainTemplate"  
 skeleton="generator.skeleton" %><% final ApiContext ctxt = (ApiContext) argument; 
 final String n = ctxt.getJavaName();
 %>

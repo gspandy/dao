@@ -70,6 +70,10 @@ public class <%= n %>Dao extends AbstractDao
          */
         public <%= n %>Dto getSingleResult()
         {
+            if (this.dtoResults.isEmpty())
+            {
+                return null;
+            }
             return Iterables.getOnlyElement(this.dtoResults);
         }
     }

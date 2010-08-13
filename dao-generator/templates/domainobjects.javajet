@@ -71,16 +71,15 @@ for (final ApiContext t : ctxt.getTableContextsWithIds())
 			final Integer id) {
 		final <%= n %>Dao <%= p %>Dao = new <%= n %>Dao();
 		final <%= n %>Dto dto = <%= p %>Dao.findById(transaction, id);
-
-
-
-// ===================== single fields ============================ 
+		if (dto == null)
+		{
+		    return null;
+		}
 <% for (final IField field : t.getDomainObject().getSingleFields()) 
 {
    final String decl = t.getDeclarationForField(field);
    final boolean requiresLoad = field instanceof DomainObjectField;
 %>
-//== <%= field %> [<%= field.getClass().getSimpleName() %>]== is complex? 
 <%= decl %> = <%
     if (requiresLoad) {
         final DomainObjectField dof = (DomainObjectField)field;
@@ -92,7 +91,6 @@ for (final ApiContext t : ctxt.getTableContextsWithIds())
     <% } // end if primitive %>
 <% }// end for single fields %>
 
-// ===================== list fields ============================ 
 <% for (final IField field : t.getDomainObject().getListFields()) 
 {
    final DomainObjectField dof = (DomainObjectField)field;
@@ -110,12 +108,6 @@ for (final ApiContext t : ctxt.getTableContextsWithIds())
    final String pkId = field.getNameAsAccessor();
    final Field id = t.getDomainObject().getIdField();
 %>
-//== <%= field %> (name=<%= field.getJavaName() %>, type=<%= field.getJavaTypeName()%>) : dof id=<%= dof.getId() %>, type is...
-/* <%= t.getDomainObject()%> */
-// id: <%= t.getIdType() %>
-// id type name: <%= t.getDomainObject().getIdTypeName() %>
-// id field: <%= id %>
-// id as accessor: <%= dof.getIdAsAccessor()%>
 		final Collection<<%= dto %>> <%= coll %> = new <%= type %>Dao()
 			.findBy<%= id.getJavaName() %>(transaction, <%= id.getNameAsProperty() %>);
 <%= decl %> = Collections2.transform(
@@ -127,7 +119,6 @@ for (final ApiContext t : ctxt.getTableContextsWithIds())
 		});
 		
 <% }// end for single fields %>
-
 
 		final I<%= n %> value = new <%= n %>(<%= t.getDeclarationVariables() %>);
 

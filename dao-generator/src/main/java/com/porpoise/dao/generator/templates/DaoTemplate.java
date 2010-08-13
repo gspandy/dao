@@ -38,7 +38,7 @@ public class DaoTemplate implements IGenerator
   protected final String TEXT_19 = "Dto> getDtoResults()" + NL + "        {" + NL + "            return ImmutableList.copyOf(this.dtoResults);" + NL + "        }" + NL + "" + NL + "        /**" + NL + "         * convenience method used when only a single ";
   protected final String TEXT_20 = "Dto entry was expected" + NL + "         * @return the single ";
   protected final String TEXT_21 = "Dto instance " + NL + "         * @throws NoSuchElementException if no results were returned" + NL + "         * @throws IllegalArgumentException if multiple results were returned" + NL + "         */" + NL + "        public ";
-  protected final String TEXT_22 = "Dto getSingleResult()" + NL + "        {" + NL + "            return Iterables.getOnlyElement(this.dtoResults);" + NL + "        }" + NL + "    }" + NL + "    ";
+  protected final String TEXT_22 = "Dto getSingleResult()" + NL + "        {" + NL + "            if (this.dtoResults.isEmpty())" + NL + "            {" + NL + "                return null;" + NL + "            }" + NL + "            return Iterables.getOnlyElement(this.dtoResults);" + NL + "        }" + NL + "    }" + NL + "    ";
   protected final String TEXT_23 = NL + "    /**" + NL + "     * @param transaction the transaction used to retrieve the object" + NL + "     * @param id the Id for the ";
   protected final String TEXT_24 = " object" + NL + "     * @return the ";
   protected final String TEXT_25 = " object with the given ID" + NL + "     */" + NL + "    public ";

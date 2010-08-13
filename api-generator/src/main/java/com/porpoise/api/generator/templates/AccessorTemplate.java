@@ -5,7 +5,6 @@ import com.porpoise.generator.model.*;
 import com.porpoise.dao.generator.model.api.*;
 import com.porpoise.dao.generator.gen.*;
 import com.porpoise.generator.*;
-import com.porpoise.api.generator.model.*;
 import com.porpoise.api.generator.gen.*;
 
 public class AccessorTemplate implements IGenerator
