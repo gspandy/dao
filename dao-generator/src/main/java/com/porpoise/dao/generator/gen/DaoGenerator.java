@@ -11,6 +11,8 @@ import com.porpoise.dao.generator.templates.AbstractDaoServiceTemplate;
 import com.porpoise.dao.generator.templates.AbstractDaoTestTemplate;
 import com.porpoise.dao.generator.templates.AbstractDtoTemplate;
 import com.porpoise.dao.generator.templates.AbstractDtoTestTemplate;
+import com.porpoise.dao.generator.templates.AbstractServiceTestTemplate;
+import com.porpoise.dao.generator.templates.ApiImplTestTemplate;
 import com.porpoise.dao.generator.templates.DaoApiImplTemplate;
 import com.porpoise.dao.generator.templates.DaoPomTemplate;
 import com.porpoise.dao.generator.templates.DaoTemplate;
@@ -45,6 +47,7 @@ public class DaoGenerator extends AbstractGenerator {
 				);
 
 		testSourceTemplateByFilename = ImmutableMap.of(//
+				"impl/%sServiceImplTest", new ApiImplTestTemplate(),//
 				"%sDaoTest", new DaoTestTemplate(),//
 				"%sDtoTest", new DtoTestTemplate()//
 				);
@@ -73,6 +76,8 @@ public class DaoGenerator extends AbstractGenerator {
 				"AbstractDaoTest");
 		generate(destFolder, AbstractDtoTestTemplate.create(newLine()), ctxt,
 				"AbstractDtoTest");
+		generate(destFolder, AbstractServiceTestTemplate.create(newLine()),
+				ctxt, "impl/AbstractServiceImplTest");
 	}
 
 	@Override
@@ -142,7 +147,8 @@ public class DaoGenerator extends AbstractGenerator {
 	}
 
 	private boolean shouldGenerateForNonIdObject(final String javaFileName) {
-		return !javaFileName.endsWith("ServiceImpl");
+		return !javaFileName.contains("ServiceImpl")
+				|| javaFileName.endsWith("AbstractServiceImplTest");
 	}
 
 	/**

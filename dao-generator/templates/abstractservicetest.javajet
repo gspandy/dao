@@ -1,0 +1,15 @@
+<%@ jet package="com.porpoise.dao.generator.templates" imports="java.util.* com.porpoise.generator.* com.porpoise.dao.generator.gen.* com.porpoise.dao.generator.model.*" class="AbstractServiceTestTemplate" 
+skeleton="generator.skeleton" %><% final DaoContext ctxt = (DaoContext) argument; 
+%>
+package <%= ctxt.getPackageName() %>.impl;
+
+import <%= ctxt.getPackageName() %>.*;
+import org.junit.Ignore;
+
+/**
+ */
+@Ignore
+public abstract class AbstractServiceImplTest extends AbstractDaoTest
+{
+
+}

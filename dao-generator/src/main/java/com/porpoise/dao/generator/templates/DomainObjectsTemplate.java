@@ -57,34 +57,35 @@ public class DomainObjectsTemplate implements IGenerator
   protected final String TEXT_36 = NL + "       dto.";
   protected final String TEXT_37 = "();";
   protected final String TEXT_38 = NL;
-  protected final String TEXT_39 = NL + "//No ID!";
-  protected final String TEXT_40 = NL + "\t\tfinal Collection<";
-  protected final String TEXT_41 = "> ";
-  protected final String TEXT_42 = " = new ";
-  protected final String TEXT_43 = "Dao()" + NL + "\t\t\t.findBy";
-  protected final String TEXT_44 = "(transaction, ";
-  protected final String TEXT_45 = ");";
-  protected final String TEXT_46 = NL;
-  protected final String TEXT_47 = " = Collections2.transform(" + NL + "\t\t\t";
-  protected final String TEXT_48 = ", new Function<";
-  protected final String TEXT_49 = ", I";
-  protected final String TEXT_50 = ">() {" + NL + "\t\t\t\t@Override" + NL + "\t\t\t\tpublic I";
-  protected final String TEXT_51 = " apply(final ";
-  protected final String TEXT_52 = " from) {" + NL + "\t\t\t\t\treturn get";
-  protected final String TEXT_53 = "(from.";
-  protected final String TEXT_54 = "(), transaction);" + NL + "\t\t\t\t}" + NL + "\t\t});" + NL + "\t\t";
-  protected final String TEXT_55 = NL + NL + "\t\tfinal I";
-  protected final String TEXT_56 = " value = new ";
-  protected final String TEXT_57 = "(";
-  protected final String TEXT_58 = ");" + NL + "" + NL + "\t\treturn value;" + NL + "\t}" + NL + "" + NL + "    /**" + NL + "     * @return the I";
-  protected final String TEXT_59 = " for the given Id " + NL + "     */" + NL + "\tpublic I";
-  protected final String TEXT_60 = " get";
-  protected final String TEXT_61 = "(final ";
-  protected final String TEXT_62 = " id, final IDbTransaction tx) {" + NL + "\t\treturn ";
-  protected final String TEXT_63 = "ById.get(new FindKey<";
-  protected final String TEXT_64 = ">(id, tx));" + NL + "\t}";
-  protected final String TEXT_65 = NL + NL + "}";
-  protected final String TEXT_66 = NL;
+  protected final String TEXT_39 = NL + "       ";
+  protected final String TEXT_40 = " = null;";
+  protected final String TEXT_41 = NL + "\t\tfinal Collection<";
+  protected final String TEXT_42 = "> ";
+  protected final String TEXT_43 = " = new ";
+  protected final String TEXT_44 = "Dao()" + NL + "\t\t\t.findBy";
+  protected final String TEXT_45 = "(transaction, ";
+  protected final String TEXT_46 = ");";
+  protected final String TEXT_47 = NL;
+  protected final String TEXT_48 = " = Collections2.transform(" + NL + "\t\t\t";
+  protected final String TEXT_49 = ", new Function<";
+  protected final String TEXT_50 = ", I";
+  protected final String TEXT_51 = ">() {" + NL + "\t\t\t\t@Override" + NL + "\t\t\t\tpublic I";
+  protected final String TEXT_52 = " apply(final ";
+  protected final String TEXT_53 = " from) {" + NL + "\t\t\t\t\treturn get";
+  protected final String TEXT_54 = "(from.";
+  protected final String TEXT_55 = "(), transaction);" + NL + "\t\t\t\t}" + NL + "\t\t});" + NL + "\t\t";
+  protected final String TEXT_56 = NL + NL + "\t\tfinal I";
+  protected final String TEXT_57 = " value = new ";
+  protected final String TEXT_58 = "(";
+  protected final String TEXT_59 = ");" + NL + "" + NL + "\t\treturn value;" + NL + "\t}" + NL + "" + NL + "    /**" + NL + "     * @return the I";
+  protected final String TEXT_60 = " for the given Id " + NL + "     */" + NL + "\tpublic I";
+  protected final String TEXT_61 = " get";
+  protected final String TEXT_62 = "(final ";
+  protected final String TEXT_63 = " id, final IDbTransaction tx) {" + NL + "\t\treturn ";
+  protected final String TEXT_64 = "ById.get(new FindKey<";
+  protected final String TEXT_65 = ">(id, tx));" + NL + "\t}";
+  protected final String TEXT_66 = NL + NL + "}";
+  protected final String TEXT_67 = NL;
 
    /* (non-javadoc)
     * @see IGenerator#generate(Object)
@@ -195,71 +196,76 @@ for (final ApiContext t : ctxt.getTableContextsWithIds())
      for (final IField field : t.getDomainObject().getListFields()) 
 {
    final DomainObjectField dof = (DomainObjectField)field;
+
+   final String decl = t.getDeclarationForField(field);
+   final String coll = field.getNameAsProperty()  + "DtoCollection";
+   final String type = field.getJavaTypeName();
+//   final String pkId = field.getNameAsAccessor();
+   final String dto  = field.getJavaTypeName() + "Dto";
+
    if (!dof.hasId())
    {
 
     stringBuffer.append(TEXT_39);
+    stringBuffer.append( decl );
+    stringBuffer.append(TEXT_40);
     
        continue;
    }
-   final String decl = t.getDeclarationForField(field);
-   final String coll = field.getNameAsProperty()  + "DtoCollection";
-   final String type = field.getJavaTypeName();
-   final String dto  = field.getJavaTypeName() + "Dto";
-   final String pkId = field.getNameAsAccessor();
+
    final Field id = t.getDomainObject().getIdField();
 
-    stringBuffer.append(TEXT_40);
-    stringBuffer.append( dto );
     stringBuffer.append(TEXT_41);
-    stringBuffer.append( coll );
-    stringBuffer.append(TEXT_42);
-    stringBuffer.append( type );
-    stringBuffer.append(TEXT_43);
-    stringBuffer.append( id.getJavaName() );
-    stringBuffer.append(TEXT_44);
-    stringBuffer.append( id.getNameAsProperty() );
-    stringBuffer.append(TEXT_45);
-    stringBuffer.append(TEXT_46);
-    stringBuffer.append( decl );
-    stringBuffer.append(TEXT_47);
-    stringBuffer.append( coll );
-    stringBuffer.append(TEXT_48);
     stringBuffer.append( dto );
-    stringBuffer.append(TEXT_49);
+    stringBuffer.append(TEXT_42);
+    stringBuffer.append( coll );
+    stringBuffer.append(TEXT_43);
     stringBuffer.append( type );
+    stringBuffer.append(TEXT_44);
+    stringBuffer.append( id.getJavaName() );
+    stringBuffer.append(TEXT_45);
+    stringBuffer.append( id.getNameAsProperty() );
+    stringBuffer.append(TEXT_46);
+    stringBuffer.append(TEXT_47);
+    stringBuffer.append( decl );
+    stringBuffer.append(TEXT_48);
+    stringBuffer.append( coll );
+    stringBuffer.append(TEXT_49);
+    stringBuffer.append( dto );
     stringBuffer.append(TEXT_50);
     stringBuffer.append( type );
     stringBuffer.append(TEXT_51);
-    stringBuffer.append( dto );
-    stringBuffer.append(TEXT_52);
     stringBuffer.append( type );
+    stringBuffer.append(TEXT_52);
+    stringBuffer.append( dto );
     stringBuffer.append(TEXT_53);
-    stringBuffer.append( dof.getIdAsAccessor());
+    stringBuffer.append( type );
     stringBuffer.append(TEXT_54);
-     }// end for single fields 
+    stringBuffer.append( dof.getIdAsAccessor());
     stringBuffer.append(TEXT_55);
-    stringBuffer.append( n );
+     }// end for single fields 
     stringBuffer.append(TEXT_56);
     stringBuffer.append( n );
     stringBuffer.append(TEXT_57);
-    stringBuffer.append( t.getDeclarationVariables() );
-    stringBuffer.append(TEXT_58);
     stringBuffer.append( n );
+    stringBuffer.append(TEXT_58);
+    stringBuffer.append( t.getDeclarationVariables() );
     stringBuffer.append(TEXT_59);
     stringBuffer.append( n );
     stringBuffer.append(TEXT_60);
     stringBuffer.append( n );
     stringBuffer.append(TEXT_61);
-    stringBuffer.append( k );
+    stringBuffer.append( n );
     stringBuffer.append(TEXT_62);
-    stringBuffer.append( t.getPropertyName() );
-    stringBuffer.append(TEXT_63);
     stringBuffer.append( k );
+    stringBuffer.append(TEXT_63);
+    stringBuffer.append( t.getPropertyName() );
     stringBuffer.append(TEXT_64);
-     } // end for 
+    stringBuffer.append( k );
     stringBuffer.append(TEXT_65);
+     } // end for 
     stringBuffer.append(TEXT_66);
+    stringBuffer.append(TEXT_67);
     return stringBuffer.toString();
   }
 }

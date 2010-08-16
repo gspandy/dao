@@ -32,10 +32,13 @@ public class DaoApiImplTemplate implements IGenerator
   protected final String TEXT_13 = " get(final ";
   protected final String TEXT_14 = " id)" + NL + "    {" + NL + "        final IDbTransaction tx = getFactory().startNewTransaction();" + NL + "\t\tfinal I";
   protected final String TEXT_15 = " value;" + NL + "\t\ttry {" + NL + "\t\t\tvalue = getDomainObjects().get";
-  protected final String TEXT_16 = "(id, tx);" + NL + "\t\t} finally {" + NL + "\t\t\ttx.close();" + NL + "\t\t}" + NL + "\t\treturn value;" + NL + "\t}" + NL + "    " + NL + "    /**" + NL + "     * @return an object for the given key" + NL + "     */" + NL + "    public Collection<I";
+  protected final String TEXT_16 = "(id, tx);" + NL + "\t\t} finally {" + NL + "\t\t\ttx.close();" + NL + "\t\t}" + NL + "\t\treturn value;" + NL + "\t}" + NL + "    " + NL + "    /**" + NL + "     * @return the objects for the given key" + NL + "     */" + NL + "\t@Override" + NL + "    public Collection<I";
   protected final String TEXT_17 = "> getAll(final Collection<";
-  protected final String TEXT_18 = "> keys)" + NL + "    {" + NL + "        return Lists.newArrayList();" + NL + "    }" + NL + "}";
-  protected final String TEXT_19 = NL;
+  protected final String TEXT_18 = "> keys)" + NL + "    {" + NL + "\t\tfinal Collection<I";
+  protected final String TEXT_19 = "> results = Lists" + NL + "\t\t\t\t.newArrayListWithExpectedSize(keys.size());" + NL + "\t\tfor (final Integer key : keys) {" + NL + "\t\t\tfinal I";
+  protected final String TEXT_20 = " next = get(key);" + NL + "\t\t\tresults.add(next);" + NL + "\t\t}" + NL + "\t\treturn results;" + NL + "    }" + NL + "" + NL + "\t/**" + NL + "\t * @return the total number of ";
+  protected final String TEXT_21 = " objects in the database" + NL + "\t */" + NL + "\tpublic int count() {" + NL + "\t\tfinal IDbTransaction tx = getFactory().startNewTransaction();" + NL + "\t\ttry {" + NL + "\t\t\treturn this.dao.count(tx);" + NL + "\t\t} finally {" + NL + "\t\t\ttx.close();" + NL + "\t\t}" + NL + "\t}" + NL + "}";
+  protected final String TEXT_22 = NL;
 
    /* (non-javadoc)
     * @see IGenerator#generate(Object)
@@ -81,7 +84,13 @@ final String n = ctxt.getJavaName();
     stringBuffer.append(TEXT_17);
     stringBuffer.append( ctxt.getIdField().getJavaTypeName() );
     stringBuffer.append(TEXT_18);
+    stringBuffer.append( n );
     stringBuffer.append(TEXT_19);
+    stringBuffer.append( n );
+    stringBuffer.append(TEXT_20);
+    stringBuffer.append( n );
+    stringBuffer.append(TEXT_21);
+    stringBuffer.append(TEXT_22);
     return stringBuffer.toString();
   }
 }

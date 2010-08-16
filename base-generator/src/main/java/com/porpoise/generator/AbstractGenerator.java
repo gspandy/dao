@@ -113,7 +113,17 @@ public abstract class AbstractGenerator {
 					"Could not create sub-package directory "
 							+ file.getParentFile().getAbsolutePath());
 		}
-		Files.write(text, file, Charsets.UTF_8);
+
+		if (file.exists() && !canOverwrite(file)) {
+			System.out.println("\tNot clobbering file " + file);
+
+		} else {
+			Files.write(text, file, Charsets.UTF_8);
+		}
+	}
+
+	protected boolean canOverwrite(final File file) {
+		return false;
 	}
 
 	private static File createJavaFile(final File destFolder,

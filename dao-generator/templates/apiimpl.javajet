@@ -59,10 +59,29 @@ public class <%= n %>ServiceImpl extends AbstractDaoService implements I<%= n %>
 	}
     
     /**
-     * @return an object for the given key
+     * @return the objects for the given key
      */
+	@Override
     public Collection<I<%= n %>> getAll(final Collection<<%= ctxt.getIdField().getJavaTypeName() %>> keys)
     {
-        return Lists.newArrayList();
+		final Collection<I<%= n %>> results = Lists
+				.newArrayListWithExpectedSize(keys.size());
+		for (final Integer key : keys) {
+			final I<%= n %> next = get(key);
+			results.add(next);
+		}
+		return results;
     }
+
+	/**
+	 * @return the total number of <%= n %> objects in the database
+	 */
+	public int count() {
+		final IDbTransaction tx = getFactory().startNewTransaction();
+		try {
+			return this.dao.count(tx);
+		} finally {
+			tx.close();
+		}
+	}
 }

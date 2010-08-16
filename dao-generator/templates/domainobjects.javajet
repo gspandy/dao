@@ -94,18 +94,21 @@ for (final ApiContext t : ctxt.getTableContextsWithIds())
 <% for (final IField field : t.getDomainObject().getListFields()) 
 {
    final DomainObjectField dof = (DomainObjectField)field;
-   if (!dof.hasId())
-   {
-%>
-//No ID!
-<%
-       continue;
-   }
+
    final String decl = t.getDeclarationForField(field);
    final String coll = field.getNameAsProperty()  + "DtoCollection";
    final String type = field.getJavaTypeName();
+//   final String pkId = field.getNameAsAccessor();
    final String dto  = field.getJavaTypeName() + "Dto";
-   final String pkId = field.getNameAsAccessor();
+
+   if (!dof.hasId())
+   {
+%>
+       <%= decl %> = null;
+<%
+       continue;
+   }
+
    final Field id = t.getDomainObject().getIdField();
 %>
 		final Collection<<%= dto %>> <%= coll %> = new <%= type %>Dao()

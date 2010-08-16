@@ -1,0 +1,44 @@
+<%@ jet package="com.porpoise.dao.generator.templates" imports="com.porpoise.generator.* java.util.* com.porpoise.dao.generator.gen.* com.porpoise.dao.generator.model.*" class="ApiImplTestTemplate" 
+skeleton="generator.skeleton" %><% final DaoContext ctxt = (DaoContext) argument; 
+final String n = ctxt.getJavaName();
+%>
+package <%= ctxt.getPackageName() %>.impl;
+
+import org.junit.Assert;
+import org.junit.Test;
+
+import com.google.common.collect.Iterables;
+import <%= ctxt.getPackageName() %>.*;
+
+/**
+ * Tests for <%= n %>ServiceImpl
+ */
+public class <%= n %>ServiceImplTest extends AbstractServiceImplTest
+{
+	/**
+	 * test which exercises:
+	 * <ul>
+	 * <li>{@link <%= n %>ServiceImpl.listAllKeys()}</li>
+	 * <li>{@link <%= n %>ServiceImpl.count()}</li>
+	 * <li>{@link <%= n %>ServiceImpl.get(Integer)}</li>
+	 * <ul>
+	 * 
+	 * This test assumes a connection to an access database with data.
+	 */
+	@Test
+	public void test_canRead() {
+		// create the object under test
+		final <%= n %>ServiceImpl service = new <%= n %>ServiceImpl(getFactory());
+
+		//
+		final Iterable<Integer> allKeys = service.listAllKeys();
+
+		final int actualCount = service.count(getFactory());
+		Assert.assertEquals(actualCount, Iterables.size(allKeys));
+
+		for (final Integer key : allKeys) {
+			final I<%= n %> obj = service.get(key);
+			Assert.assertNotNull(obj);
+		}
+	}
+}
