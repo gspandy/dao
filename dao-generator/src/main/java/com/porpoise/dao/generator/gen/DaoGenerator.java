@@ -8,6 +8,7 @@ import java.util.Map;
 import com.google.common.collect.ImmutableMap;
 import com.porpoise.dao.generator.model.Table;
 import com.porpoise.dao.generator.templates.AbstractDaoServiceTemplate;
+import com.porpoise.dao.generator.templates.AbstractDaoTemplate;
 import com.porpoise.dao.generator.templates.AbstractDaoTestTemplate;
 import com.porpoise.dao.generator.templates.AbstractDtoTemplate;
 import com.porpoise.dao.generator.templates.AbstractDtoTestTemplate;
@@ -101,6 +102,8 @@ public class DaoGenerator extends AbstractGenerator {
 				"model/AbstractDto");
 		generate(destFolder, new AbstractDaoServiceTemplate(), ctxt,
 				"impl/AbstractDaoService");
+		generate(destFolder, new AbstractDaoTemplate(), ctxt,
+				"AbstractSingleIdDao");
 	}
 
 	/**

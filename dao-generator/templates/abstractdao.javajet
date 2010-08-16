@@ -1,0 +1,81 @@
+<%@ jet package="com.porpoise.dao.generator.templates" imports="com.porpoise.generator.* java.util.* com.porpoise.dao.generator.gen.* com.porpoise.dao.generator.model.*" class="AbstractDaoTemplate" 
+skeleton="generator.skeleton" %><% final DaoContext ctxt = (DaoContext) argument; 
+final String n = ctxt.getJavaName();
+%>
+package <%= ctxt.getPackageName() %>;
+
+import java.util.Collection;
+import java.util.List;
+
+import com.porpoise.dao.database.IDbTransaction;
+import com.porpoise.dao.database.dao.AbstractDao;
+import com.porpoise.dao.database.visitors.MultipleScalarResultVisitor;
+import com.porpoise.dao.database.visitors.SingleScalarResultVisitor;
+
+/**
+ */
+public abstract class AbstractSingleIdDao<K, T> extends AbstractDao
+{
+    /**
+     * @param transaction the transaction used to retrieve the object
+     * @param id the Id for the <%= n %> object
+     * @return the <%= n %> object with the given ID
+     */
+    public abstract T findById(final IDbTransaction transaction, final K id);
+
+    /** 
+     * @return the select count
+     */
+    protected abstract String getSelectCountQuery();
+
+    /** 
+     * @return the select Id query
+     */
+    protected abstract String getSelectIdQuery();
+
+    /**
+     * @return the next available ID
+     */
+	public abstract K nextId(final IDbTransaction transaction);
+
+    /**
+     * @return the number of rows in the database
+     */
+    public int count(final IDbTransaction transaction)
+    {
+	    final Integer count = transaction.executeQuery(new SingleScalarResultVisitor(),
+				getSelectCountQuery()).getInteger();
+		return count.intValue();
+    }
+    
+    
+    /**
+     * @return an iterable of all IDs for the given type
+     */
+    public Iterable<K> listAllKeys(final IDbTransaction transaction)
+    {
+	    final List<K> keys = transaction.executeQuery(
+	       new MultipleScalarResultVisitor<K>(), getSelectIdQuery()).getResults();
+		return keys;
+    }
+
+    /**
+     * @param transaction the transaction used to retrieve the object
+     * @return all <%= n %> objects
+     */
+    public abstract Collection<T> listAll(final IDbTransaction transaction);
+
+    /** 
+     * create a new entry for the given dto
+     * @param transaction
+     * @param dto the dto to insert
+     */
+    public abstract void insert(final IDbTransaction transaction, final T dto);
+
+    /** 
+     * @param transaction
+     * @param id the ID of the element to update
+     * @param dto
+     */
+    public abstract void update(final IDbTransaction transaction, K id, final T dto);
+}

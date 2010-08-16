@@ -16,72 +16,21 @@ import com.porpoise.dao.database.IDbTransaction;
 /**
  * 
  */
-public class <%= n %>ServiceImpl extends AbstractDaoService implements I<%= n %>AccessorService
+public class <%= n %>ServiceImpl extends AbstractDaoService<<%= ctxt.getIdField().getJavaTypeName() %>, I<%= n %>, <%= n %>Dao> implements I<%= n %>AccessorService
 {
-    private final <%= n %>Dao dao;
     /**
      *
      */
     public <%= n %>ServiceImpl(final DbConnectionFactory factory)
     {
-        super(factory);
-        this.dao = new <%= n %>Dao();
+        super(factory, new <%= n %>Dao());
     }
 
-    /**
-     * @return an iterable of all IDs for the given type
-     */
-    public Iterable<<%= ctxt.getIdField().getJavaTypeName() %>> listAllKeys()
-    {
-		final IDbTransaction tx = getFactory().startNewTransaction();
-		Iterable<Integer> result;
-		try {
-			result = this.dao.listAllKeys(tx);
-		} finally {
-			tx.close();
-		}
-		return result;
-    }
-    
     /**
      * @return an object for the given key
      */
-    public I<%= n %> get(final <%= ctxt.getIdField().getJavaTypeName() %> id)
+    protected I<%= n %> getInternal(final <%= ctxt.getIdField().getJavaTypeName() %> id, final IDbTransaction tx)
     {
-        final IDbTransaction tx = getFactory().startNewTransaction();
-		final I<%= n %> value;
-		try {
-			value = getDomainObjects().get<%= n %>(id, tx);
-		} finally {
-			tx.close();
-		}
-		return value;
-	}
-    
-    /**
-     * @return the objects for the given key
-     */
-	@Override
-    public Collection<I<%= n %>> getAll(final Collection<<%= ctxt.getIdField().getJavaTypeName() %>> keys)
-    {
-		final Collection<I<%= n %>> results = Lists
-				.newArrayListWithExpectedSize(keys.size());
-		for (final Integer key : keys) {
-			final I<%= n %> next = get(key);
-			results.add(next);
-		}
-		return results;
-    }
-
-	/**
-	 * @return the total number of <%= n %> objects in the database
-	 */
-	public int count() {
-		final IDbTransaction tx = getFactory().startNewTransaction();
-		try {
-			return this.dao.count(tx);
-		} finally {
-			tx.close();
-		}
+        return getDomainObjects().get<%= n %>(id, tx);
 	}
 }

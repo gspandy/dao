@@ -8,12 +8,16 @@ import <%= ctxt.getPackageName() %>.model.<%= n%>Dto;
 import <%= ctxt.getPackageName() %>.model.<%= n%>Metadata;
 
 import com.porpoise.dao.database.metadata.Field;
-import com.google.common.base.Strings;
+import static com.google.common.base.Strings.*;
+import com.google.common.base.Function;
+import com.google.common.collect.MapMaker;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.concurrent.ConcurrentMap;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -23,12 +27,45 @@ public class <%= n %>Sql
 {
     private static final String TABLE_NAME = "<%=ctxt.getTableName() %>";
 
+    // cached (computing) maps for query strings
+    private static final ConcurrentMap<String, String> attributeListAsStringMap;
+    private static final ConcurrentMap<String, String> attributeListAsUpdateStringMap;
+    private static final ConcurrentMap<String, String> selectByAliasMap;
+
+	static {
+		attributeListAsStringMap = new MapMaker().initialCapacity(3)
+				.makeComputingMap(new Function<String, String>() {
+					@Override
+					public String apply(final String alias) {
+						return Field.asAttributeList(alias,
+								<%= n %>Metadata.FIELDS);
+					}
+				});
+
+		attributeListAsUpdateStringMap = new MapMaker().initialCapacity(3)
+				.makeComputingMap(new Function<String, String>() {
+					@Override
+					public String apply(final String alias) {
+						return Field.asUpdateList(alias, <%= n %>Metadata.FIELDS);
+					}
+				});
+		selectByAliasMap = new MapMaker().initialCapacity(3).makeComputingMap(
+				new Function<String, String>() {
+					@Override
+					public String apply(final String alias) {
+						return String.format("SELECT %s FROM %s %s",
+								attributeListAsString(alias), TABLE_NAME,
+								nullToEmpty(alias));
+					}
+				});
+	}
+
     /**
      * @return a comma-separated list of <%= n %> attributes in string form 
      */
     public static String attributeListAsString(final String alias)
     {
-        return Field.asAttributeList(alias, <%= n %>Metadata.FIELDS);
+        return attributeListAsStringMap.get(nullToEmpty(alias));
     }
     
     /**
@@ -36,7 +73,7 @@ public class <%= n %>Sql
      */
     public static String attributeListAsUpdateString(final String alias)
     {
-        return Field.asUpdateList(alias, <%= n %>Metadata.FIELDS);
+        return attributeListAsUpdateStringMap.get(nullToEmpty(alias));
     }
 
 <% if (ctxt.hasIdField()) { %>
@@ -115,7 +152,7 @@ final String id = pk.getNameAsJava();
      */
     public static String insert()
     {
-        final String propertyPlaceholders = Strings.repeat("?,", <%= n %>Metadata.FIELDS.size() - 1) + "?";
+        final String propertyPlaceholders = repeat("?,", <%= n %>Metadata.FIELDS.size() - 1) + "?";
         return String.format("INSERT INTO %s (%s) VALUES (%s)", TABLE_NAME, attributeListAsString(null), propertyPlaceholders);
     }
 
@@ -140,7 +177,7 @@ final String id = pk.getNameAsJava();
      */
     public static String select(final String alias)
     {
-        return String.format("SELECT %s FROM %s %s", attributeListAsString(alias), TABLE_NAME, Strings.nullToEmpty(alias));
+        return selectByAliasMap.get(nullToEmpty(alias));
     }
     
 }
