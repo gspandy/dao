@@ -21,9 +21,9 @@ public class MeteorGeneratorMain {
 		final File dest = new File("c:/sandbox/dao/generated");
 		final File dao = new File(dest, "dao");
 		final File api = new File(dest, "api");
-		final String packageName = "com.lhasalimited.meteor";
+		final String packageName = "org.lhasalimited.meteor.knowledge";
 
-		final String group = packageName + ".knowledge";
+		final String group = packageName;
 		final String apiArtifactId = "knowledge-api";
 
 		final String version = "1.0.0";

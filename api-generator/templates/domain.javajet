@@ -61,6 +61,7 @@ if (f.isDate()) {
     /**
      * @return <%= f.getNameAsProperty() %>
      */
+    @XmlElement(name="<%=f.getJavaName()%>")
     public <%= f.getJavaInterfaceName() %> <%= f.getNameAsAccessor() %>()
     {
 <% if (f.isDate()) { %>
@@ -81,6 +82,7 @@ if (!dof.getType().hasIdField())
     /**
      * @return <%= f.getNameAsProperty() %>
      */
+    @XmlElement(name="<%=f.getJavaName()%>")
     public Collection<<%= f.getJavaInterfaceName() %>> <%= f.getNameAsAccessor() %>()
     {
         return this.<%= f.getNameAsProperty() %>;
@@ -93,6 +95,7 @@ final String name = f.getJavaName();
 %>
 
 	@Override
+    @XmlElement(name="<%=f.getJavaName()%>Ids")
 	public Collection<<%= idType %>> <%= f.getNameAsAccessor() %>Ids() {
 		return Collections2.transform(<%= f.getNameAsAccessor() %>(),
 				new Function<I<%= name %>, <%= idType %>>() {

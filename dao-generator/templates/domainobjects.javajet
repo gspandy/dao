@@ -47,13 +47,16 @@ for (final ApiContext t : ctxt.getTableContextsWithIds())
         // =============================================================================
         {
             final Function<FindKey<<%= k %>>, I<%= t.getJavaName() %>> computingFunction = new Function<FindKey<Integer>, I<%= n %>>() {
-			@Override
-			public I<%= n %> apply(final FindKey<Integer> from) {
-				final IDbTransaction transaction = from.getTx();
-				final <%= k %> id = from.getKey();
-				return load<%= n %>(transaction, id);
-			}
-
+				@Override
+				public I<%= n %> apply(final FindKey<Integer> from) {
+					final IDbTransaction transaction = from.getTx();
+					final <%= k %> id = from.getKey();
+					return load<%= n %>(transaction, id);
+				}
+				@Override
+				public String toString() {
+					return "<%= t.getJavaName() %> load function";
+				}
 		    };
             <%= t.getPropertyName() %>ById = new MapMaker().concurrencyLevel(concurrencyLevel).makeComputingMap(computingFunction);
         }
@@ -75,6 +78,7 @@ for (final ApiContext t : ctxt.getTableContextsWithIds())
 		final <%= n %>Dto dto = <%= p %>Dao.findById(transaction, id);
 		if (dto == null)
 		{
+		    onNull(<%= n %>Dto.class, id);
 		    return null;
 		}
 <% for (final IField field : t.getDomainObject().getSingleFields()) 
@@ -151,7 +155,12 @@ for (final ApiContext t : ctxt.getTableContextsWithIds())
 
     private void onError(ComputationException e)
     {
-        e.printStackTrace();
+        throw e;
+    }
+
+    private <K, T> void onNull(Class<?> type, final K key)
+    {
+        org.apache.log4j.Logger.getLogger(getClass()).warn(String.format("No '%s' found for id %d", type.getSimpleName(), key));
     }
 
 }
