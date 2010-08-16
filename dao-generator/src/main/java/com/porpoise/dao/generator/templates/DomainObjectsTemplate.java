@@ -20,7 +20,7 @@ public class DomainObjectsTemplate implements IGenerator
 
   public final String NL = nl == null ? (System.getProperties().getProperty("line.separator")) : nl;
   protected final String TEXT_1 = "package ";
-  protected final String TEXT_2 = ".assembler;" + NL + "" + NL + "" + NL + "import com.google.common.collect.Collections2;" + NL + "import java.util.concurrent.ConcurrentMap;" + NL + "import java.util.*;" + NL + "" + NL + "import com.google.common.base.Function;" + NL + "import com.google.common.collect.MapMaker;" + NL + "import ";
+  protected final String TEXT_2 = ".assembler;" + NL + "" + NL + "" + NL + "import com.google.common.collect.Collections2;" + NL + "import com.google.common.collect.ComputationException;" + NL + "" + NL + "import java.util.concurrent.ConcurrentMap;" + NL + "import java.util.*;" + NL + "" + NL + "import com.google.common.base.Function;" + NL + "import com.google.common.collect.MapMaker;" + NL + "import ";
   protected final String TEXT_3 = ".*;" + NL + "import ";
   protected final String TEXT_4 = ".domain.*;" + NL + "import ";
   protected final String TEXT_5 = ".model.*;" + NL + "import com.porpoise.dao.database.IDbTransaction;" + NL + "" + NL + "/**" + NL + " * An assembler class used to assemble/retrieve domain objects" + NL + " */" + NL + "public class DomainObjects {" + NL;
@@ -81,11 +81,12 @@ public class DomainObjectsTemplate implements IGenerator
   protected final String TEXT_60 = " for the given Id " + NL + "     */" + NL + "\tpublic I";
   protected final String TEXT_61 = " get";
   protected final String TEXT_62 = "(final ";
-  protected final String TEXT_63 = " id, final IDbTransaction tx) {" + NL + "\t\treturn ";
-  protected final String TEXT_64 = "ById.get(new FindKey<";
-  protected final String TEXT_65 = ">(id, tx));" + NL + "\t}";
-  protected final String TEXT_66 = NL + NL + "}";
-  protected final String TEXT_67 = NL;
+  protected final String TEXT_63 = " id, final IDbTransaction tx) {" + NL + "\t\tI";
+  protected final String TEXT_64 = " value;" + NL + "\t\tif (id == null || id.intValue() == 0) {" + NL + "\t\t\tvalue = null;" + NL + "\t\t} else {" + NL + "\t\t\ttry {" + NL + "\t\t\t\tvalue = ";
+  protected final String TEXT_65 = "ById.get(new FindKey<";
+  protected final String TEXT_66 = ">(id, tx));" + NL + "\t\t\t} catch (final ComputationException e) {" + NL + "\t\t\t\tonError(e);" + NL + "\t\t\t\tvalue = null;" + NL + "\t\t\t}" + NL + "\t\t}" + NL + "\t\treturn value;" + NL + "\t}";
+  protected final String TEXT_67 = NL + NL + "    private void onError(ComputationException e)" + NL + "    {" + NL + "        e.printStackTrace();" + NL + "    }" + NL + "" + NL + "}";
+  protected final String TEXT_68 = NL;
 
    /* (non-javadoc)
     * @see IGenerator#generate(Object)
@@ -259,13 +260,15 @@ for (final ApiContext t : ctxt.getTableContextsWithIds())
     stringBuffer.append(TEXT_62);
     stringBuffer.append( k );
     stringBuffer.append(TEXT_63);
-    stringBuffer.append( t.getPropertyName() );
+    stringBuffer.append( n );
     stringBuffer.append(TEXT_64);
-    stringBuffer.append( k );
+    stringBuffer.append( t.getPropertyName() );
     stringBuffer.append(TEXT_65);
-     } // end for 
+    stringBuffer.append( k );
     stringBuffer.append(TEXT_66);
+     } // end for 
     stringBuffer.append(TEXT_67);
+    stringBuffer.append(TEXT_68);
     return stringBuffer.toString();
   }
 }

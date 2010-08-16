@@ -36,7 +36,9 @@ public class <%= n %>Sql
 		attributeListAsStringMap = new MapMaker().initialCapacity(3)
 				.makeComputingMap(new Function<String, String>() {
 					@Override
-					public String apply(final String alias) {
+					public String apply(final String aliasParam) {
+					    assert aliasParam != null : "alias was null";
+					    final String alias = emptyToNull(aliasParam);
 						return Field.asAttributeList(alias,
 								<%= n %>Metadata.FIELDS);
 					}
@@ -45,17 +47,21 @@ public class <%= n %>Sql
 		attributeListAsUpdateStringMap = new MapMaker().initialCapacity(3)
 				.makeComputingMap(new Function<String, String>() {
 					@Override
-					public String apply(final String alias) {
+					public String apply(final String aliasParam) {
+					    assert aliasParam != null : "alias was null";
+					    final String alias = emptyToNull(aliasParam);
 						return Field.asUpdateList(alias, <%= n %>Metadata.FIELDS);
 					}
 				});
 		selectByAliasMap = new MapMaker().initialCapacity(3).makeComputingMap(
 				new Function<String, String>() {
 					@Override
-					public String apply(final String alias) {
+					public String apply(final String aliasParam) {
+					    assert aliasParam != null : "alias was null";
+					    final String alias = emptyToNull(aliasParam);
 						return String.format("SELECT %s FROM %s %s",
 								attributeListAsString(alias), TABLE_NAME,
-								nullToEmpty(alias));
+								aliasParam);
 					}
 				});
 	}
@@ -65,6 +71,7 @@ public class <%= n %>Sql
      */
     public static String attributeListAsString(final String alias)
     {
+        // allow null aliases as null has a meaning
         return attributeListAsStringMap.get(nullToEmpty(alias));
     }
     
@@ -73,6 +80,7 @@ public class <%= n %>Sql
      */
     public static String attributeListAsUpdateString(final String alias)
     {
+        // allow null aliases as null has a meaning
         return attributeListAsUpdateStringMap.get(nullToEmpty(alias));
     }
 
@@ -124,7 +132,7 @@ final String id = pk.getNameAsJava();
     {
         final String select = select("a");
         final StringBuilder querySql = new StringBuilder(select);
-        querySql.append(", <%=  r.getFrom().getTable().getTableName() %> b");
+        querySql.append(", <%=  r.getFrom().getTable().getTableName() %> b ");
         
 <% if (r.getCardinality() == Cardinality.ManyToMany) { %>
         querySql.append("WHERE b.<%= r.getFrom().getName() %>=a.<%= r.getTo().getName() %> ");

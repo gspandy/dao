@@ -33,7 +33,7 @@ public class <%= n %>ServiceImplTest extends AbstractServiceImplTest
 		//
 		final Iterable<Integer> allKeys = service.listAllKeys();
 
-		final int actualCount = service.count(getFactory());
+		final int actualCount = service.count();
 		Assert.assertEquals(actualCount, Iterables.size(allKeys));
 
 		for (final Integer key : allKeys) {

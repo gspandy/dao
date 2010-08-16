@@ -6,6 +6,8 @@ package <%= ctxt.getPackageName() %>.assembler;
 
 
 import com.google.common.collect.Collections2;
+import com.google.common.collect.ComputationException;
+
 import java.util.concurrent.ConcurrentMap;
 import java.util.*;
 
@@ -132,8 +134,24 @@ for (final ApiContext t : ctxt.getTableContextsWithIds())
      * @return the I<%= n %> for the given Id 
      */
 	public I<%= n %> get<%= n %>(final <%= k %> id, final IDbTransaction tx) {
-		return <%= t.getPropertyName() %>ById.get(new FindKey<<%= k %>>(id, tx));
+		I<%= n %> value;
+		if (id == null || id.intValue() == 0) {
+			value = null;
+		} else {
+			try {
+				value = <%= t.getPropertyName() %>ById.get(new FindKey<<%= k %>>(id, tx));
+			} catch (final ComputationException e) {
+				onError(e);
+				value = null;
+			}
+		}
+		return value;
 	}
 <% } // end for %>
+
+    private void onError(ComputationException e)
+    {
+        e.printStackTrace();
+    }
 
 }

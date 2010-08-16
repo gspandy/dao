@@ -38,7 +38,7 @@ class FindKey<T> {
 		if (getClass() != obj.getClass()) {
 			return false;
 		}
-		final FindKey other = (FindKey) obj;
+		final FindKey<?> other = (FindKey<?>) obj;
 		if (key == null) {
 			if (other.key != null) {
 				return false;
@@ -63,4 +63,8 @@ class FindKey<T> {
 		return tx;
 	}
 
+	@Override
+	public String toString() {
+		return "Key:" + key;
+	}
 }

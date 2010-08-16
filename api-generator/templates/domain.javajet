@@ -53,7 +53,7 @@ if (f.isDate()) {
 <%}  // end for %>
 
 <% for (final IField f : ctxt.getListFields()) { %>
-        this.<%= f.getNameAsProperty() %> = ImmutableList.copyOf(<%= f.getNameAsProperty() %>);
+        this.<%= f.getNameAsProperty() %> = <%= f.getNameAsProperty() %>;// ImmutableList.copyOf(<%= f.getNameAsProperty() %>);
 <%}  // end for %>
     }
 

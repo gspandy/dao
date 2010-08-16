@@ -26,7 +26,7 @@ public class ApiImplTestTemplate implements IGenerator
   protected final String TEXT_7 = "ServiceImpl.count()}</li>" + NL + "\t * <li>{@link ";
   protected final String TEXT_8 = "ServiceImpl.get(Integer)}</li>" + NL + "\t * <ul>" + NL + "\t * " + NL + "\t * This test assumes a connection to an access database with data." + NL + "\t */" + NL + "\t@Test" + NL + "\tpublic void test_canRead() {" + NL + "\t\t// create the object under test" + NL + "\t\tfinal ";
   protected final String TEXT_9 = "ServiceImpl service = new ";
-  protected final String TEXT_10 = "ServiceImpl(getFactory());" + NL + "" + NL + "\t\t//" + NL + "\t\tfinal Iterable<Integer> allKeys = service.listAllKeys();" + NL + "" + NL + "\t\tfinal int actualCount = service.count(getFactory());" + NL + "\t\tAssert.assertEquals(actualCount, Iterables.size(allKeys));" + NL + "" + NL + "\t\tfor (final Integer key : allKeys) {" + NL + "\t\t\tfinal I";
+  protected final String TEXT_10 = "ServiceImpl(getFactory());" + NL + "" + NL + "\t\t//" + NL + "\t\tfinal Iterable<Integer> allKeys = service.listAllKeys();" + NL + "" + NL + "\t\tfinal int actualCount = service.count();" + NL + "\t\tAssert.assertEquals(actualCount, Iterables.size(allKeys));" + NL + "" + NL + "\t\tfor (final Integer key : allKeys) {" + NL + "\t\t\tfinal I";
   protected final String TEXT_11 = " obj = service.get(key);" + NL + "\t\t\tAssert.assertNotNull(obj);" + NL + "\t\t}" + NL + "\t}" + NL + "}";
   protected final String TEXT_12 = NL;
 
