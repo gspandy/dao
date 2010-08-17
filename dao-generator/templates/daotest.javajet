@@ -63,7 +63,7 @@ final String methodName = "findBy" + pk.getNameAsJava();
 %>
 
     /**
-     * data-dependant test for the <%= methodName %> method
+     * data-dependent test for the <%= methodName %> method
      */
     @Test
     public void test_<%= methodName %>()
