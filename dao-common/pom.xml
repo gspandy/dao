@@ -3,12 +3,12 @@
 	<parent>
 		<groupId>com.porpoise.dao</groupId>
 		<artifactId>dao-parent</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
+		<version>0.1.0</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>dao-common</artifactId>
 	<packaging>bundle</packaging>
-	<name>dao common</name>
+	<name>com.porpoise.dao</name>
 <!-- 
 	<dependencies>
 		<dependency>
@@ -27,6 +27,7 @@
 	</dependencies>
 	-->
   <build>
+  <finalName>com.porpoise.dao-${version}</finalName>
     <plugins>
   <plugin>
     <groupId>org.apache.felix</groupId>
@@ -38,18 +39,6 @@
       </instructions>
     </configuration>
   </plugin>
-  <!--
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
-        <version>2.2</version>
-        <configuration>
-          <archive>
-              <manifestFile>src/main/resources/META-INF/MANIFEST.MF</manifestFile>
-          </archive>
-        </configuration>
-      </plugin>
--->
     </plugins>
   </build>
 
