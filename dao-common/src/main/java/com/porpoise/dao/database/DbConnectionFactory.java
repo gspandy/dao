@@ -14,6 +14,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import javax.sql.DataSource;
 
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableList;
 import com.porpoise.dao.database.init.Databases;
 import com.porpoise.dao.database.init.IDatabaseVendor;
 
@@ -63,6 +64,7 @@ public enum DbConnectionFactory
 	 */
 	INSTANCE;
 
+	private final Collection<Connection> openConnections = new ArrayList<Connection>();
 	private final Collection<IDbTransaction> openTransactions = new ArrayList<IDbTransaction>();
 	private final Map<String, DataSource> datasourceByKey = new ConcurrentHashMap<String, DataSource>();
 	private String defaultDatasourceKey;
@@ -87,6 +89,30 @@ public enum DbConnectionFactory
 	 * close all open connections
 	 */
 	public void closeAllConnections()
+	{
+		closeAllTransactions();
+		final ImmutableList<Connection> copy = ImmutableList.copyOf(openConnections);
+		openConnections.clear();
+		for (final Connection c : copy)
+		{
+			try
+			{
+				if (!c.isClosed())
+				{
+					c.close();
+				}
+			}
+			catch (final SQLException e)
+			{
+				e.printStackTrace();
+			}
+		}
+	}
+
+	/**
+	 * cloase all open transactions
+	 */
+	public void closeAllTransactions()
 	{
 		final Collection<IDbTransaction> copy = new ArrayList<IDbTransaction>(this.openTransactions);
 		for (final IDbTransaction trans : copy)
@@ -252,18 +278,19 @@ public enum DbConnectionFactory
 					.format("no datasources have been registered by the default name '%s'.",
 							getInstance().defaultDatasourceKey));
 		}
-		return initConnection(defaultDataSource);
+		return getInstance().initConnection(defaultDataSource);
 	}
 
 	/*
 	 * all methods using connections should ensure they initialise them using
 	 */
-	private static Connection initConnection(final DataSource dataSource)
+	private Connection initConnection(final DataSource dataSource)
 	{
 		Connection conn;
 		try
 		{
 			conn = dataSource.getConnection();
+			openConnections.add(conn);
 			conn.setAutoCommit(false);
 		}
 		catch (final SQLException e)
