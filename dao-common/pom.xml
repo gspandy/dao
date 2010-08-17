@@ -36,6 +36,7 @@
     <configuration>
       <instructions>
         <Export-Package>com.porpoise.dao.*</Export-Package>
+        <Import-Package>!com.mysql.*,!org.apache.*,*</Import-Package>
       </instructions>
     </configuration>
   </plugin>
