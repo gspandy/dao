@@ -3,44 +3,47 @@
 	<parent>
 		<groupId>com.porpoise.dao</groupId>
 		<artifactId>dao-parent</artifactId>
-		<version>0.1.0</version>
+		<version>0.1.1</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>dao-common</artifactId>
+	<!-- 
 	<packaging>bundle</packaging>
+	 -->
 	<name>com.porpoise.dao</name>
-<!-- 
-	<dependencies>
-		<dependency>
-			<groupId>org.apache.derby</groupId>
-			<artifactId>derby</artifactId>
-			<version>10.5.3.0_1</version>
-			<scope>test</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-			<version>5.1.9</version>
-			<scope>test</scope>
-		</dependency>
-	</dependencies>
+	<!--
+		<dependencies> <dependency> <groupId>org.apache.derby</groupId>
+		<artifactId>derby</artifactId> <version>10.5.3.0_1</version>
+		<scope>test</scope> </dependency> <dependency>
+		<groupId>mysql</groupId> <artifactId>mysql-connector-java</artifactId>
+		<version>5.1.9</version> <scope>test</scope> </dependency>
+		</dependencies>
 	-->
-  <build>
-  <finalName>com.porpoise.dao-${version}</finalName>
-    <plugins>
-  <plugin>
-    <groupId>org.apache.felix</groupId>
-    <artifactId>maven-bundle-plugin</artifactId>
-    <extensions>true</extensions>
-    <configuration>
-      <instructions>
-        <Export-Package>com.porpoise.dao.*</Export-Package>
-        <Import-Package>!com.mysql.*,!org.apache.*,*</Import-Package>
-      </instructions>
-    </configuration>
-  </plugin>
-    </plugins>
-  </build>
+	<build>
+		<finalName>com.porpoise.dao-${version}</finalName>
+		<plugins>
+			<!--
+				EITHER USE THIS (FELIX) PLUGIN TO GENERATE THE MANIFEST... <plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<extensions>true</extensions> <configuration> <instructions>
+				<Export-Package>com.porpoise.dao.*</Export-Package>
+				<Import-Package>!com.mysql.*,!org.apache.*,*</Import-Package>
+				<Bundle-SymbolicName>com.porpoise.dao</Bundle-SymbolicName>
+				</instructions> </configuration> </plugin>
+			-->
+
+			<!-- ... OR SPECIFY THE EXPLICIT MANIFEST: -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+					<archive>
+						<manifestFile>src/main/resources/META-INF/MANIFEST.MF</manifestFile>
+					</archive>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 
 </project>

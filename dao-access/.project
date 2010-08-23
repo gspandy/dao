@@ -1,7 +1,12 @@
 <projectDescription>
   <name>dao-access</name>
   <comment>NO_M2ECLIPSE_SUPPORT: Project files created with the maven-eclipse-plugin are not supported in M2Eclipse.</comment>
-  <projects/>
+  <projects>
+    <project>api-generator</project>
+    <project>base-generator</project>
+    <project>dao-common</project>
+    <project>dao-generator</project>
+  </projects>
   <buildSpec>
     <buildCommand>
       <name>org.eclipse.jdt.core.javabuilder</name>

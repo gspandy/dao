@@ -1,10 +1,11 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: DAO Common
-Bundle-SymbolicName: com.porpoise.dao.common; singleton:=true
-Bundle-Version: 1.0.0
+Bundle-Name: com.porpoise.dao
+Bundle-SymbolicName: com.porpoise.dao;singleton:=true
+Bundle-Version: 0.1.0
 Bundle-Vendor: Porpoise Ltd
-Require-Bundle: com.google.guava;bundle-version="0.5.0"
+Require-Bundle: com.google.guava
+Import-Package: javax.sql
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: com.porpoise.dao,
  com.porpoise.dao.database,
@@ -13,3 +14,5 @@ Export-Package: com.porpoise.dao,
  com.porpoise.dao.database.metadata,
  com.porpoise.dao.database.tools,
  com.porpoise.dao.database.visitors
+Ignore-Package: com.mysql.jdbc.jdbc2.optional,org.apache.log4j,org.apache.derby.jdbc
+ 
