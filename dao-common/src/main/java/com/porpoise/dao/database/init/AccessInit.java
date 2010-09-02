@@ -95,9 +95,6 @@ class AccessInit
             final File database = new File( details.getUrl());
             final String databaseURL = prefix + database.getAbsolutePath() + suffix;
 //            databaseURL = databaseURL + ";PWD=" + details.getPassword() +";";
-//            final Properties properties = new Properties();
-//            properties.put("user", details.getUser());
-//            properties.put("password", details.getPassword());         
             
             final Connection c = DriverManager.getConnection(databaseURL, details.getUser(), details.getPassword());
 			return c;
