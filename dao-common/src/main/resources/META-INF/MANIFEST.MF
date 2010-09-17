@@ -2,10 +2,9 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: com.porpoise.dao
 Bundle-SymbolicName: com.porpoise.dao;singleton:=true
-Bundle-Version: 0.1.1
+Bundle-Version: 0.2.0
 Bundle-Vendor: Porpoise Ltd
 Require-Bundle: com.google.guava
-Import-Package: javax.sql
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: com.porpoise.dao,
  com.porpoise.dao.database,

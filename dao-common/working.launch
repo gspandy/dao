@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="org.eclipse.pde.ui.RuntimeWorkbench">
+<booleanAttribute key="append.args" value="true"/>
+<stringAttribute key="application" value="org.lhasalimited.meteor.ui.application"/>
+<booleanAttribute key="askclear" value="true"/>
+<booleanAttribute key="automaticAdd" value="false"/>
+<booleanAttribute key="automaticValidate" value="false"/>
+<stringAttribute key="bootstrap" value=""/>
+<stringAttribute key="checked" value="[NONE]"/>
+<booleanAttribute key="clearConfig" value="false"/>
+<booleanAttribute key="clearws" value="false"/>
+<booleanAttribute key="clearwslog" value="false"/>
+<stringAttribute key="configLocation" value="${workspace_loc}/.metadata/.plugins/org.eclipse.pde.core/meteor.product"/>
+<booleanAttribute key="default" value="false"/>
+<booleanAttribute key="includeOptional" value="true"/>
+<stringAttribute key="location" value="${workspace_loc}/../runtime-meteor.product"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-os ${target.os} -ws ${target.ws} -arch ${target.arch} -nl ${target.nl} -consoleLog -console"/>
+<stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.pde.ui.workbenchClasspathProvider"/>
+<stringAttribute key="pde.version" value="3.3"/>
+<stringAttribute key="product" value="org.lhasalimited.meteor.product.product"/>
+<stringAttribute key="productFile" value="\org.lhasalimited.meteor.product\meteor.product"/>
+<stringAttribute key="selected_target_plugins" value="org.eclipse.swtbot.eclipse.finder@default:default,
+org.eclipse.swt.win32.win32.x86@default:false,
+org.apache.batik.dom@default:default,
+org.eclipse.jface.databinding@default:default,
+org.eclipse.help*3.4.1.v20090805_35x@default:default,
+org.eclipse.equinox.launcher.win32.win32.x86@default:false,
+org.eclipse.equinox.registry@default:default,
+org.eclipse.equinox.preferences@default:default,
+org.eclipse.swtbot.eclipse.core@default:default,
+org.eclipse.core.jobs@default:default,
+org.hamcrest@default:default,
+org.eclipse.core.commands@default:default,
+org.eclipse.rcp@default:default,
+org.eclipse.osgi.services@default:default,
+org.eclipse.ui.views.properties.tabbed@default:default,
+org.eclipse.zest.core@default:default,
+org.eclipse.swtbot.eclipse.spy@default:default,
+org.apache.batik.dom.svg@default:default,
+org.eclipse.equinox.simpleconfigurator@1:true,
+org.eclipse.ui.forms@default:default,
+com.porpoise.dao@default:default,
+org.hamcrest.library@default:default,
+org.apache.batik.xml@default:default,
+org.eclipse.draw2d@default:default,
+org.eclipse.equinox.ds@1:true,
+org.eclipse.core.databinding.observable@default:default,
+org.eclipse.swt@default:default,
+org.w3c.sac@default:default,
+org.apache.batik.css@default:default,
+org.apache.batik.transcoder@default:default,
+org.eclipse.equinox.common@2:true,
+org.eclipse.core.databinding@default:default,
+org.eclipse.core.runtime.compatibility.auth@default:default,
+org.eclipse.osgi@-1:true,
+org.apache.log4j*1.2.13.v200903072027@default:default,
+org.hamcrest.core@default:default,
+org.apache.batik.ext.awt@default:default,
+org.w3c.css.sac@default:default,
+org.w3c.dom.smil@default:default,
+org.hamcrest.integration@default:default,
+org.hamcrest.text@default:default,
+org.eclipse.core.contenttype@default:default,
+org.eclipse.equinox.launcher@default:default,
+org.eclipse.equinox.app@default:default,
+org.eclipse.swtbot.junit4_x@default:default,
+com.ibm.icu@default:default,
+org.junit@default:default,
+org.eclipse.swtbot.swt.finder@default:default,
+org.apache.batik.util@default:default,
+org.apache.batik.util.gui@default:default,
+org.eclipse.swtbot.go@default:default,
+org.eclipse.core.expressions@default:default,
+org.eclipse.equinox.util@default:default,
+org.w3c.dom.svg@default:default,
+javax.servlet@default:default,
+org.eclipse.ui.workbench@default:default,
+org.eclipse.core.databinding.beans@default:default,
+org.eclipse.gef@default:default,
+org.eclipse.core.runtime@default:true,
+org.eclipse.ui.views@default:default,
+org.junit4@default:default,
+org.eclipse.jdt.junit.runtime@default:default,
+org.eclipse.jface@default:default,
+org.eclipse.core.databinding.property@default:default,
+org.apache.batik.parser@default:default,
+org.eclipse.zest.layouts@default:default,
+org.apache.batik.pdf@default:default,
+org.eclipse.ui@default:default,
+org.apache.batik.bridge@default:default,
+org.apache.batik.svggen@default:default,
+org.eclipse.update.configurator@3:true"/>
+<stringAttribute key="selected_workspace_plugins" value="org.lhasalimited.pluto.ui.swt.swing@default:default,
+org.lhasalimited.pluto.base.core@default:default,
+org.lhasalimited.meteor.product@default:default,
+org.lhasalimited.meteor.prediction@default:default,
+org.lhasalimited.pluto.ui.application@default:default,
+com.chemaxon.marvinbeans@default:default,
+org.lhasalimited.meteor.ui.test@default:false,
+org.lhasalimited.pluto.niobe.util@default:default,
+org.lhasalimited.daf.core@default:default,
+org.lhasalimited.meteor.kb.test@default:false,
+org.lhasalimited.daf.export@default:default,
+org.lhasalimited.meteor.inter2.wrapper.test@default:false,
+org.lhasalimited.pluto.base.model@default:default,
+org.lhasalimited.daf.model.problem.test@default:false,
+org.lhasalimited.meteor.model@default:default,
+org.lhasalimited.pluto.ui.navigator@default:default,
+org.lhasalimited.meteor.prediction.ui@default:default,
+org.lhasalimited.daf.views.structureeditor@default:default,
+org.lhasalimited.daf.treereduce@default:default,
+org.lhasalimited.daf.predictionscheduler.test@default:false,
+org.lhasalimited.daf.structures.test@default:false,
+org.lhasalimited.meteor.dummyprediction.ui@default:default,
+org.lhasalimited.pluto.utils@default:default,
+org.lhasalimited.daf.structures@default:default,
+org.lhasalimited.meteor.ui@default:default,
+org.lhasalimited.daf.export.ui@default:default,
+org.lhasalimited.meteor.inter2.wrapper@default:default,
+org.lhasalimited.meteor.ui.views.tableview@default:default,
+org.lhasalimited.daf.views.problemview@default:default,
+org.lhasalimited.daf.core.test@default:false,
+org.lhasalimited.ceres@default:default,
+org.lhasalimited.daf.views.multistructureview@default:default,
+org.lhasalimited.meteor.kb@default:default,
+org.lhasalimited.daf.navigator@default:default,
+org.lhasalimited.daf.core.ui@default:default,
+org.lhasalimited.daf.export.test@default:false,
+org.lhasalimited.pluto.base.ui@default:default,
+org.lhasalimited.daf.navigator.model@default:default,
+org.lhasalimited.meteor.build.log4j@default:false,
+org.lhasalimited.meteor.dummyprediction@default:default,
+org.lhasalimited.meteor.model.providers@default:default,
+org.lhasalimited.daf.views.summaryview@default:default,
+org.lhasalimited.pluto.ui.input@default:default,
+org.lhasalimited.meteor.inter2.win32@default:false,
+org.lhasalimited.pluto.licence@default:default,
+org.lhasalimited.meteor.prediction.test@default:false,
+org.lhasalimited.daf.input@default:default,
+org.lhasalimited.daf.treereduce.test@default:false,
+org.lhasalimited.daf.input.test@default:false,
+org.lhasalimited.daf.navigator.model.test@default:false,
+org.lhasalimited.meteor.model.test@default:false,
+org.lhasalimited.meteor.ui.views.treeview@default:default,
+org.lhasalimited.daf.model.problem@default:default,
+org.lhasalimited.daf.predictionscheduler@default:default,
+com.google.guava@default:default"/>
+<booleanAttribute key="show_selected_only" value="false"/>
+<stringAttribute key="templateConfig" value="C:\sandbox\workspace_2010_08_17\plugins\org.lhasalimited.meteor.product\etc\config.ini"/>
+<booleanAttribute key="tracing" value="false"/>
+<booleanAttribute key="useDefaultConfig" value="false"/>
+<booleanAttribute key="useDefaultConfigArea" value="true"/>
+<booleanAttribute key="useProduct" value="true"/>
+<booleanAttribute key="usefeatures" value="false"/>
+</launchConfiguration>

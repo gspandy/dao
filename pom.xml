@@ -4,11 +4,11 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.porpoise.dao</groupId>
 	<artifactId>dao-parent</artifactId>
-	<version>0.1.1</version>
+	<version>0.2.0</version>
 	<packaging>pom</packaging>
 	<name>dao parent</name>
 	<properties>
-		<dao.version>0.1.1</dao.version>
+		<dao.version>0.2.0</dao.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<distributionId>dao</distributionId>
 		<javaDocVersion>2.5</javaDocVersion>
